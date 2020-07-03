@@ -1,0 +1,5 @@
+rootProject.name='RadialGraph'
+include ':app'
+include ':radialgraph'
+// FIXME: Huh?
+//include ':sample'
