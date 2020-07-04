@@ -8,7 +8,7 @@ import android.graphics.PixelFormat
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
 
-abstract class ChartDrawable(open var graphValues: List<GraphValue>) : Drawable() {
+abstract class GraphDrawable(open var graphValues: List<GraphValue>) : Drawable() {
     private val strokeWidth = 40f
     private val startingRotation = -90f
     protected var pathLength: Float = 0f

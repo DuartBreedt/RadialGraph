@@ -9,7 +9,7 @@ import android.util.FloatProperty
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.annotation.RequiresApi
 
-class PieChartDrawable(override var graphValues: List<GraphValue>) : ChartDrawable(graphValues) {
+class RadialGraphDrawable(override var graphValues: List<GraphValue>) : GraphDrawable(graphValues) {
 
     override fun draw(canvas: Canvas) {
         val boundaries = calculateBoundaries()
@@ -40,8 +40,8 @@ class PieChartDrawable(override var graphValues: List<GraphValue>) : ChartDrawab
 
     // Creates a progress property to be animated animated
     @RequiresApi(Build.VERSION_CODES.N)
-    private object PROGRESS : FloatProperty<PieChartDrawable>("progress") {
-        override fun setValue(drawable: PieChartDrawable, progressPercent: Float) {
+    private object PROGRESS : FloatProperty<RadialGraphDrawable>("progress") {
+        override fun setValue(drawable: RadialGraphDrawable, progressPercent: Float) {
             drawable.invalidateSelf()
             var graphValueSum = drawable.graphValues.sumByDouble { graphValue -> graphValue.value.toDouble() }.toFloat()
             for (graphValue in drawable.graphValues) {
@@ -50,6 +50,6 @@ class PieChartDrawable(override var graphValues: List<GraphValue>) : ChartDrawab
             }
         }
 
-        override fun get(drawable: PieChartDrawable) = drawable.graphValues[0].progress
+        override fun get(drawable: RadialGraphDrawable) = drawable.graphValues[0].progress
     }
 }

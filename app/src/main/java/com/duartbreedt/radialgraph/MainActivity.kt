@@ -2,7 +2,6 @@ package com.duartbreedt.radialgraph
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import java.math.BigDecimal
 
@@ -16,27 +15,26 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-
-            val chartCategories = mutableListOf(
-                ChartCategory(
+            val graphCategories = mutableListOf(
+                GraphCategory(
                     "A",
                     BigDecimal("5"),
                     R.color.red
                 ),
-                ChartCategory(
+                GraphCategory(
                     "B",
                     BigDecimal("10"),
                     R.color.green
 
                 ),
-                ChartCategory(
+                GraphCategory(
                     BigDecimal("15"),
                     R.color.blue
                 )
             )
 
-            val chartData = ChartData(chartCategories)
+            val graphData = GraphData(graphCategories)
 
-            overview_pie_chart_layout.drawChartPercent(chartData)
+            graph_layout.draw(graphData)
     }
 }

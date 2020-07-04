@@ -14,7 +14,7 @@ class LabelView(context: Context) : AppCompatTextView(context) {
     @ColorRes var colorRes: Int = R.color.defaultLabelColor
     var positionValue: Float = 0f
 
-    constructor(context: Context, category: ChartCategory, posValue: Float): this(context) {
+    constructor(context: Context, category: GraphCategory, posValue: Float): this(context) {
         id = ViewCompat.generateViewId()
         positionValue = posValue
         colorRes = category.color
@@ -37,24 +37,24 @@ class LabelView(context: Context) : AppCompatTextView(context) {
         val xGraphCenter = x
         val yGraphCenter = y
 
-        val labelPadding = context.resources.getDimension(R.dimen.pie_chart_label_padding)
-        val labelDistanceFromChart = radius + labelPadding + (width / 2f * (cosineFunction(positionValue)))
+        val labelPadding = context.resources.getDimension(R.dimen.label_padding)
+        val labelDistanceFromGraph = radius + labelPadding + (width / 2f * (cosineFunction(positionValue)))
 
         val xLabelPosition = x
-        val yLabelPosition = y - labelDistanceFromChart
+        val yLabelPosition = y - labelDistanceFromGraph
 
         val angleOfRotation = -positionValue * 2 * Math.PI
 
         val xVector = xLabelPosition - xGraphCenter
         val yVector = yLabelPosition - yGraphCenter
 
-        // Rotate label about the center of the chart
+        // Rotate label about the center of the graph
         y = ((xVector * sin(angleOfRotation) + yVector * cos(angleOfRotation)) + yGraphCenter).toFloat()
         x = ((xVector * cos(angleOfRotation) - yVector * sin(angleOfRotation)) + xGraphCenter).toFloat()
     }
 
     /**
-     * Intended to provide values which shift text labels away from the pie chart when they are along side the graph
+     * Intended to provide values which shift text labels away from the graph when they are along side the graph
      * and bring the labels nearer the graph when they are above or below the graph
      *
      * @param x A cycle completes for every 0.5 increment of x

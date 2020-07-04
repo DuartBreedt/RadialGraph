@@ -1,12 +1,14 @@
 package com.duartbreedt.radialgraph
 
+import android.content.Context
+import androidx.core.content.ContextCompat
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class ChartData(
-    categories: List<ChartCategory>
+class GraphData(
+    categories: List<GraphCategory>
 ) {
-    val categories: List<ChartCategory> = categories.map {
+    val categories: List<GraphCategory> = categories.map {
         it.apply {
             totalValue = calculateTotalValue(categories)
             normalizedValue = value.divide(totalValue, 10, RoundingMode.HALF_EVEN)
@@ -14,13 +16,11 @@ class ChartData(
         }
     }
 
-    val totalValue: BigDecimal = calculateTotalValue(categories)
-
-    private fun calculateTotalValue(categories: List<ChartCategory>): BigDecimal =
+    private fun calculateTotalValue(categories: List<GraphCategory>): BigDecimal =
         categories.sumByBigDecimal { it.value }
 }
 
-class ChartCategory {
+class GraphCategory {
     val label: String?
     val value: BigDecimal
     val color: Int
@@ -51,4 +51,11 @@ class ChartCategory {
         portionStartPositionValue
             .minus(normalizedValue.divide(BigDecimal("2"), 2, RoundingMode.HALF_EVEN))
             .toFloat()
+
+    fun toGraphValue(context: Context): GraphDrawable.GraphValue {
+        val graphColor = ContextCompat.getColor(context, color)
+
+        return if (value == BigDecimal.ZERO) GraphDrawable.GraphValue(0F, graphColor)
+        else GraphDrawable.GraphValue(normalizedValue.toFloat(), graphColor)
+    }
 }

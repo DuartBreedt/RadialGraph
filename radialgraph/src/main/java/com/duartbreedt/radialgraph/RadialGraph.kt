@@ -2,16 +2,22 @@ package com.duartbreedt.radialgraph
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import androidx.annotation.Nullable
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.core.view.children
 import java.math.BigDecimal
 
-class LabeledPieChartLayout(context: Context, @Nullable attrs: AttributeSet) : ConstraintLayout(context, attrs) {
+class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintLayout(context, attrs) {
 
+    //region Properties
+    var graphView: AppCompatImageView? = null
+    //endregion
+
+    //region Android Lifecycle
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
 
@@ -23,33 +29,48 @@ class LabeledPieChartLayout(context: Context, @Nullable attrs: AttributeSet) : C
 
         labels.forEach { it.setPosition(graph.height / 2f) }
     }
+    //endregion
 
-    fun drawChartPercent(chartData: ChartData) {
-        drawChart(chartData)
-        addLabelViewsToLayout(chartData)
+    //region Public API
+    fun draw(graphData: GraphData) {
+        addGraphViewToLayout()
+        drawGraph(graphData)
+        addLabelViewsToLayout(graphData)
     }
+    //endregion
 
-    private fun drawChart(chartData: ChartData) {
-
-        val chartPortions = ArrayList<ChartDrawable.GraphValue>()
-
-        for (category in chartData.categories) {
-            chartPortions.add(getChartPortion(category))
+    //region Helper Functions
+    private fun addGraphViewToLayout() {
+        if (graphView != null) {
+            removeView(graphView)
         }
 
-        val portfolioPieChart = PieChartDrawable(chartPortions)
+        graphView = AppCompatImageView(context).apply { id = ViewCompat.generateViewId() }
+        addView(graphView)
 
-        (children.first { child -> child is AppCompatImageView } as AppCompatImageView)
-            .setImageDrawable(portfolioPieChart)
+        val margin: Int = resources.getDimensionPixelSize(R.dimen.graph_margin)
+        graphView!!.layoutParams = (graphView!!.layoutParams as LayoutParams).apply {
+            setMargins(margin, margin, margin, margin)
+            width = resources.getDimensionPixelSize(R.dimen.graph_width)
+            height = resources.getDimensionPixelSize(R.dimen.graph_height)
+        }
 
-        portfolioPieChart.animateIn()
+        setConstraints(graphView)
     }
 
-    private fun addLabelViewsToLayout(chartData: ChartData) {
+    private fun drawGraph(graphData: GraphData) {
+        val graph = RadialGraphDrawable(graphData.categories.map { it.toGraphValue(context) })
+
+        graphView!!.setImageDrawable(graph)
+
+        graph.animateIn()
+    }
+
+    private fun addLabelViewsToLayout(graphData: GraphData) {
         var labelStartPositionValue = BigDecimal.ONE
         removeAllLabels()
 
-        for (category in chartData.categories) {
+        for (category in graphData.categories) {
             context?.let { context ->
                 val categoryPortion: BigDecimal = category.normalizedValue
                 val labelPositionValue: Float = category.calculateLabelPositionValue(labelStartPositionValue)
@@ -64,21 +85,18 @@ class LabeledPieChartLayout(context: Context, @Nullable attrs: AttributeSet) : C
     }
 
     private fun removeAllLabels() {
-        val labelsToRemove = mutableListOf<LabelView>()
-
-        children.forEach { view ->
-            if (view is LabelView) {
-                labelsToRemove.add(view)
+        children.forEach {
+            if (it is LabelView) {
+                removeView(it)
             }
         }
-
-        labelsToRemove.forEach { removeView(it) }
     }
 
-    private fun setConstraints(labelView: LabelView?) {
+    private fun setConstraints(labelView: View?) {
         val constraintSet = ConstraintSet()
         constraintSet.clone(this)
         labelView?.id?.let { labelViewId ->
+            constraintSet.setDimensionRatio(labelViewId, "1:1")
             constraintSet.connect(
                 labelViewId,
                 ConstraintSet.LEFT,
@@ -107,11 +125,5 @@ class LabeledPieChartLayout(context: Context, @Nullable attrs: AttributeSet) : C
 
         constraintSet.applyTo(this)
     }
-
-    private fun getChartPortion(category: ChartCategory): ChartDrawable.GraphValue {
-        val graphColor = ContextCompat.getColor(context, category.color)
-
-        return if (category.value == BigDecimal.ZERO) ChartDrawable.GraphValue(0F, graphColor)
-        else ChartDrawable.GraphValue(category.normalizedValue.toFloat(), graphColor)
-    }
+//endregion
 }
