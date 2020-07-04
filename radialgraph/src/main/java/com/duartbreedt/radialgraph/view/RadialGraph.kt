@@ -38,7 +38,12 @@ class RadialGraph : ConstraintLayout {
             attributes.getInt(R.styleable.RadialGraph_animationDirection, DEFAULT_ANIMATION_DIRECTION)
         val animationDirection = AnimationDirection.values()[animationDirectionOrdinal]
 
-        graphConfig = GraphConfig(animationDirection)
+        val labelsEnabled = attributes.getBoolean(R.styleable.RadialGraph_labelsEnabled, false)
+
+        graphConfig = GraphConfig(
+            animationDirection,
+            labelsEnabled
+        )
 
         attributes.recycle()
     }
@@ -55,7 +60,7 @@ class RadialGraph : ConstraintLayout {
     fun draw(data: Data) {
         addGraphViewToLayout()
         drawGraph(data)
-        addLabelViewsToLayout(data)
+        if(graphConfig.labelsEnabled) {addLabelViewsToLayout(data) }
     }
     //endregion
 
@@ -67,6 +72,7 @@ class RadialGraph : ConstraintLayout {
         addView(graphView)
 
         val margin: Int = resources.getDimensionPixelSize(R.dimen.graph_margin)
+
         graphView!!.layoutParams = (graphView!!.layoutParams as LayoutParams).apply {
             setMargins(margin, margin, margin, margin)
             width = resources.getDimensionPixelSize(R.dimen.graph_width)

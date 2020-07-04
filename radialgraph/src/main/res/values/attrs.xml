@@ -7,5 +7,6 @@
 
     <declare-styleable name="RadialGraph">
         <attr name="animationDirection" />
+        <attr name="labelsEnabled" format="boolean"/>
     </declare-styleable>
 </resources>
