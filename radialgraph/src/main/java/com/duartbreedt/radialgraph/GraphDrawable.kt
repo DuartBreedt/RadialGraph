@@ -58,5 +58,5 @@ abstract class GraphDrawable(open var graphValues: List<GraphValue>) : Drawable(
 
     override fun getOpacity(): Int = PixelFormat.OPAQUE
 
-    data class GraphValue(var value: Float, var color: Int, var progress: Float = 0f)
+    data class GraphValue(var value: Float, var color: Int, var currentProgress: Float = 0f)
 }

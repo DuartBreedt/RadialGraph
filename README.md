@@ -14,17 +14,24 @@ TODO
 - Rounded end (attr)
 - Stroke thickness
 - Graph size
+- Customizable graph end icon
 
 #### Graph labels
 - Color
+- Icon as labels
 - Toggleable
+- Percent precision/decoration
+- Use value as label
+    - Decoration for currency
 - Animate in once the graph has animated in
 - Indicators
+    - None
     - Line
     - Dashed line
     - Nodule line
     - Dashed nodule line
 
 ### Features
-- Graph key convenience methods
-
+- Graph key/legend convenience methods
+- Render graph portions by descending value, ascending value, or using a separate priority value 
+ 

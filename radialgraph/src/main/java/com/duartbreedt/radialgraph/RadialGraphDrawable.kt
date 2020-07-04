@@ -6,7 +6,6 @@ import android.graphics.ColorFilter
 import android.graphics.PathMeasure
 import android.os.Build
 import android.util.FloatProperty
-import android.util.Log
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.annotation.RequiresApi
 
@@ -18,7 +17,7 @@ class RadialGraphDrawable(override var graphValues: List<GraphValue>) : GraphDra
         for (graph in graphValues) {
             val path = buildCircularPath(boundaries)
             pathLength = PathMeasure(path, false).length
-            val paint = buildPhasedPathPaint(pathLength - graph.progress, graph.color)
+            val paint = buildPhasedPathPaint(pathLength - graph.currentProgress, graph.color)
 
             canvas.drawPath(path, paint)
         }
@@ -44,13 +43,13 @@ class RadialGraphDrawable(override var graphValues: List<GraphValue>) : GraphDra
     private object PROGRESS : FloatProperty<RadialGraphDrawable>("progress") {
         override fun setValue(drawable: RadialGraphDrawable, progressPercent: Float) {
             drawable.invalidateSelf()
-            var graphValueSum = 1f
+            var portionStartPosition = 1f
             for (graphValue in drawable.graphValues) {
-                graphValue.progress = drawable.pathLength * progressPercent * graphValueSum
-                graphValueSum -= graphValue.value
+                graphValue.currentProgress = drawable.pathLength * progressPercent * portionStartPosition
+                portionStartPosition -= graphValue.value
             }
         }
 
-        override fun get(drawable: RadialGraphDrawable) = drawable.graphValues[0].progress
+        override fun get(drawable: RadialGraphDrawable) = drawable.graphValues[0].currentProgress
     }
 }
