@@ -6,6 +6,7 @@ import android.graphics.ColorFilter
 import android.graphics.PathMeasure
 import android.os.Build
 import android.util.FloatProperty
+import android.util.Log
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.annotation.RequiresApi
 
@@ -43,7 +44,7 @@ class RadialGraphDrawable(override var graphValues: List<GraphValue>) : GraphDra
     private object PROGRESS : FloatProperty<RadialGraphDrawable>("progress") {
         override fun setValue(drawable: RadialGraphDrawable, progressPercent: Float) {
             drawable.invalidateSelf()
-            var graphValueSum = drawable.graphValues.sumByDouble { graphValue -> graphValue.value.toDouble() }.toFloat()
+            var graphValueSum = 1f
             for (graphValue in drawable.graphValues) {
                 graphValue.progress = drawable.pathLength * progressPercent * graphValueSum
                 graphValueSum -= graphValue.value
