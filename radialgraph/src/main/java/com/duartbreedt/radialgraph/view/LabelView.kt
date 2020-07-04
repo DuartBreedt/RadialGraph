@@ -7,21 +7,26 @@ import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import com.duartbreedt.radialgraph.model.GraphCategory
 import com.duartbreedt.radialgraph.R
 import com.duartbreedt.radialgraph.extensions.toFormattedPercentage
+import com.duartbreedt.radialgraph.model.Section
 import kotlin.math.cos
 import kotlin.math.sin
 
 class LabelView(context: Context) : AppCompatTextView(context) {
-    @ColorRes var colorRes: Int = R.color.defaultLabelColor
+    @ColorRes
+    var colorRes: Int = R.color.defaultLabelColor
     var positionValue: Float = 0f
 
-    constructor(context: Context, category: GraphCategory, posValue: Float): this(context) {
+    constructor(context: Context, section: Section, posValue: Float) : this(context) {
         id = ViewCompat.generateViewId()
         positionValue = posValue
-        colorRes = category.color
-        text = resources.getString(R.string.label_percent_pattern, category.percent.toFormattedPercentage())
+        colorRes = section.color
+
+        text = section.label ?: resources.getString(
+            R.string.label_percent_pattern,
+            section.percent.toFormattedPercentage()
+        )
 
         setTextSize(
             TypedValue.COMPLEX_UNIT_PX,

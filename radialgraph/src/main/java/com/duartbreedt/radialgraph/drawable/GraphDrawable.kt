@@ -7,8 +7,9 @@ import android.graphics.Path
 import android.graphics.PixelFormat
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
+import com.duartbreedt.radialgraph.model.SectionState
 
-abstract class GraphDrawable(open var graphValues: List<GraphValue>) : Drawable() {
+abstract class GraphDrawable(open var sectionStates: List<SectionState>) : Drawable() {
     private val strokeWidth = 40f
     private val startingRotation = -90f
     protected var pathLength: Float = 0f
@@ -57,6 +58,4 @@ abstract class GraphDrawable(open var graphValues: List<GraphValue>) : Drawable(
     }
 
     override fun getOpacity(): Int = PixelFormat.OPAQUE
-
-    data class GraphValue(var value: Float, var color: Int, var currentProgress: Float = 0f)
 }

@@ -2,8 +2,8 @@ package com.duartbreedt.radialgraph
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.duartbreedt.radialgraph.model.GraphCategory
-import com.duartbreedt.radialgraph.model.GraphData
+import com.duartbreedt.radialgraph.model.Section
+import com.duartbreedt.radialgraph.model.Data
 import kotlinx.android.synthetic.main.activity_main.*
 import java.math.BigDecimal
 
@@ -17,25 +17,25 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-            val graphCategories = mutableListOf(
-                GraphCategory(
+            val sections = mutableListOf(
+                Section(
                     "A",
                     BigDecimal("5"),
                     R.color.red
                 ),
-                GraphCategory(
+                Section(
                     "B",
                     BigDecimal("10"),
                     R.color.green
 
                 ),
-                GraphCategory(
+                Section(
                     BigDecimal("15"),
                     R.color.blue
                 )
             )
 
-            val graphData = GraphData(graphCategories)
+            val graphData = Data(sections)
 
             graph_layout.draw(graphData)
     }

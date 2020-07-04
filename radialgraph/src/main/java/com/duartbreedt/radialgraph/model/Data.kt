@@ -4,17 +4,17 @@ import com.duartbreedt.radialgraph.extensions.sumByBigDecimal
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class GraphData(categories: List<GraphCategory>) {
+class Data(sections: List<Section>) {
 
-    val categories: List<GraphCategory> = categories.map {
+    val sections: List<Section> = sections.map {
         it.apply {
-            totalValue = calculateTotalValue(categories)
+            totalValue = calculateTotalValue(sections)
             normalizedValue = value.divide(totalValue, 10, RoundingMode.HALF_EVEN)
             percent = normalizedValue.multiply(BigDecimal("100")).setScale(1, RoundingMode.HALF_EVEN)
         }
     }
 
-    private fun calculateTotalValue(categories: List<GraphCategory>): BigDecimal =
-        categories.sumByBigDecimal { it.value }
+    private fun calculateTotalValue(sections: List<Section>): BigDecimal =
+        sections.sumByBigDecimal { it.value }
 }
 

@@ -8,13 +8,14 @@ import android.os.Build
 import android.util.FloatProperty
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.annotation.RequiresApi
+import com.duartbreedt.radialgraph.model.SectionState
 
-class RadialGraphDrawable(override var graphValues: List<GraphValue>) : GraphDrawable(graphValues) {
+class RadialGraphDrawable(override var sectionStates: List<SectionState>) : GraphDrawable(sectionStates) {
 
     override fun draw(canvas: Canvas) {
         val boundaries = calculateBoundaries()
 
-        for (graph in graphValues) {
+        for (graph in sectionStates) {
             val path = buildCircularPath(boundaries)
             pathLength = PathMeasure(path, false).length
             val paint = buildPhasedPathPaint(pathLength - graph.currentProgress, graph.color)
@@ -45,12 +46,12 @@ class RadialGraphDrawable(override var graphValues: List<GraphValue>) : GraphDra
         override fun setValue(drawable: RadialGraphDrawable, progressPercent: Float) {
             drawable.invalidateSelf()
             var portionStartPosition = 1f
-            for (graphValue in drawable.graphValues) {
+            for (graphValue in drawable.sectionStates) {
                 graphValue.currentProgress = drawable.pathLength * progressPercent * portionStartPosition
                 portionStartPosition -= graphValue.value
             }
         }
 
-        override fun get(drawable: RadialGraphDrawable) = drawable.graphValues[0].currentProgress
+        override fun get(drawable: RadialGraphDrawable) = drawable.sectionStates[0].currentProgress
     }
 }

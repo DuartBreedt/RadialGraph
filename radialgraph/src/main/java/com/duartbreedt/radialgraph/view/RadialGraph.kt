@@ -8,7 +8,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.ViewCompat
-import com.duartbreedt.radialgraph.model.GraphData
+import com.duartbreedt.radialgraph.model.Data
 import com.duartbreedt.radialgraph.R
 import com.duartbreedt.radialgraph.drawable.RadialGraphDrawable
 import java.math.BigDecimal
@@ -29,10 +29,10 @@ class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintL
     //endregion
 
     //region Public API
-    fun draw(graphData: GraphData) {
+    fun draw(data: Data) {
         addGraphViewToLayout()
-        drawGraph(graphData)
-        addLabelViewsToLayout(graphData)
+        drawGraph(data)
+        addLabelViewsToLayout(data)
     }
     //endregion
 
@@ -60,9 +60,9 @@ class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintL
         }
     }
 
-    private fun drawGraph(graphData: GraphData) {
+    private fun drawGraph(data: Data) {
         val graph =
-            RadialGraphDrawable(graphData.categories.map {
+            RadialGraphDrawable(data.sections.map {
                 it.toGraphValue(context)
             })
 
@@ -71,23 +71,22 @@ class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintL
         graph.animateIn()
     }
 
-    private fun addLabelViewsToLayout(graphData: GraphData) {
+    private fun addLabelViewsToLayout(data: Data) {
         removeAllLabels()
 
         var labelStartPositionValue = BigDecimal.ONE
 
-        for (category in graphData.categories) {
+        for (section in data.sections) {
             context?.let { context ->
-                val categoryPortion: BigDecimal = category.normalizedValue
-                val labelPositionValue: Float = category.calculateLabelPositionValue(labelStartPositionValue)
-                val labelView =
-                    LabelView(context, category, labelPositionValue)
+                val sectionNormalizedSize: BigDecimal = section.normalizedValue
+                val labelPositionValue: Float = section.calculateLabelPositionValue(labelStartPositionValue)
+                val labelView = LabelView(context, section, labelPositionValue)
 
                 labelViews.add(labelView)
                 addView(labelView)
                 setConstraints(labelView)
 
-                labelStartPositionValue = labelStartPositionValue.minus(categoryPortion)
+                labelStartPositionValue = labelStartPositionValue.minus(sectionNormalizedSize)
             }
         }
     }
