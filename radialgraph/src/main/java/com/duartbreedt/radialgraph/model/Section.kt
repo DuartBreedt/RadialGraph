@@ -6,7 +6,7 @@ import com.duartbreedt.radialgraph.drawable.GraphDrawable
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class GraphCategory {
+class Category {
     val label: String?
     val value: BigDecimal
     val color: Int
