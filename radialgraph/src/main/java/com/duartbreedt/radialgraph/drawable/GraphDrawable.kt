@@ -7,9 +7,14 @@ import android.graphics.Path
 import android.graphics.PixelFormat
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
+import com.duartbreedt.radialgraph.model.GraphConfig
 import com.duartbreedt.radialgraph.model.SectionState
 
-abstract class GraphDrawable(open var sectionStates: List<SectionState>) : Drawable() {
+abstract class GraphDrawable(
+    open val graphConfig: GraphConfig,
+    open val sectionStates: List<SectionState>
+) : Drawable() {
+
     private val width = 40f
     private val startingRotation = -90f
     protected var pathLength: Float = 0f
@@ -20,11 +25,10 @@ abstract class GraphDrawable(open var sectionStates: List<SectionState>) : Drawa
      * @param phase The progress of the bar where 0f is a full bar and the path's length is an empty bar
      */
     protected fun buildPhasedPathPaint(progress: Float, resolvedColor: Int): Paint {
-        // CCW
-        // val phase = pathLength - progress
 
-        // CW
-        val phase = pathLength + progress
+        val phase =
+            if (graphConfig.isClockwise()) pathLength + progress
+            else pathLength - progress
 
         return Paint().apply {
             strokeWidth = width

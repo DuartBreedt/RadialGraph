@@ -8,9 +8,13 @@ import android.os.Build
 import android.util.FloatProperty
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.annotation.RequiresApi
+import com.duartbreedt.radialgraph.model.GraphConfig
 import com.duartbreedt.radialgraph.model.SectionState
 
-class RadialGraphDrawable(override var sectionStates: List<SectionState>) : GraphDrawable(sectionStates) {
+class RadialGraphDrawable(
+    override val graphConfig: GraphConfig,
+    override val sectionStates: List<SectionState>
+) :GraphDrawable(graphConfig, sectionStates) {
 
     override fun draw(canvas: Canvas) {
         val boundaries = calculateBoundaries()

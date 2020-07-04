@@ -25,16 +25,7 @@ class Section {
         this.color = color
     }
 
-    fun calculateLabelPositionValue(portionStartPositionValue: BigDecimal): Float =
-        portionStartPositionValue
-            // CCW
-            // .minus(normalizedValue.divide(BigDecimal("2"), 2, RoundingMode.HALF_EVEN))
-
-            // CW
-            .plus(normalizedValue.divide(BigDecimal("2"), 2, RoundingMode.HALF_EVEN))
-            .toFloat()
-
-    fun toGraphValue(context: Context): SectionState {
+    fun toSectionState(context: Context): SectionState {
         val graphColor = ContextCompat.getColor(context, color)
 
         return if (value == BigDecimal.ZERO) SectionState(0F, graphColor)

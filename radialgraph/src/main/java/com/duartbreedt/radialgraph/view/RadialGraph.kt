@@ -3,7 +3,6 @@ package com.duartbreedt.radialgraph.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import androidx.annotation.Nullable
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -12,14 +11,17 @@ import com.duartbreedt.radialgraph.R
 import com.duartbreedt.radialgraph.drawable.RadialGraphDrawable
 import com.duartbreedt.radialgraph.model.AnimationDirection
 import com.duartbreedt.radialgraph.model.Data
+import com.duartbreedt.radialgraph.model.GraphConfig
+import com.duartbreedt.radialgraph.model.Section
 import java.math.BigDecimal
+import java.math.RoundingMode
 
-class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintLayout(context, attrs) {
+class RadialGraph : ConstraintLayout {
 
     //region Properties
     private var graphView: AppCompatImageView? = null
     private val labelViews: MutableList<LabelView> = mutableListOf()
-    private val animationDirection: AnimationDirection
+    private val graphConfig: GraphConfig
     //endregion
 
     companion object {
@@ -27,12 +29,16 @@ class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintL
         private const val DEFAULT_ANIMATION_DIRECTION = CLOCKWISE_ANIMATION_DIRECTION
     }
 
-    init {
+    constructor(context: Context) : this(context, null)
+
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.RadialGraph)
 
         val animationDirectionOrdinal =
             attributes.getInt(R.styleable.RadialGraph_animationDirection, DEFAULT_ANIMATION_DIRECTION)
-        animationDirection = AnimationDirection.values()[animationDirectionOrdinal]
+        val animationDirection = AnimationDirection.values()[animationDirectionOrdinal]
+
+        graphConfig = GraphConfig(animationDirection)
 
         attributes.recycle()
     }
@@ -78,7 +84,7 @@ class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintL
     }
 
     private fun drawGraph(data: Data) {
-        val graph = RadialGraphDrawable(data.sections.map { it.toGraphValue(context) })
+        val graph = RadialGraphDrawable(graphConfig, data.sections.map { it.toSectionState(context) })
 
         graphView!!.setImageDrawable(graph)
 
@@ -88,29 +94,33 @@ class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintL
     private fun addLabelViewsToLayout(data: Data) {
         removeAllLabels()
 
-        // CCW
-        // var labelStartPositionValue = BigDecimal.ONE
-
-        // CW
-        var labelStartPositionValue = BigDecimal.ZERO
+        var labelStartPositionValue =
+            if (graphConfig.isClockwise()) BigDecimal.ZERO
+            else BigDecimal.ONE
 
         for (section in data.sections) {
             context?.let { context ->
                 val sectionNormalizedSize: BigDecimal = section.normalizedValue
-                val labelPositionValue: Float = section.calculateLabelPositionValue(labelStartPositionValue)
+                val labelPositionValue: Float = calculateLabelPositionValue(section, labelStartPositionValue)
                 val labelView = LabelView(context, section, labelPositionValue)
 
                 labelViews.add(labelView)
                 addView(labelView)
                 setConstraints(labelView)
 
-                // CCW
-                // labelStartPositionValue = labelStartPositionValue.minus(sectionNormalizedSize)
-
-                // CW
-                labelStartPositionValue = labelStartPositionValue.plus(sectionNormalizedSize)
+                labelStartPositionValue =
+                    if (graphConfig.isClockwise()) labelStartPositionValue + sectionNormalizedSize
+                    else labelStartPositionValue - sectionNormalizedSize
             }
         }
+    }
+
+    private fun calculateLabelPositionValue(section: Section, portionStartPositionValue: BigDecimal): Float {
+        val halfSectionSize = section.normalizedValue.divide(BigDecimal("2"), 2, RoundingMode.HALF_EVEN)
+        val sectionMidpointPosition =
+            if (graphConfig.isClockwise()) (portionStartPositionValue + halfSectionSize)
+            else (portionStartPositionValue - halfSectionSize)
+        return sectionMidpointPosition.toFloat()
     }
 
     private fun removeAllLabels() {
@@ -151,5 +161,5 @@ class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintL
 
         constraintSet.applyTo(this)
     }
-//endregion
+    //endregion
 }
