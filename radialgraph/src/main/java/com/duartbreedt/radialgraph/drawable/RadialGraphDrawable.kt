@@ -15,10 +15,10 @@ class RadialGraphDrawable(override var sectionStates: List<SectionState>) : Grap
     override fun draw(canvas: Canvas) {
         val boundaries = calculateBoundaries()
 
-        for (graph in sectionStates) {
+        for (sectionState in sectionStates) {
             val path = buildCircularPath(boundaries)
             pathLength = PathMeasure(path, false).length
-            val paint = buildPhasedPathPaint(pathLength - graph.currentProgress, graph.color)
+            val paint = buildPhasedPathPaint(sectionState.currentProgress, sectionState.color)
 
             canvas.drawPath(path, paint)
         }

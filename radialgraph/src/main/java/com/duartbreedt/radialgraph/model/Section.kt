@@ -27,7 +27,11 @@ class Section {
 
     fun calculateLabelPositionValue(portionStartPositionValue: BigDecimal): Float =
         portionStartPositionValue
-            .minus(normalizedValue.divide(BigDecimal("2"), 2, RoundingMode.HALF_EVEN))
+            // CCW
+            // .minus(normalizedValue.divide(BigDecimal("2"), 2, RoundingMode.HALF_EVEN))
+
+            // CW
+            .plus(normalizedValue.divide(BigDecimal("2"), 2, RoundingMode.HALF_EVEN))
             .toFloat()
 
     fun toGraphValue(context: Context): SectionState {

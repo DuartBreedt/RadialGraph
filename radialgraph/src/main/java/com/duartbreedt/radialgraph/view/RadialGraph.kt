@@ -8,9 +8,10 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.ViewCompat
-import com.duartbreedt.radialgraph.model.Data
 import com.duartbreedt.radialgraph.R
 import com.duartbreedt.radialgraph.drawable.RadialGraphDrawable
+import com.duartbreedt.radialgraph.model.AnimationDirection
+import com.duartbreedt.radialgraph.model.Data
 import java.math.BigDecimal
 
 class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintLayout(context, attrs) {
@@ -18,7 +19,23 @@ class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintL
     //region Properties
     private var graphView: AppCompatImageView? = null
     private val labelViews: MutableList<LabelView> = mutableListOf()
+    private val animationDirection: AnimationDirection
     //endregion
+
+    companion object {
+        private const val CLOCKWISE_ANIMATION_DIRECTION = 0
+        private const val DEFAULT_ANIMATION_DIRECTION = CLOCKWISE_ANIMATION_DIRECTION
+    }
+
+    init {
+        val attributes = context.obtainStyledAttributes(attrs, R.styleable.RadialGraph)
+
+        val animationDirectionOrdinal =
+            attributes.getInt(R.styleable.RadialGraph_animationDirection, DEFAULT_ANIMATION_DIRECTION)
+        animationDirection = AnimationDirection.values()[animationDirectionOrdinal]
+
+        attributes.recycle()
+    }
 
     //region Android Lifecycle
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
@@ -61,10 +78,7 @@ class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintL
     }
 
     private fun drawGraph(data: Data) {
-        val graph =
-            RadialGraphDrawable(data.sections.map {
-                it.toGraphValue(context)
-            })
+        val graph = RadialGraphDrawable(data.sections.map { it.toGraphValue(context) })
 
         graphView!!.setImageDrawable(graph)
 
@@ -74,7 +88,11 @@ class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintL
     private fun addLabelViewsToLayout(data: Data) {
         removeAllLabels()
 
-        var labelStartPositionValue = BigDecimal.ONE
+        // CCW
+        // var labelStartPositionValue = BigDecimal.ONE
+
+        // CW
+        var labelStartPositionValue = BigDecimal.ZERO
 
         for (section in data.sections) {
             context?.let { context ->
@@ -86,7 +104,11 @@ class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintL
                 addView(labelView)
                 setConstraints(labelView)
 
-                labelStartPositionValue = labelStartPositionValue.minus(sectionNormalizedSize)
+                // CCW
+                // labelStartPositionValue = labelStartPositionValue.minus(sectionNormalizedSize)
+
+                // CW
+                labelStartPositionValue = labelStartPositionValue.plus(sectionNormalizedSize)
             }
         }
     }

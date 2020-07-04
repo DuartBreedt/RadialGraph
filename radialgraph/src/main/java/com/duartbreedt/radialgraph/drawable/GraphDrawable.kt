@@ -10,7 +10,7 @@ import android.graphics.drawable.Drawable
 import com.duartbreedt.radialgraph.model.SectionState
 
 abstract class GraphDrawable(open var sectionStates: List<SectionState>) : Drawable() {
-    private val strokeWidth = 40f
+    private val width = 40f
     private val startingRotation = -90f
     protected var pathLength: Float = 0f
 
@@ -19,15 +19,21 @@ abstract class GraphDrawable(open var sectionStates: List<SectionState>) : Drawa
      *
      * @param phase The progress of the bar where 0f is a full bar and the path's length is an empty bar
      */
-    protected fun buildPhasedPathPaint(phase: Float, color: Int): Paint {
-        val paint = Paint()
-        paint.strokeWidth = strokeWidth
-        paint.color = color
-        paint.pathEffect = DashPathEffect(floatArrayOf(pathLength, pathLength), phase)
-        paint.style = Paint.Style.STROKE
-        paint.flags = Paint.ANTI_ALIAS_FLAG
-        paint.strokeCap = Paint.Cap.BUTT
-        return paint
+    protected fun buildPhasedPathPaint(progress: Float, resolvedColor: Int): Paint {
+        // CCW
+        // val phase = pathLength - progress
+
+        // CW
+        val phase = pathLength + progress
+
+        return Paint().apply {
+            strokeWidth = width
+            color = resolvedColor
+            pathEffect = DashPathEffect(floatArrayOf(pathLength, pathLength), phase)
+            style = Paint.Style.STROKE
+            flags = Paint.ANTI_ALIAS_FLAG
+            strokeCap = Paint.Cap.BUTT
+        }
     }
 
     protected fun buildCircularPath(boundaries: RectF): Path {
@@ -50,10 +56,10 @@ abstract class GraphDrawable(open var sectionStates: List<SectionState>) : Drawa
 
     protected fun calculateBoundaries(): RectF {
         return RectF(
-            bounds.left.toFloat() + (strokeWidth / 2f),
-            bounds.top.toFloat() + (strokeWidth / 2f),
-            bounds.right.toFloat() - (strokeWidth / 2f),
-            bounds.bottom.toFloat() - (strokeWidth / 2f)
+            bounds.left.toFloat() + (width / 2f),
+            bounds.top.toFloat() + (width / 2f),
+            bounds.right.toFloat() - (width / 2f),
+            bounds.bottom.toFloat() - (width / 2f)
         )
     }
 

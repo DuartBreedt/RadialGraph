@@ -14,9 +14,11 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 class LabelView(context: Context) : AppCompatTextView(context) {
+
     @ColorRes
     var colorRes: Int = R.color.defaultLabelColor
-    var positionValue: Float = 0f
+
+    private var positionValue: Float = 0f
 
     constructor(context: Context, section: Section, posValue: Float) : this(context) {
         id = ViewCompat.generateViewId()
@@ -28,10 +30,7 @@ class LabelView(context: Context) : AppCompatTextView(context) {
             section.percent.toFormattedPercentage()
         )
 
-        setTextSize(
-            TypedValue.COMPLEX_UNIT_PX,
-            resources.getDimension(R.dimen.default_label_size)
-        )
+        setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.default_label_size))
 
         setTextColor(ContextCompat.getColor(context, colorRes))
 
