@@ -8,26 +8,20 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.ViewCompat
-import androidx.core.view.children
 import java.math.BigDecimal
 
 class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintLayout(context, attrs) {
 
     //region Properties
-    var graphView: AppCompatImageView? = null
+    private var graphView: AppCompatImageView? = null
+    private val labelViews: MutableList<LabelView> = mutableListOf()
     //endregion
 
     //region Android Lifecycle
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
 
-        val graph: AppCompatImageView = children.filter { view -> view is AppCompatImageView }.firstOrNull()
-            .let { view -> view as AppCompatImageView }
-
-        val labels: List<LabelView> =
-            children.map { view -> if (view is LabelView) view else null }.toList().filterNotNull()
-
-        labels.forEach { it.setPosition(graph.height / 2f) }
+        labelViews.forEach { it.setPosition(graphView!!.height / 2f) }
     }
     //endregion
 
@@ -41,9 +35,7 @@ class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintL
 
     //region Helper Functions
     private fun addGraphViewToLayout() {
-        if (graphView != null) {
-            removeView(graphView)
-        }
+        removeGraphView()
 
         graphView = AppCompatImageView(context).apply { id = ViewCompat.generateViewId() }
         addView(graphView)
@@ -58,6 +50,13 @@ class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintL
         setConstraints(graphView)
     }
 
+    private fun removeGraphView() {
+        if (graphView != null) {
+            removeView(graphView)
+            graphView = null
+        }
+    }
+
     private fun drawGraph(graphData: GraphData) {
         val graph = RadialGraphDrawable(graphData.categories.map { it.toGraphValue(context) })
 
@@ -67,8 +66,9 @@ class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintL
     }
 
     private fun addLabelViewsToLayout(graphData: GraphData) {
-        var labelStartPositionValue = BigDecimal.ONE
         removeAllLabels()
+
+        var labelStartPositionValue = BigDecimal.ONE
 
         for (category in graphData.categories) {
             context?.let { context ->
@@ -76,6 +76,7 @@ class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintL
                 val labelPositionValue: Float = category.calculateLabelPositionValue(labelStartPositionValue)
                 val labelView = LabelView(context, category, labelPositionValue)
 
+                labelViews.add(labelView)
                 addView(labelView)
                 setConstraints(labelView)
 
@@ -85,11 +86,8 @@ class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintL
     }
 
     private fun removeAllLabels() {
-        children.forEach {
-            if (it is LabelView) {
-                removeView(it)
-            }
-        }
+        labelViews.forEach { removeView(it) }
+        labelViews.clear()
     }
 
     private fun setConstraints(labelView: View?) {
