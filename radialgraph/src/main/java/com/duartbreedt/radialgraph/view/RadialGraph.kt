@@ -60,7 +60,9 @@ class RadialGraph : ConstraintLayout {
     fun draw(data: Data) {
         addGraphViewToLayout()
         drawGraph(data)
-        if(graphConfig.labelsEnabled) {addLabelViewsToLayout(data) }
+        if (graphConfig.labelsEnabled) {
+            addLabelViewsToLayout(data)
+        }
     }
     //endregion
 

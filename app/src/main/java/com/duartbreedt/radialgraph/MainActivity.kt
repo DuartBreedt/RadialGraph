@@ -35,8 +35,6 @@ class MainActivity : AppCompatActivity() {
                 )
             )
 
-            val graphData = Data(sections)
-
-            graph_layout.draw(graphData)
+            graph_layout.draw(Data(sections))
     }
 }
