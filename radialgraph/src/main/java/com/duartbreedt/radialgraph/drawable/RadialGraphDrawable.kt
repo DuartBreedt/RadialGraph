@@ -1,4 +1,4 @@
-package com.duartbreedt.radialgraph
+package com.duartbreedt.radialgraph.drawable
 
 import android.animation.ObjectAnimator
 import android.graphics.Canvas
@@ -32,7 +32,8 @@ class RadialGraphDrawable(override var graphValues: List<GraphValue>) : GraphDra
     }
 
     fun animateIn() {
-        ObjectAnimator.ofFloat(this, PROGRESS, 0f, 1f).apply {
+        ObjectAnimator.ofFloat(this,
+            PROGRESS, 0f, 1f).apply {
             duration = 1000L
             interpolator = AccelerateDecelerateInterpolator()
         }.start()

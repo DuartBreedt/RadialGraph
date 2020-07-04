@@ -1,4 +1,4 @@
-package com.duartbreedt.radialgraph
+package com.duartbreedt.radialgraph.drawable
 
 import android.graphics.DashPathEffect
 import android.graphics.Matrix

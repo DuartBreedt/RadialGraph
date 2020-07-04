@@ -1,4 +1,4 @@
-package com.duartbreedt.radialgraph
+package com.duartbreedt.radialgraph.view
 
 import android.content.Context
 import android.util.TypedValue
@@ -7,6 +7,9 @@ import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import com.duartbreedt.radialgraph.model.GraphCategory
+import com.duartbreedt.radialgraph.R
+import com.duartbreedt.radialgraph.extensions.toFormattedPercentage
 import kotlin.math.cos
 import kotlin.math.sin
 

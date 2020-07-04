@@ -2,6 +2,8 @@ package com.duartbreedt.radialgraph
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.duartbreedt.radialgraph.model.GraphCategory
+import com.duartbreedt.radialgraph.model.GraphData
 import kotlinx.android.synthetic.main.activity_main.*
 import java.math.BigDecimal
 

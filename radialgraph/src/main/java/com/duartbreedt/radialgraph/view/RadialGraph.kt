@@ -1,4 +1,4 @@
-package com.duartbreedt.radialgraph
+package com.duartbreedt.radialgraph.view
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,6 +8,9 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.ViewCompat
+import com.duartbreedt.radialgraph.model.GraphData
+import com.duartbreedt.radialgraph.R
+import com.duartbreedt.radialgraph.drawable.RadialGraphDrawable
 import java.math.BigDecimal
 
 class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintLayout(context, attrs) {
@@ -58,7 +61,10 @@ class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintL
     }
 
     private fun drawGraph(graphData: GraphData) {
-        val graph = RadialGraphDrawable(graphData.categories.map { it.toGraphValue(context) })
+        val graph =
+            RadialGraphDrawable(graphData.categories.map {
+                it.toGraphValue(context)
+            })
 
         graphView!!.setImageDrawable(graph)
 
@@ -74,7 +80,8 @@ class RadialGraph(context: Context, @Nullable attrs: AttributeSet) : ConstraintL
             context?.let { context ->
                 val categoryPortion: BigDecimal = category.normalizedValue
                 val labelPositionValue: Float = category.calculateLabelPositionValue(labelStartPositionValue)
-                val labelView = LabelView(context, category, labelPositionValue)
+                val labelView =
+                    LabelView(context, category, labelPositionValue)
 
                 labelViews.add(labelView)
                 addView(labelView)

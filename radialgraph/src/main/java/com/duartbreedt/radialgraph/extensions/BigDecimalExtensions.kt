@@ -1,4 +1,4 @@
-package com.duartbreedt.radialgraph
+package com.duartbreedt.radialgraph.extensions
 
 import java.math.BigDecimal
 import java.text.DecimalFormat
@@ -24,7 +24,10 @@ inline fun <T> Iterable<T>.sumByBigDecimal(selector: (T) -> BigDecimal): BigDeci
 }
 
 fun BigDecimal.toFormattedPercentage(): String =
-    createSpaceGroupingSeparator(this, percentageDecimalPattern)
+    createSpaceGroupingSeparator(
+        this,
+        percentageDecimalPattern
+    )
 
 private fun createSpaceGroupingSeparator(value: BigDecimal, pattern: String): String {
     val formatter = DecimalFormat(pattern)
