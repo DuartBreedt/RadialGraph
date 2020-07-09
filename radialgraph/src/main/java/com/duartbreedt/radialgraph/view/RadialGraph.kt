@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat
 import com.duartbreedt.radialgraph.R
 import com.duartbreedt.radialgraph.drawable.RadialGraphDrawable
 import com.duartbreedt.radialgraph.model.AnimationDirection
+import com.duartbreedt.radialgraph.model.Cap
 import com.duartbreedt.radialgraph.model.Data
 import com.duartbreedt.radialgraph.model.GraphConfig
 import com.duartbreedt.radialgraph.model.Section
@@ -42,7 +43,8 @@ class RadialGraph : ConstraintLayout {
 
         graphConfig = GraphConfig(
             animationDirection,
-            labelsEnabled
+            labelsEnabled,
+            Cap.ROUND
         )
 
         attributes.recycle()
@@ -93,7 +95,8 @@ class RadialGraph : ConstraintLayout {
 
     private fun drawGraph(data: Data) {
 
-        val graph = RadialGraphDrawable(graphConfig, data.toSectionStates(context).reversed())
+        // TODO: Perhaps don't reverse this here and just sort differently a bit higher
+        val graph = RadialGraphDrawable(graphConfig, data.toSectionStates(context, graphConfig).reversed())
 
         graphView!!.setImageDrawable(graph)
 

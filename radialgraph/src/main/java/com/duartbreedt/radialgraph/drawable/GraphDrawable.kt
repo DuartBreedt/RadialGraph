@@ -8,7 +8,9 @@ import android.graphics.PixelFormat
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import com.duartbreedt.radialgraph.model.AnimationDirection
+import com.duartbreedt.radialgraph.model.Cap
 import com.duartbreedt.radialgraph.model.GraphConfig
+import com.duartbreedt.radialgraph.model.Section
 import com.duartbreedt.radialgraph.model.SectionState
 
 abstract class GraphDrawable(
@@ -18,22 +20,24 @@ abstract class GraphDrawable(
 
     private val width = 40f
     private val startingRotation = -90f
-    protected var pathLength: Float = 0f
 
     /**
      * Creates a paint object with a phase value to indicate the progress of the bar
      *
      * @param phase The progress of the bar where 0f is a full bar and the path's length is an empty bar
      */
-    protected fun buildPhasedPathPaint(state: SectionState): Paint =
-        Paint().apply {
+    protected fun buildPhasedPathPaint(state: SectionState): Paint {
+        val phase: Float = state.length!! + state.currentProgress
+
+        return Paint().apply {
             strokeWidth = width
             color = state.color
-            pathEffect = DashPathEffect(floatArrayOf(pathLength, pathLength), pathLength + state.currentProgress)
+            pathEffect = DashPathEffect(floatArrayOf(state.length!! , state.length!!), phase)
             style = Paint.Style.STROKE
             flags = Paint.ANTI_ALIAS_FLAG
             strokeCap = Paint.Cap.BUTT
         }
+    }
 
     protected fun buildCircularPath(boundaries: RectF): Path {
         val path = Path()

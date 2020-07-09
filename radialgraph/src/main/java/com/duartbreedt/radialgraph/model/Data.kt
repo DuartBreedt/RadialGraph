@@ -1,7 +1,6 @@
 package com.duartbreedt.radialgraph.model
 
 import android.content.Context
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.duartbreedt.radialgraph.extensions.sumByBigDecimal
 import java.math.BigDecimal
@@ -24,19 +23,24 @@ class Data(sections: List<Section>, total: BigDecimal? = null) {
     private fun calculateTotalValue(sections: List<Section>): BigDecimal =
         sections.sumByBigDecimal { it.value }
 
-    fun toSectionStates(context: Context): List<SectionState> {
+    fun toSectionStates(context: Context, graphConfig: GraphConfig): List<SectionState> {
         var previousSectionEndPosition = 0f
 
-        return sections.map {
-            val graphColor = ContextCompat.getColor(context, it.color)
+        val sectionStates = mutableListOf<SectionState>()
 
-            val sectionState: SectionState = if (it.value == BigDecimal.ZERO) SectionState(0f, 0f, graphColor)
-            else SectionState(it.normalizedValue.toFloat(), previousSectionEndPosition, graphColor)
+        sections.forEachIndexed { index: Int, section: Section ->
+            val graphColor = ContextCompat.getColor(context, section.color)
 
-            previousSectionEndPosition += it.normalizedValue.toFloat()
+            val sectionState: SectionState =
+                if (section.value == BigDecimal.ZERO) SectionState(0f, 0f, graphColor, index == sections.size - 1)
+                else SectionState(section.normalizedValue.toFloat(), previousSectionEndPosition, graphColor, index == sections.size - 1)
 
-            sectionState
+            previousSectionEndPosition += section.normalizedValue.toFloat()
+
+            sectionStates.add(sectionState)
         }
+
+        return sectionStates
     }
 }
 

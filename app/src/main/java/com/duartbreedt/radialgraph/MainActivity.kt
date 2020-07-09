@@ -29,6 +29,6 @@ class MainActivity : AppCompatActivity() {
                 )
             )
 
-            graph_layout.draw(Data(sections, BigDecimal("30")))
+            graph_layout.draw(Data(sections, BigDecimal("50")))
     }
 }
