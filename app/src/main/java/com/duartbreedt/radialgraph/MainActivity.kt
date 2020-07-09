@@ -19,22 +19,16 @@ class MainActivity : AppCompatActivity() {
 
             val sections = mutableListOf(
                 Section(
-                    "A",
-                    BigDecimal("5"),
+                    BigDecimal("10"),
                     R.color.red
                 ),
                 Section(
-                    "B",
+                    "STAB",
                     BigDecimal("10"),
                     R.color.green
-
-                ),
-                Section(
-                    BigDecimal("15"),
-                    R.color.blue
                 )
             )
 
-            graph_layout.draw(Data(sections))
+            graph_layout.draw(Data(sections, BigDecimal("30")))
     }
 }

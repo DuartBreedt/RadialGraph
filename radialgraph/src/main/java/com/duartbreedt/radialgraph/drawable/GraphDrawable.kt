@@ -7,6 +7,7 @@ import android.graphics.Path
 import android.graphics.PixelFormat
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
+import com.duartbreedt.radialgraph.model.AnimationDirection
 import com.duartbreedt.radialgraph.model.GraphConfig
 import com.duartbreedt.radialgraph.model.SectionState
 
@@ -24,26 +25,20 @@ abstract class GraphDrawable(
      *
      * @param phase The progress of the bar where 0f is a full bar and the path's length is an empty bar
      */
-    protected fun buildPhasedPathPaint(progress: Float, resolvedColor: Int): Paint {
-
-        val phase =
-            if (graphConfig.isClockwise()) pathLength + progress
-            else pathLength - progress
-
-        return Paint().apply {
+    protected fun buildPhasedPathPaint(state: SectionState): Paint =
+        Paint().apply {
             strokeWidth = width
-            color = resolvedColor
-            pathEffect = DashPathEffect(floatArrayOf(pathLength, pathLength), phase)
+            color = state.color
+            pathEffect = DashPathEffect(floatArrayOf(pathLength, pathLength), pathLength + state.currentProgress)
             style = Paint.Style.STROKE
             flags = Paint.ANTI_ALIAS_FLAG
             strokeCap = Paint.Cap.BUTT
         }
-    }
 
     protected fun buildCircularPath(boundaries: RectF): Path {
         val path = Path()
-
-        path.addArc(boundaries, 0f, -360f)
+        val sign = if (graphConfig.animationDirection == AnimationDirection.CLOCKWISE) -1 else 1
+        path.addArc(boundaries, 0f, 360f * sign)
 
         // The starting position of the arc is undesirable, therefore set it explicitly
         rotatePath(path, startingRotation)

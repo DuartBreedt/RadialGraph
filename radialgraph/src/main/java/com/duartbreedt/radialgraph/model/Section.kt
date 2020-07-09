@@ -24,11 +24,4 @@ class Section {
         this.value = value
         this.color = color
     }
-
-    fun toSectionState(context: Context): SectionState {
-        val graphColor = ContextCompat.getColor(context, color)
-
-        return if (value == BigDecimal.ZERO) SectionState(0F, graphColor)
-        else SectionState(normalizedValue.toFloat(), graphColor)
-    }
 }

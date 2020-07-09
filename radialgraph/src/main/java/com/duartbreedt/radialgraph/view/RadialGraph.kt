@@ -92,7 +92,8 @@ class RadialGraph : ConstraintLayout {
     }
 
     private fun drawGraph(data: Data) {
-        val graph = RadialGraphDrawable(graphConfig, data.sections.map { it.toSectionState(context) })
+
+        val graph = RadialGraphDrawable(graphConfig, data.toSectionStates(context).reversed())
 
         graphView!!.setImageDrawable(graph)
 
@@ -103,9 +104,10 @@ class RadialGraph : ConstraintLayout {
         removeAllLabels()
 
         var labelStartPositionValue =
-            if (graphConfig.isClockwise()) BigDecimal.ZERO
-            else BigDecimal.ONE
+            if (graphConfig.isClockwise()) BigDecimal.ONE
+            else BigDecimal.ZERO
 
+        // val wot = data.sections.reversed()
         for (section in data.sections) {
             context?.let { context ->
                 val sectionNormalizedSize: BigDecimal = section.normalizedValue
@@ -117,8 +119,8 @@ class RadialGraph : ConstraintLayout {
                 setConstraints(labelView)
 
                 labelStartPositionValue =
-                    if (graphConfig.isClockwise()) labelStartPositionValue + sectionNormalizedSize
-                    else labelStartPositionValue - sectionNormalizedSize
+                    if (graphConfig.isClockwise()) labelStartPositionValue - sectionNormalizedSize
+                    else labelStartPositionValue + sectionNormalizedSize
             }
         }
     }
@@ -126,8 +128,8 @@ class RadialGraph : ConstraintLayout {
     private fun calculateLabelPositionValue(section: Section, portionStartPositionValue: BigDecimal): Float {
         val halfSectionSize = section.normalizedValue.divide(BigDecimal("2"), 2, RoundingMode.HALF_EVEN)
         val sectionMidpointPosition =
-            if (graphConfig.isClockwise()) (portionStartPositionValue + halfSectionSize)
-            else (portionStartPositionValue - halfSectionSize)
+            if (graphConfig.isClockwise()) (portionStartPositionValue - halfSectionSize)
+            else (portionStartPositionValue + halfSectionSize)
         return sectionMidpointPosition.toFloat()
     }
 
