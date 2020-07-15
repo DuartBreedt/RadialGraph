@@ -14,7 +14,7 @@
 
         app:animationDirection="clockwise"
         app:labelsEnabled="true"
-        app:labelsColor="@color/defaultLabelColor"
+        app:labelsColor="@color/label_defaultColor"
         app:strokeWidth="10dp"
 
         app:layout_constraintTop_toTopOf="parent" />

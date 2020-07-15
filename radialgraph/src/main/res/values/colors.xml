@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="defaultLabelColor">#555555</color>
+    <color name="label_defaultColor">#555555</color>
 </resources>

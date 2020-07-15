@@ -50,7 +50,7 @@ class RadialGraph : ConstraintLayout {
         val labelsEnabled: Boolean = attributes.getBoolean(R.styleable.RadialGraph_labelsEnabled, false)
 
         @ColorInt val labelsColor: Int? = if(attributes.hasValue(R.styleable.RadialGraph_labelsColor)) {
-            attributes.getColor(R.styleable.RadialGraph_labelsColor, ContextCompat.getColor(context,R.color.defaultLabelColor))
+            attributes.getColor(R.styleable.RadialGraph_labelsColor, ContextCompat.getColor(context,R.color.label_defaultColor))
         } else null
 
         val strokeWidth: Float = attributes.getDimension(R.styleable.RadialGraph_strokeWidth, 0f)
