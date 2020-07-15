@@ -33,6 +33,11 @@ class RadialGraph : ConstraintLayout {
         private const val DEFAULT_ANIMATION_DIRECTION = CLOCKWISE_ANIMATION_DIRECTION
     }
 
+    init {
+        clipChildren = false
+        clipToPadding = false
+    }
+
     constructor(context: Context) : this(context, null)
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
@@ -87,7 +92,7 @@ class RadialGraph : ConstraintLayout {
 
         addView(graphView)
 
-        val graphSize = if(width < height) width else height
+        val graphSize: Int = if(width < height) width else height
 
         graphView!!.layoutParams = (graphView!!.layoutParams as LayoutParams).apply {
             width = graphSize
