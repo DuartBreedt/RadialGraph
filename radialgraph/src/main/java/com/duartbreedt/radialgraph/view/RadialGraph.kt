@@ -61,11 +61,6 @@ class RadialGraph : ConstraintLayout {
         attributes.recycle()
     }
 
-    init {
-        clipChildren = false
-        clipToPadding = false
-    }
-
     //region Android Lifecycle
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
