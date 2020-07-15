@@ -2,6 +2,7 @@ package com.duartbreedt.radialgraph.view
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -41,9 +42,12 @@ class RadialGraph : ConstraintLayout {
 
         val labelsEnabled = attributes.getBoolean(R.styleable.RadialGraph_labelsEnabled, false)
 
+        val strokeWidth: Float = attributes.getDimension(R.styleable.RadialGraph_strokeWidth, 0f)
+
         graphConfig = GraphConfig(
             animationDirection,
             labelsEnabled,
+            strokeWidth,
             Cap.ROUND
         )
 

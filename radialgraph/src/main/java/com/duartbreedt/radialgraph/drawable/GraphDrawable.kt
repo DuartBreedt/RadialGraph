@@ -18,7 +18,6 @@ abstract class GraphDrawable(
     open val sectionStates: List<SectionState>
 ) : Drawable() {
 
-    private val width = 40f
     private val startingRotation = -90f
 
     /**
@@ -30,7 +29,7 @@ abstract class GraphDrawable(
         val phase: Float = state.length!! + state.currentProgress
 
         return Paint().apply {
-            strokeWidth = width
+            strokeWidth = graphConfig.strokeWidth
             color = state.color
             pathEffect = DashPathEffect(floatArrayOf(state.length!! , state.length!!), phase)
             style = Paint.Style.STROKE
@@ -59,10 +58,10 @@ abstract class GraphDrawable(
 
     protected fun calculateBoundaries(): RectF {
         return RectF(
-            bounds.left.toFloat() + (width / 2f),
-            bounds.top.toFloat() + (width / 2f),
-            bounds.right.toFloat() - (width / 2f),
-            bounds.bottom.toFloat() - (width / 2f)
+            bounds.left.toFloat() + (graphConfig.strokeWidth / 2f),
+            bounds.top.toFloat() + (graphConfig.strokeWidth / 2f),
+            bounds.right.toFloat() - (graphConfig.strokeWidth / 2f),
+            bounds.bottom.toFloat() - (graphConfig.strokeWidth / 2f)
         )
     }
 
