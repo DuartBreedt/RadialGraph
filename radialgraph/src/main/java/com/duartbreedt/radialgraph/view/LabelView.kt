@@ -53,7 +53,7 @@ class LabelView(context: Context) : AppCompatTextView(context) {
         val angleOfRotation = -positionValue * 2 * Math.PI
 
         val xVector = xLabelPosition - xGraphCenter
-        val yVector = yLabelPosition - yGraphCenter
+        val yVector = yLabelPosition - yGraphCenter + (height / 2)
 
         // Rotate label about the center of the graph
         y = ((xVector * sin(angleOfRotation) + yVector * cos(angleOfRotation)) + yGraphCenter).toFloat()
