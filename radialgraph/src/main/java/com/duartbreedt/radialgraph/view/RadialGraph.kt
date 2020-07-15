@@ -92,9 +92,11 @@ class RadialGraph : ConstraintLayout {
 
         addView(graphView)
 
+        val graphSize = if(width < height) width else height
+
         graphView!!.layoutParams = (graphView!!.layoutParams as LayoutParams).apply {
-            width = this@RadialGraph.width
-            height = this@RadialGraph.width
+            width = graphSize
+            height = graphSize
         }
 
         setConstraints(graphView)
