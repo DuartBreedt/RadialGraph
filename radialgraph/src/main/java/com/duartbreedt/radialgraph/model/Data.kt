@@ -23,7 +23,7 @@ class Data(sections: List<Section>, total: BigDecimal? = null) {
     private fun calculateTotalValue(sections: List<Section>): BigDecimal =
         sections.sumByBigDecimal { it.value }
 
-    fun toSectionStates(context: Context, graphConfig: GraphConfig): List<SectionState> {
+    fun toSectionStates(context: Context): List<SectionState> {
         var previousSectionEndPosition = 0f
 
         val sectionStates = mutableListOf<SectionState>()

@@ -96,7 +96,7 @@ class RadialGraph : ConstraintLayout {
     private fun drawGraph(data: Data) {
 
         // TODO: Perhaps don't reverse this here and just sort differently a bit higher
-        val graph = RadialGraphDrawable(graphConfig, data.toSectionStates(context, graphConfig).reversed())
+        val graph = RadialGraphDrawable(graphConfig, data.toSectionStates(context).reversed())
 
         graphView!!.setImageDrawable(graph)
 
