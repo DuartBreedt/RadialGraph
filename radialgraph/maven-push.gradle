@@ -16,12 +16,10 @@ def getSnapshotRepositoryUrl() {
 }
 
 def getRepositoryUsername() {
-    println("Nexus Username (${hasProperty('NEXUS_USERNAME')}): ${hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : "Error!"}")
     return hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ""
 }
 
 def getRepositoryPassword() {
-    println("Nexus Password (${hasProperty('NEXUS_PASSWORD')}): ${hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : "Error!"}")
     return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
 }
 
