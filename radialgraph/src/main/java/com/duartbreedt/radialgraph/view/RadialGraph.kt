@@ -7,6 +7,11 @@ import androidx.annotation.ColorInt
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.constraintlayout.widget.ConstraintSet.BOTTOM
+import androidx.constraintlayout.widget.ConstraintSet.LEFT
+import androidx.constraintlayout.widget.ConstraintSet.PARENT_ID
+import androidx.constraintlayout.widget.ConstraintSet.RIGHT
+import androidx.constraintlayout.widget.ConstraintSet.TOP
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.duartbreedt.radialgraph.R
@@ -49,8 +54,11 @@ class RadialGraph : ConstraintLayout {
 
         val labelsEnabled: Boolean = attributes.getBoolean(R.styleable.RadialGraph_labelsEnabled, false)
 
-        @ColorInt val labelsColor: Int? = if(attributes.hasValue(R.styleable.RadialGraph_labelsColor)) {
-            attributes.getColor(R.styleable.RadialGraph_labelsColor, ContextCompat.getColor(context,R.color.label_defaultColor))
+        @ColorInt val labelsColor: Int? = if (attributes.hasValue(R.styleable.RadialGraph_labelsColor)) {
+            attributes.getColor(
+                R.styleable.RadialGraph_labelsColor,
+                ContextCompat.getColor(context, R.color.label_defaultColor)
+            )
         } else null
 
         val strokeWidth: Float = attributes.getDimension(R.styleable.RadialGraph_strokeWidth, 0f)
@@ -92,11 +100,9 @@ class RadialGraph : ConstraintLayout {
 
         addView(graphView)
 
-        val graphSize: Int = if(width < height) width else height
-
         graphView!!.layoutParams = (graphView!!.layoutParams as LayoutParams).apply {
-            width = graphSize
-            height = graphSize
+            width = 0
+            height = 0
         }
 
         setConstraints(graphView)
@@ -134,7 +140,7 @@ class RadialGraph : ConstraintLayout {
 
                 val labelPositionValue: Float = calculateLabelPositionValue(section, labelStartPositionValue)
 
-                val labelValue: String = section.label ?: when(section.displayMode) {
+                val labelValue: String = section.label ?: when (section.displayMode) {
                     Section.DisplayMode.PERCENT ->
                         resources.getString(R.string.label_percentPattern, section.percent.toFormattedDecimal())
                     Section.DisplayMode.VALUE ->
@@ -170,38 +176,20 @@ class RadialGraph : ConstraintLayout {
         labelViews.clear()
     }
 
-    private fun setConstraints(labelView: View?) {
-        val constraintSet = ConstraintSet()
-        constraintSet.clone(this)
-        labelView?.id?.let { labelViewId ->
-            constraintSet.setDimensionRatio(labelViewId, "1:1")
-            constraintSet.connect(
-                labelViewId,
-                ConstraintSet.LEFT,
-                ConstraintSet.PARENT_ID,
-                ConstraintSet.LEFT
-            )
-            constraintSet.connect(
-                labelViewId,
-                ConstraintSet.TOP,
-                ConstraintSet.PARENT_ID,
-                ConstraintSet.TOP
-            )
-            constraintSet.connect(
-                labelViewId,
-                ConstraintSet.RIGHT,
-                ConstraintSet.PARENT_ID,
-                ConstraintSet.RIGHT
-            )
-            constraintSet.connect(
-                labelViewId,
-                ConstraintSet.BOTTOM,
-                ConstraintSet.PARENT_ID,
-                ConstraintSet.BOTTOM
-            )
-        }
+    private fun setConstraints(view: View?) {
+        ConstraintSet().apply {
+            clone(this@RadialGraph)
 
-        constraintSet.applyTo(this)
+            view?.id?.let { viewId ->
+                setDimensionRatio(viewId, "1:1")
+                connect(viewId, LEFT, PARENT_ID, LEFT)
+                connect(viewId, TOP, PARENT_ID, TOP)
+                connect(viewId, RIGHT, PARENT_ID, RIGHT)
+                connect(viewId, BOTTOM, PARENT_ID, BOTTOM)
+            }
+
+            applyTo(this@RadialGraph)
+        }
     }
     //endregion
 }
