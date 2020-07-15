@@ -8,11 +8,10 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.getColorOrThrow
 import androidx.core.view.ViewCompat
 import com.duartbreedt.radialgraph.R
 import com.duartbreedt.radialgraph.drawable.RadialGraphDrawable
-import com.duartbreedt.radialgraph.extensions.toFormattedPercentage
+import com.duartbreedt.radialgraph.extensions.toFormattedDecimal
 import com.duartbreedt.radialgraph.model.AnimationDirection
 import com.duartbreedt.radialgraph.model.Cap
 import com.duartbreedt.radialgraph.model.Data
@@ -133,8 +132,12 @@ class RadialGraph : ConstraintLayout {
 
                 val labelPositionValue: Float = calculateLabelPositionValue(section, labelStartPositionValue)
 
-                val labelValue: String = section.label
-                    ?: resources.getString(R.string.label_percent_pattern, section.percent.toFormattedPercentage())
+                val labelValue: String = section.label ?: when(section.displayMode) {
+                    Section.DisplayMode.PERCENT ->
+                        resources.getString(R.string.label_percent_pattern, section.percent.toFormattedDecimal())
+                    Section.DisplayMode.VALUE ->
+                        section.value.toFormattedDecimal()
+                }
 
                 @ColorInt
                 val labelColor: Int = graphConfig.labelsColor ?: section.color

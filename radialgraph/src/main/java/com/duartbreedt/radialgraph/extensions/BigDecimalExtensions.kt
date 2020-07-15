@@ -23,11 +23,7 @@ inline fun <T> Iterable<T>.sumByBigDecimal(selector: (T) -> BigDecimal): BigDeci
     return sum
 }
 
-fun BigDecimal.toFormattedPercentage(): String =
-    createSpaceGroupingSeparator(
-        this,
-        percentageDecimalPattern
-    )
+fun BigDecimal.toFormattedDecimal(): String = createSpaceGroupingSeparator(this, percentageDecimalPattern)
 
 private fun createSpaceGroupingSeparator(value: BigDecimal, pattern: String): String {
     val formatter = DecimalFormat(pattern)

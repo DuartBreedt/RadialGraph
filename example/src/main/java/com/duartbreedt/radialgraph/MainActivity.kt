@@ -21,8 +21,18 @@ class MainActivity : AppCompatActivity() {
 
             val sections = mutableListOf(
                 Section(
+                    Section.DisplayMode.PERCENT,
                     BigDecimal("10"),
                     ContextCompat.getColor(this, R.color.red)
+                ),
+                Section(
+                    Section.DisplayMode.VALUE,
+                    BigDecimal("10"),
+                    ContextCompat.getColor(this, R.color.blue)
+                ),
+                Section(
+                    BigDecimal("10"),
+                    ContextCompat.getColor(this, R.color.blue)
                 ),
                 Section(
                     "STAB",
