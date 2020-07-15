@@ -1,5 +1,3 @@
 rootProject.name='RadialGraph'
-include ':app'
+include ':example'
 include ':radialgraph'
-// FIXME: Huh? Create sample module as an example perhaps
-//include ':sample'
