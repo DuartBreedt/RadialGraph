@@ -1,13 +1,12 @@
 package com.duartbreedt.radialgraph.model
 
-import android.content.Context
-import androidx.core.content.ContextCompat
+import androidx.annotation.ColorInt
 import java.math.BigDecimal
-import java.math.RoundingMode
 
 class Section {
     val label: String?
     val value: BigDecimal
+    @ColorInt
     val color: Int
     lateinit var totalValue: BigDecimal
     lateinit var normalizedValue: BigDecimal

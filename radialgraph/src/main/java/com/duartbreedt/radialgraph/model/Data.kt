@@ -29,11 +29,9 @@ class Data(sections: List<Section>, total: BigDecimal? = null) {
         val sectionStates = mutableListOf<SectionState>()
 
         sections.forEachIndexed { index: Int, section: Section ->
-            val graphColor = ContextCompat.getColor(context, section.color)
-
             val sectionState: SectionState =
-                if (section.value == BigDecimal.ZERO) SectionState(0f, 0f, graphColor, index == sections.size - 1)
-                else SectionState(section.normalizedValue.toFloat(), previousSectionEndPosition, graphColor, index == sections.size - 1)
+                if (section.value == BigDecimal.ZERO) SectionState(0f, 0f, section.color, index == sections.size - 1)
+                else SectionState(section.normalizedValue.toFloat(), previousSectionEndPosition, section.color, index == sections.size - 1)
 
             previousSectionEndPosition += section.normalizedValue.toFloat()
 

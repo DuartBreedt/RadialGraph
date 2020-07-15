@@ -2,14 +2,17 @@ package com.duartbreedt.radialgraph.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.TypedValue
 import android.view.View
+import androidx.annotation.ColorInt
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.getColorOrThrow
 import androidx.core.view.ViewCompat
 import com.duartbreedt.radialgraph.R
 import com.duartbreedt.radialgraph.drawable.RadialGraphDrawable
+import com.duartbreedt.radialgraph.extensions.toFormattedPercentage
 import com.duartbreedt.radialgraph.model.AnimationDirection
 import com.duartbreedt.radialgraph.model.Cap
 import com.duartbreedt.radialgraph.model.Data
@@ -36,17 +39,22 @@ class RadialGraph : ConstraintLayout {
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.RadialGraph)
 
-        val animationDirectionOrdinal =
+        val animationDirectionOrdinal: Int =
             attributes.getInt(R.styleable.RadialGraph_animationDirection, DEFAULT_ANIMATION_DIRECTION)
-        val animationDirection = AnimationDirection.values()[animationDirectionOrdinal]
+        val animationDirection: AnimationDirection = AnimationDirection.values()[animationDirectionOrdinal]
 
-        val labelsEnabled = attributes.getBoolean(R.styleable.RadialGraph_labelsEnabled, false)
+        val labelsEnabled: Boolean = attributes.getBoolean(R.styleable.RadialGraph_labelsEnabled, false)
+
+        @ColorInt val labelsColor: Int? = if(attributes.hasValue(R.styleable.RadialGraph_labelsColor)) {
+            attributes.getColor(R.styleable.RadialGraph_labelsColor, ContextCompat.getColor(context,R.color.defaultLabelColor))
+        } else null
 
         val strokeWidth: Float = attributes.getDimension(R.styleable.RadialGraph_strokeWidth, 0f)
 
         graphConfig = GraphConfig(
             animationDirection,
             labelsEnabled,
+            labelsColor,
             strokeWidth,
             Cap.ROUND
         )
@@ -120,9 +128,18 @@ class RadialGraph : ConstraintLayout {
         // val wot = data.sections.reversed()
         for (section in data.sections) {
             context?.let { context ->
+
                 val sectionNormalizedSize: BigDecimal = section.normalizedValue
+
                 val labelPositionValue: Float = calculateLabelPositionValue(section, labelStartPositionValue)
-                val labelView = LabelView(context, section, labelPositionValue)
+
+                val labelValue: String = section.label
+                    ?: resources.getString(R.string.label_percent_pattern, section.percent.toFormattedPercentage())
+
+                @ColorInt
+                val labelColor: Int = graphConfig.labelsColor ?: section.color
+
+                val labelView = LabelView(context, labelValue, labelColor, labelPositionValue)
 
                 labelViews.add(labelView)
                 addView(labelView)

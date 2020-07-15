@@ -8,6 +8,7 @@
     <declare-styleable name="RadialGraph">
         <attr name="animationDirection" />
         <attr name="labelsEnabled" format="boolean"/>
+        <attr name="labelsColor" format="color"/>
         <attr name="strokeWidth" format="dimension"/>
     </declare-styleable>
 </resources>

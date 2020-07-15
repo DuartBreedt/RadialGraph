@@ -1,39 +1,27 @@
 package com.duartbreedt.radialgraph.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.TypedValue
 import android.view.ViewGroup
-import androidx.annotation.ColorRes
+import androidx.annotation.ColorInt
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.duartbreedt.radialgraph.R
-import com.duartbreedt.radialgraph.extensions.toFormattedPercentage
-import com.duartbreedt.radialgraph.model.Section
 import kotlin.math.cos
 import kotlin.math.sin
 
-class LabelView(context: Context) : AppCompatTextView(context) {
+@SuppressLint("ViewConstructor")
+internal class LabelView(context: Context, value: String, @ColorInt val color: Int, posValue: Float) :
+    AppCompatTextView(context, null) {
 
-    @ColorRes
-    var colorRes: Int = R.color.defaultLabelColor
+    private var positionValue: Float = posValue
 
-    private var positionValue: Float = 0f
-
-    constructor(context: Context, section: Section, posValue: Float) : this(context) {
+    init {
         id = ViewCompat.generateViewId()
-        positionValue = posValue
-        colorRes = section.color
-
-        text = section.label ?: resources.getString(
-            R.string.label_percent_pattern,
-            section.percent.toFormattedPercentage()
-        )
-
+        text = value
         setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.default_label_size))
-
-        setTextColor(ContextCompat.getColor(context, colorRes))
-
+        setTextColor(color)
         layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
@@ -71,6 +59,6 @@ class LabelView(context: Context) : AppCompatTextView(context) {
         val amplitude = 0.5f
         val period = 4f
         val midLine = 0.5f
-        return (amplitude * Math.cos(period * Math.PI * x + Math.PI) + midLine).toFloat()
+        return (amplitude * cos(period * Math.PI * x + Math.PI) + midLine).toFloat()
     }
 }
