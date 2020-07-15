@@ -50,6 +50,11 @@ class RadialGraph : ConstraintLayout {
         attributes.recycle()
     }
 
+    init {
+        clipChildren = false
+        clipToPadding = false
+    }
+
     //region Android Lifecycle
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
@@ -73,14 +78,12 @@ class RadialGraph : ConstraintLayout {
         removeGraphView()
 
         graphView = AppCompatImageView(context).apply { id = ViewCompat.generateViewId() }
+
         addView(graphView)
 
-        val margin: Int = resources.getDimensionPixelSize(R.dimen.graph_margin)
-
         graphView!!.layoutParams = (graphView!!.layoutParams as LayoutParams).apply {
-            setMargins(margin, margin, margin, margin)
-            width = resources.getDimensionPixelSize(R.dimen.graph_width)
-            height = resources.getDimensionPixelSize(R.dimen.graph_height)
+            width = this@RadialGraph.width
+            height = this@RadialGraph.width
         }
 
         setConstraints(graphView)

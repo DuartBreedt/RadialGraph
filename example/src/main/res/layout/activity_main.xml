@@ -10,6 +10,7 @@
         android:id="@+id/graph_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/label_margin"
         app:animationDirection="clockwise"
         app:labelsEnabled="true"
         app:layout_constraintTop_toTopOf="parent" />
