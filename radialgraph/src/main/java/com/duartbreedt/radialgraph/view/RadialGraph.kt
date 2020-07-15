@@ -134,7 +134,7 @@ class RadialGraph : ConstraintLayout {
 
                 val labelValue: String = section.label ?: when(section.displayMode) {
                     Section.DisplayMode.PERCENT ->
-                        resources.getString(R.string.label_percent_pattern, section.percent.toFormattedDecimal())
+                        resources.getString(R.string.label_percentPattern, section.percent.toFormattedDecimal())
                     Section.DisplayMode.VALUE ->
                         section.value.toFormattedDecimal()
                 }

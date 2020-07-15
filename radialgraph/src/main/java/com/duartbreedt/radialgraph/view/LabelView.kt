@@ -20,7 +20,7 @@ internal class LabelView(context: Context, value: String, @ColorInt val color: I
     init {
         id = ViewCompat.generateViewId()
         text = value
-        setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.default_label_size))
+        setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.label_defaultTextSize))
         setTextColor(color)
         layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
