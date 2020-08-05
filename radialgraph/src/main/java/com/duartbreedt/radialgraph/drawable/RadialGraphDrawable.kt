@@ -20,7 +20,6 @@ class RadialGraphDrawable(
         val boundaries = calculateBoundaries()
 
         for (sectionState in sectionStates) {
-
             if (sectionState.path == null) {
                 sectionState.path = buildCircularPath(boundaries)
             }
@@ -59,8 +58,7 @@ class RadialGraphDrawable(
             drawable.invalidateSelf()
             for (sectionState in drawable.sectionStates) {
                 sectionState.currentProgress = progressPercent * (sectionState.length ?: 0f) *
-                        (sectionState.sweepSize +
-                                sectionState.startPosition)
+                        (sectionState.sweepSize + sectionState.startPosition)
             }
         }
 
