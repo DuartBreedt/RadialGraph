@@ -3,18 +3,11 @@ package com.duartbreedt.radialgraph.drawable
 import android.animation.ObjectAnimator
 import android.graphics.Canvas
 import android.graphics.ColorFilter
-import android.graphics.DashPathEffect
-import android.graphics.Paint
-import android.graphics.Path
 import android.graphics.PathMeasure
 import android.os.Build
 import android.util.FloatProperty
-import android.util.Log
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.annotation.RequiresApi
-import com.duartbreedt.radialgraph.model.AnimationDirection
-import com.duartbreedt.radialgraph.model.Cap
-import com.duartbreedt.radialgraph.model.Data
 import com.duartbreedt.radialgraph.model.GraphConfig
 import com.duartbreedt.radialgraph.model.SectionState
 
@@ -28,16 +21,16 @@ class RadialGraphDrawable(
 
         for (sectionState in sectionStates) {
 
-                if (sectionState.path == null) {
-                    sectionState.path = buildCircularPath(boundaries)
-                }
+            if (sectionState.path == null) {
+                sectionState.path = buildCircularPath(boundaries)
+            }
 
-                if (sectionState.length == null) {
-                    sectionState.length = PathMeasure(sectionState.path, false).length
-                }
+            if (sectionState.length == null) {
+                sectionState.length = PathMeasure(sectionState.path, false).length
+            }
 
-                sectionState.paint = buildPhasedPathPaint(sectionState)
-                canvas.drawPath(sectionState.path!!, sectionState.paint!!)
+            sectionState.paint = buildPhasedPathPaint(sectionState)
+            canvas.drawPath(sectionState.path!!, sectionState.paint!!)
         }
     }
 
@@ -64,15 +57,9 @@ class RadialGraphDrawable(
     private object PROGRESS : FloatProperty<RadialGraphDrawable>("progress") {
         override fun setValue(drawable: RadialGraphDrawable, progressPercent: Float) {
             drawable.invalidateSelf()
-            Log.e("STAB", "C")
             for (sectionState in drawable.sectionStates) {
-
-
-                    sectionState.currentProgress = progressPercent * (sectionState.length ?: 0f) *
-                        (sectionState.sweepSize +
-                            sectionState.startPosition)
-
-                Log.e("STAB", "D ${sectionState.currentProgress}")
+                sectionState.currentProgress = progressPercent * (sectionState.length ?: 0f) *
+                    (sectionState.sweepSize + sectionState.startPosition)
             }
         }
 
