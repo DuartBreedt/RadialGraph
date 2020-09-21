@@ -13,9 +13,10 @@
         android:padding="@dimen/label_margin"
 
         app:animationDirection="clockwise"
+        app:capStyle="rounded"
         app:labelsEnabled="true"
         app:labelsColor="@color/label_defaultColor"
-        app:strokeWidth="10dp"
+        app:strokeWidth="15dp"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

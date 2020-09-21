@@ -5,8 +5,15 @@
         <enum name="counterclockwise" value="1" />
     </attr>
 
+    <attr name="capStyle" format="enum">
+        <enum name="butt" value="0" />
+        <enum name="rounded" value="1" />
+        <enum name="square" value="2" />
+    </attr>
+
     <declare-styleable name="RadialGraph">
         <attr name="animationDirection" />
+        <attr name="capStyle" />
         <attr name="labelsEnabled" format="boolean"/>
         <attr name="labelsColor" format="color"/>
         <attr name="strokeWidth" format="dimension"/>

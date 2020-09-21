@@ -14,7 +14,8 @@ data class SectionState(
     var length: Float? = null
 )
 
-enum class Cap {
-    BUTT,
-    ROUND
+enum class Cap(val paintCapStyle: Paint.Cap) {
+    BUTT(Paint.Cap.BUTT),
+    ROUND(Paint.Cap.ROUND),
+    SQUARE(Paint.Cap.SQUARE)
 }

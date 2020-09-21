@@ -35,7 +35,9 @@ class RadialGraph : ConstraintLayout {
 
     companion object {
         private const val CLOCKWISE_ANIMATION_DIRECTION = 0
+        private const val SQUARE_CAP_STYLE = 2
         private const val DEFAULT_ANIMATION_DIRECTION = CLOCKWISE_ANIMATION_DIRECTION
+        private const val DEFAULT_CAP_STYLE = SQUARE_CAP_STYLE
     }
 
     init {
@@ -63,12 +65,15 @@ class RadialGraph : ConstraintLayout {
 
         val strokeWidth: Float = attributes.getDimension(R.styleable.RadialGraph_strokeWidth, 0f)
 
+        val capStyleOrdinal: Int = attributes.getInt(R.styleable.RadialGraph_capStyle, DEFAULT_CAP_STYLE)
+        val capStyle = Cap.values()[capStyleOrdinal]
+
         graphConfig = GraphConfig(
             animationDirection,
             labelsEnabled,
             labelsColor,
             strokeWidth,
-            Cap.ROUND
+            capStyle
         )
 
         attributes.recycle()

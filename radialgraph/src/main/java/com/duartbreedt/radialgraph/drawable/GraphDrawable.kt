@@ -34,7 +34,7 @@ abstract class GraphDrawable(
             pathEffect = DashPathEffect(floatArrayOf(state.length!! , state.length!!), phase)
             style = Paint.Style.STROKE
             flags = Paint.ANTI_ALIAS_FLAG
-            strokeCap = Paint.Cap.BUTT
+            strokeCap = graphConfig.capStyle.paintCapStyle
         }
     }
 

@@ -40,6 +40,6 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-        graph_layout.draw(Data(sections, BigDecimal("50")))
+        graph_layout.draw(Data(sections, BigDecimal("40")))
     }
 }
