@@ -44,6 +44,7 @@ class RadialGraph : ConstraintLayout {
         private const val DEFAULT_ANIMATION_DIRECTION = CLOCKWISE_ANIMATION_DIRECTION
         private const val DEFAULT_CAP_STYLE = SQUARE_CAP_STYLE
         private const val DEFAULT_GRAPH_NODE = GRAPH_NODE_NONE
+        private const val DEFAULT_ANIMATION_DURATION = 1000
     }
 
     init {
@@ -59,6 +60,8 @@ class RadialGraph : ConstraintLayout {
         val animationDirectionOrdinal: Int =
             attributes.getInt(R.styleable.RadialGraph_animationDirection, DEFAULT_ANIMATION_DIRECTION)
         val animationDirection: AnimationDirection = AnimationDirection.values()[animationDirectionOrdinal]
+
+        val animationDuration: Long = attributes.getInt(R.styleable.RadialGraph_animationDuration, DEFAULT_ANIMATION_DURATION).toLong()
 
         val labelsEnabled: Boolean = attributes.getBoolean(R.styleable.RadialGraph_labelsEnabled, false)
 
@@ -94,6 +97,7 @@ class RadialGraph : ConstraintLayout {
 
         graphConfig = GraphConfig(
             animationDirection,
+            animationDuration,
             labelsEnabled,
             labelsColor,
             strokeWidth,

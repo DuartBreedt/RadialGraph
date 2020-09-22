@@ -77,7 +77,7 @@ class RadialGraphDrawable(
             this,
             PROGRESS, 0f, 1f
         ).apply {
-            duration = 1000L
+            duration = graphConfig.animationDuration
             interpolator = AccelerateDecelerateInterpolator()
         }.start()
     }

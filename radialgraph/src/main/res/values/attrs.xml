@@ -18,6 +18,7 @@
 
     <declare-styleable name="RadialGraph">
         <attr name="animationDirection" />
+        <attr name="animationDuration" format="integer" />
         <attr name="capStyle" />
         <attr name="graphNode" />
         <attr name="graphNodeColor" format="color" />
