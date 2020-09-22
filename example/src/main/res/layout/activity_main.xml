@@ -17,6 +17,7 @@
         app:labelsEnabled="true"
         app:labelsColor="@color/label_defaultColor"
         app:strokeWidth="15dp"
+        app:backgroundTrackColor="@color/black"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

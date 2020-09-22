@@ -14,6 +14,7 @@
     <declare-styleable name="RadialGraph">
         <attr name="animationDirection" />
         <attr name="capStyle" />
+        <attr name="backgroundTrackColor" format="color"/>
         <attr name="labelsEnabled" format="boolean"/>
         <attr name="labelsColor" format="color"/>
         <attr name="strokeWidth" format="dimension"/>
