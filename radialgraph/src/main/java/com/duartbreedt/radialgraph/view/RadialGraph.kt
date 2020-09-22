@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.appcompat.widget.AppCompatImageView
@@ -20,6 +21,7 @@ import com.duartbreedt.radialgraph.model.AnimationDirection
 import com.duartbreedt.radialgraph.model.Cap
 import com.duartbreedt.radialgraph.model.Data
 import com.duartbreedt.radialgraph.model.GraphConfig
+import com.duartbreedt.radialgraph.model.GraphNode
 import com.duartbreedt.radialgraph.model.Section
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -33,10 +35,15 @@ class RadialGraph : ConstraintLayout {
     //endregion
 
     companion object {
+        private val TAG = RadialGraph::class.simpleName!!
+
         private const val CLOCKWISE_ANIMATION_DIRECTION = 0
         private const val SQUARE_CAP_STYLE = 2
+        private const val GRAPH_NODE_NONE = 0
+
         private const val DEFAULT_ANIMATION_DIRECTION = CLOCKWISE_ANIMATION_DIRECTION
         private const val DEFAULT_CAP_STYLE = SQUARE_CAP_STYLE
+        private const val DEFAULT_GRAPH_NODE = GRAPH_NODE_NONE
     }
 
     init {
@@ -69,13 +76,32 @@ class RadialGraph : ConstraintLayout {
 
         val backgroundTrackColor = attributes.getColor(R.styleable.RadialGraph_backgroundTrackColor, View.NO_ID)
 
+        val graphNodeOrdinal: Int = attributes.getInt(R.styleable.RadialGraph_graphNode, DEFAULT_GRAPH_NODE)
+        val graphNode = GraphNode.values()[graphNodeOrdinal]
+
+        val graphNodeColor: Int = if (attributes.hasValue(R.styleable.RadialGraph_graphNodeColor)) {
+            attributes.getColor(
+                R.styleable.RadialGraph_graphNodeColor,
+                ContextCompat.getColor(context, R.color.node_defaultColor)
+            )
+        } else {
+            if (graphNode != GraphNode.NONE) {
+                Log.w(TAG, "No value passed for the `app:graphNodeColor` attribute. It will default to Magenta")
+            }
+
+            ContextCompat.getColor(context, R.color.node_defaultColor)
+        }
+
         graphConfig = GraphConfig(
             animationDirection,
             labelsEnabled,
             labelsColor,
             strokeWidth,
             capStyle,
-            backgroundTrackColor
+            backgroundTrackColor,
+            graphNode,
+            graphNodeColor,
+            context.resources.getDimension(R.dimen.node_defaultTextSize)
         )
 
         attributes.recycle()

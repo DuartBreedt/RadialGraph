@@ -11,9 +11,16 @@
         <enum name="square" value="2" />
     </attr>
 
+    <attr name="graphNode" format="enum">
+        <enum name="none" value="0" />
+        <enum name="percent" value="1" />
+    </attr>
+
     <declare-styleable name="RadialGraph">
         <attr name="animationDirection" />
         <attr name="capStyle" />
+        <attr name="graphNode" />
+        <attr name="graphNodeColor" format="color" />
         <attr name="backgroundTrackColor" format="color"/>
         <attr name="labelsEnabled" format="boolean"/>
         <attr name="labelsColor" format="color"/>

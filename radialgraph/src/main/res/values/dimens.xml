@@ -2,4 +2,5 @@
 <resources>
     <dimen name="label_defaultTextSize">14sp</dimen>
     <dimen name="label_padding">30dp</dimen>
+    <dimen name="node_defaultTextSize">14sp</dimen>
 </resources>
