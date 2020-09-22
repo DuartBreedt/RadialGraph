@@ -16,8 +16,10 @@
         app:capStyle="rounded"
         app:labelsEnabled="true"
         app:labelsColor="@color/label_defaultColor"
-        app:strokeWidth="15dp"
+        app:strokeWidth="25dp"
         app:backgroundTrackColor="@color/black"
+        app:graphNode="percent"
+        app:graphNodeColor="@color/grey"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

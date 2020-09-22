@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
             ),
             Section(
                 Section.DisplayMode.VALUE,
-                BigDecimal("10"),
+                BigDecimal("20"),
                 ContextCompat.getColor(this, R.color.blue)
             ),
             Section(
@@ -40,6 +40,6 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-        graph_layout.draw(Data(sections, BigDecimal("50")))
+        graph_layout.draw(Data(sections, BigDecimal("60")))
     }
 }
