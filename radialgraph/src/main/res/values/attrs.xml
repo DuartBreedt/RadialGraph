@@ -5,10 +5,43 @@
         <enum name="counterclockwise" value="1" />
     </attr>
 
+    <attr name="capStyle" format="enum">
+        <enum name="butt" value="0" />
+        <enum name="rounded" value="1" />
+        <enum name="square" value="2" />
+    </attr>
+
+    <attr name="graphNode" format="enum">
+        <enum name="none" value="0" />
+        <enum name="percent" value="1" />
+    </attr>
+
     <declare-styleable name="RadialGraph">
+        <!-- The direction in which the graph is animated in -->
         <attr name="animationDirection" />
+
+        <!-- The duration (in ms) that the graph animation runs for. Defaults to 1000 -->
+        <attr name="animationDuration" format="integer" />
+
+        <!-- The cap style that the graph segment is drawn with. Defaults to butt -->
+        <attr name="capStyle" />
+
+        <!-- Used to specify whether the graph should render a node on the last segment. Defaults to none -->
+        <attr name="graphNode" />
+
+        <!-- The color of the node being rendered on the last graph segment. Defaults to magenta -->
+        <attr name="graphNodeColor" format="color" />
+
+        <!-- The colour of the background track rendered behind the graph segments. If not defined, the graph will not render a background track -->
+        <attr name="backgroundTrackColor" format="color"/>
+
+        <!-- Specify whether the graph should render label views or not. Defaults to false -->
         <attr name="labelsEnabled" format="boolean"/>
+
+        <!-- Specify the colour that the label text is set to -->
         <attr name="labelsColor" format="color"/>
+
+        <!-- Specify the stroke width of the graph being drawn -->
         <attr name="strokeWidth" format="dimension"/>
     </declare-styleable>
 </resources>

@@ -4,13 +4,13 @@ import android.graphics.DashPathEffect
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.PathMeasure
 import android.graphics.PixelFormat
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
+import android.text.TextPaint
 import com.duartbreedt.radialgraph.model.AnimationDirection
-import com.duartbreedt.radialgraph.model.Cap
 import com.duartbreedt.radialgraph.model.GraphConfig
-import com.duartbreedt.radialgraph.model.Section
 import com.duartbreedt.radialgraph.model.SectionState
 
 abstract class GraphDrawable(
@@ -31,10 +31,10 @@ abstract class GraphDrawable(
         return Paint().apply {
             strokeWidth = graphConfig.strokeWidth
             color = state.color
-            pathEffect = DashPathEffect(floatArrayOf(state.length!! , state.length!!), phase)
+            pathEffect = DashPathEffect(floatArrayOf(state.length!!, state.length!!), phase)
             style = Paint.Style.STROKE
             flags = Paint.ANTI_ALIAS_FLAG
-            strokeCap = Paint.Cap.BUTT
+            strokeCap = graphConfig.capStyle.paintCapStyle
         }
     }
 
@@ -46,6 +46,30 @@ abstract class GraphDrawable(
         // The starting position of the arc is undesirable, therefore set it explicitly
         rotatePath(path, startingRotation)
         return path
+    }
+
+    protected fun buildNodePaint(colorInt: Int): Paint {
+        return Paint().apply {
+            color = colorInt
+            style = Paint.Style.FILL
+            flags = Paint.ANTI_ALIAS_FLAG
+        }
+    }
+
+    protected fun buildNodeBackgroundPaint(colorInt: Int): Paint {
+        return Paint().apply {
+            color = colorInt
+            style = Paint.Style.FILL
+            flags = Paint.ANTI_ALIAS_FLAG
+        }
+    }
+
+    protected fun buildNodeTextPaint(textColor: Int, textSize: Float): Paint {
+        return TextPaint().apply {
+            this.textSize = textSize
+            color = textColor
+            flags = Paint.ANTI_ALIAS_FLAG
+        }
     }
 
     private fun rotatePath(path: Path, degrees: Float) {

@@ -9,6 +9,7 @@ import android.util.FloatProperty
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.annotation.RequiresApi
 import com.duartbreedt.radialgraph.model.GraphConfig
+import com.duartbreedt.radialgraph.model.GraphNode
 import com.duartbreedt.radialgraph.model.SectionState
 
 class RadialGraphDrawable(
@@ -20,7 +21,6 @@ class RadialGraphDrawable(
         val boundaries = calculateBoundaries()
 
         for (sectionState in sectionStates) {
-
             if (sectionState.path == null) {
                 sectionState.path = buildCircularPath(boundaries)
             }
@@ -31,6 +31,46 @@ class RadialGraphDrawable(
 
             sectionState.paint = buildPhasedPathPaint(sectionState)
             canvas.drawPath(sectionState.path!!, sectionState.paint!!)
+        }
+
+        if (graphConfig.graphNodeType == GraphNode.PERCENT) {
+            val sectionState = sectionStates.first { it.isLastSection }
+
+            if (sectionState.isLastSection) {
+                val pathMeasure = PathMeasure(sectionState.path!!, false)
+                val coordinates = FloatArray(2)
+
+                // Get the position of the end of the last drawn segment
+                pathMeasure.getPosTan(
+                    sectionState.length!! * (1 - (sectionState.sweepSize + sectionState.startPosition)),
+                    coordinates,
+                    null
+                )
+
+                // FIXME: This is a hack. Ideally the draw order should be fixed so that the last segment is drawn on top instead of at the bottom
+                // Add a circle with the same background as the last segment drawn
+                canvas.drawCircle(
+                    coordinates[0],
+                    coordinates[1],
+                    graphConfig.strokeWidth / 2,
+                    buildNodeBackgroundPaint(sectionState.color)
+                )
+
+                canvas.drawCircle(
+                    coordinates[0],
+                    coordinates[1],
+                    (graphConfig.strokeWidth / 2) - (graphConfig.strokeWidth / 10),
+                    buildNodePaint(graphConfig.graphNodeColor)
+                )
+
+                // TODO: Investigate why the magic number 15f works here for centering the text within the circle
+                canvas.drawText(
+                    "%",
+                    coordinates[0] - 15f,
+                    coordinates[1] + 15f,
+                    buildNodeTextPaint(sectionState.color, graphConfig.graphNodeTextSize)
+                )
+            }
         }
     }
 
@@ -47,7 +87,7 @@ class RadialGraphDrawable(
             this,
             PROGRESS, 0f, 1f
         ).apply {
-            duration = 1000L
+            duration = graphConfig.animationDuration
             interpolator = AccelerateDecelerateInterpolator()
         }.start()
     }
