@@ -83,9 +83,7 @@ class RadialGraphDrawable(
     }
 
     fun animateIn() {
-        ObjectAnimator.ofFloat(
-            this,
-            PROGRESS, 0f, 1f
+        ObjectAnimator.ofFloat(this, FillProgress, 0f, 1f
         ).apply {
             duration = graphConfig.animationDuration
             interpolator = AccelerateDecelerateInterpolator()
@@ -94,7 +92,7 @@ class RadialGraphDrawable(
 
     // Creates a progress property to be animated animated
     @RequiresApi(Build.VERSION_CODES.N)
-    private object PROGRESS : FloatProperty<RadialGraphDrawable>("progress") {
+    private object FillProgress : FloatProperty<RadialGraphDrawable>("progress") {
         override fun setValue(drawable: RadialGraphDrawable, progressPercent: Float) {
             drawable.invalidateSelf()
             for (sectionState in drawable.sectionStates) {
