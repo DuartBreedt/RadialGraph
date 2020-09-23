@@ -37,12 +37,12 @@ class RadialGraph : ConstraintLayout {
     companion object {
         private val TAG = RadialGraph::class.simpleName!!
 
-        private const val CLOCKWISE_ANIMATION_DIRECTION = 0
-        private const val SQUARE_CAP_STYLE = 2
+        private const val ANIMATION_DIRECTION_CLOCKWISE = 0
+        private const val CAP_STYLE_BUTT = 0
         private const val GRAPH_NODE_NONE = 0
 
-        private const val DEFAULT_ANIMATION_DIRECTION = CLOCKWISE_ANIMATION_DIRECTION
-        private const val DEFAULT_CAP_STYLE = SQUARE_CAP_STYLE
+        private const val DEFAULT_ANIMATION_DIRECTION = ANIMATION_DIRECTION_CLOCKWISE
+        private const val DEFAULT_CAP_STYLE = CAP_STYLE_BUTT
         private const val DEFAULT_GRAPH_NODE = GRAPH_NODE_NONE
         private const val DEFAULT_ANIMATION_DURATION = 1000
     }
@@ -164,9 +164,7 @@ class RadialGraph : ConstraintLayout {
         val graph = RadialGraphDrawable(graphConfig, data.toSectionStates().reversed())
         layers.add(graph)
 
-        val finalDrawable = LayerDrawable(layers.toTypedArray())
-
-        graphView!!.setImageDrawable(finalDrawable)
+        graphView!!.setImageDrawable(LayerDrawable(layers.toTypedArray()))
 
         graph.animateIn()
     }
@@ -178,7 +176,6 @@ class RadialGraph : ConstraintLayout {
             if (graphConfig.isClockwise()) BigDecimal.ONE
             else BigDecimal.ZERO
 
-        // val wot = data.sections.reversed()
         for (section in data.sections) {
             context?.let { context ->
 

@@ -27,7 +27,7 @@ class TrackDrawable(private val graphConfig: GraphConfig, private val background
             pathEffect = DashPathEffect(floatArrayOf(pathMeasure.length, pathMeasure.length), 0f)
             style = Paint.Style.STROKE
             flags = Paint.ANTI_ALIAS_FLAG
-            strokeCap = graphConfig.capStyle.paintCapStyle
+            strokeCap = Paint.Cap.BUTT
         }
 
         canvas.drawPath(path, paint)

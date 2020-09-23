@@ -48,28 +48,19 @@ abstract class GraphDrawable(
         return path
     }
 
-    protected fun buildNodePath(segmentPath: Path): Path {
-        val path = Path()
-
-        val coordinates = FloatArray(2)
-        val pathMeasure = PathMeasure(segmentPath, false)
-
-        pathMeasure.getPosTan(pathMeasure.length, coordinates, null)
-        path.addCircle(coordinates[0], coordinates[1], 5f, Path.Direction.CW)
-
-        // The starting position of the arc is undesirable, therefore set it explicitly
-        rotatePath(path, startingRotation)
-        return path
-    }
-
-    protected fun buildNodePaint(state: SectionState, colorInt: Int): Paint {
+    protected fun buildNodePaint(colorInt: Int): Paint {
         return Paint().apply {
-            strokeWidth = 1f
             color = colorInt
-            pathEffect = DashPathEffect(floatArrayOf(state.length!!, state.length!!), 0f)
             style = Paint.Style.FILL
             flags = Paint.ANTI_ALIAS_FLAG
-            strokeCap = graphConfig.capStyle.paintCapStyle
+        }
+    }
+
+    protected fun buildNodeBackgroundPaint(colorInt: Int): Paint {
+        return Paint().apply {
+            color = colorInt
+            style = Paint.Style.FILL
+            flags = Paint.ANTI_ALIAS_FLAG
         }
     }
 

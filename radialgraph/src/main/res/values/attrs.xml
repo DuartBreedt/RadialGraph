@@ -23,7 +23,7 @@
         <!-- The duration (in ms) that the graph animation runs for. Defaults to 1000 -->
         <attr name="animationDuration" format="integer" />
 
-        <!-- The cap style that the graph segment is drawn with. Defaults to square -->
+        <!-- The cap style that the graph segment is drawn with. Defaults to butt -->
         <attr name="capStyle" />
 
         <!-- Used to specify whether the graph should render a node on the last segment. Defaults to none -->
