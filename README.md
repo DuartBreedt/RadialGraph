@@ -7,7 +7,7 @@ This library aims to be a fully customisable radial graph to suit all your needs
 *Note:* This library only provisions for a radial graph composed of one or multiple head-to-tail stroked paths as
  shown Below:
  
- ![Example of Graph](https://github.com/DuartBreedt/RadialGraph/images/graph_example.png)
+ <img src="https://github.com/DuartBreedt/RadialGraph/blob/master/images/graph_example.png" width="320px" />
 
 ### Features
 #### Graph
@@ -34,28 +34,35 @@ This library aims to be a fully customisable radial graph to suit all your needs
 ### Usage
 #### 01 Layout
 
-![Example of Graph Layout](https://github.com/DuartBreedt/RadialGraph/images/layout_example.png)
+<img src="https://github.com/DuartBreedt/RadialGraph/blob/master/images/layout_example.png" width="320px" />
 
 ##### Note:
-- Using a constraint dimension ratio of 1:1 is recommended for a scalable graph
-- Currently, if you are using labels you will need to set some padding to accommodate said labels
+- If the `animationDuration` attribute is not specified then it will default to 1000ms.
+- If the `animationDirection` attribute is not specified then it will default to `CLOCKWISE`.
+- By default, labels are disabled.
+- If the `labelsColor` attribute is not specified then it will default to the color of the section which it represents.
+- If the `graphNode` attribute is not specified then it will default to `NONE` and it won't display.
+- If the `capStyle` attribute is not specified then it will default to the `BUTT`.
+- If the `backgroundTrackColor` attribute is not specified then the background track will be disabled and not be rendered.
+- Using a constraint dimension ratio of 1:1 is recommended for a scalable graph.
+- Currently, if you are using labels you will need to set some padding to accommodate said labels.
 
 #### 02 Config
 
-![Example of Graph Config](https://github.com/DuartBreedt/RadialGraph/images/config_example.png)
+<img src="https://github.com/DuartBreedt/RadialGraph/blob/master/images/config_example.png" width="320px" />
 
 ##### Note
 - If the display mode is not specified for a section then it will display as a `DisplayMode.PERCENT` by default. 
 - The Data object's second parameter is the total value of the graph. If it is not specified it is assumed that the sum of the sections comprise 100% of the graph.
-- Note that a custom label - such as STAB - can be set for a specific section.  
+- Note that a custom label - such as STAB - can be set for a specific section.
 
 #### 03 Initialization
 
-![Example of Graph Initialization](https://github.com/DuartBreedt/RadialGraph/images/initialization_example.png)
+<img src="https://github.com/DuartBreedt/RadialGraph/blob/master/images/initialization_example.png" width="220px" />
 
 #### 04 Animate In
 
-![Example of Graph Animate In](https://github.com/DuartBreedt/RadialGraph/images/animate_in_example.png)
+<img src="https://github.com/DuartBreedt/RadialGraph/blob/master/images/animate_in_example.png" width="220px" />
 
 ### License
 Copyright 2020 Duart Breedt
