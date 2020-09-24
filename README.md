@@ -32,6 +32,15 @@ This library aims to be a fully customisable radial graph to suit all your needs
 - The animation duration can be specified in milliseconds
 
 ### Usage
+
+#### 00 Dependency
+
+```groovy
+dependencies {
+    implementation "com.duartbreedt.radialgraph:radialgraph:1.0.5"
+}
+```
+
 #### 01 Layout
 
 ![Example of Graph Layout](https://github.com/DuartBreedt/RadialGraph/images/layout_example.png)
