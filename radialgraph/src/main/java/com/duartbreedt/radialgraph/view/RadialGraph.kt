@@ -10,12 +10,17 @@ import androidx.annotation.ColorInt
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.constraintlayout.widget.ConstraintSet.*
+import androidx.constraintlayout.widget.ConstraintSet.BOTTOM
+import androidx.constraintlayout.widget.ConstraintSet.LEFT
+import androidx.constraintlayout.widget.ConstraintSet.PARENT_ID
+import androidx.constraintlayout.widget.ConstraintSet.RIGHT
+import androidx.constraintlayout.widget.ConstraintSet.TOP
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.duartbreedt.radialgraph.R
 import com.duartbreedt.radialgraph.drawable.RadialGraphDrawable
 import com.duartbreedt.radialgraph.drawable.TrackDrawable
+import com.duartbreedt.radialgraph.extensions.addIf
 import com.duartbreedt.radialgraph.extensions.toFormattedDecimal
 import com.duartbreedt.radialgraph.model.AnimationDirection
 import com.duartbreedt.radialgraph.model.Cap
@@ -61,7 +66,8 @@ class RadialGraph : ConstraintLayout {
             attributes.getInt(R.styleable.RadialGraph_animationDirection, DEFAULT_ANIMATION_DIRECTION)
         val animationDirection: AnimationDirection = AnimationDirection.values()[animationDirectionOrdinal]
 
-        val animationDuration: Long = attributes.getInt(R.styleable.RadialGraph_animationDuration, DEFAULT_ANIMATION_DURATION).toLong()
+        val animationDuration: Long =
+            attributes.getInt(R.styleable.RadialGraph_animationDuration, DEFAULT_ANIMATION_DURATION).toLong()
 
         val labelsEnabled: Boolean = attributes.getBoolean(R.styleable.RadialGraph_labelsEnabled, false)
 
@@ -153,16 +159,12 @@ class RadialGraph : ConstraintLayout {
     }
 
     private fun drawGraph(data: Data) {
-        val layers = mutableListOf<Drawable>()
-
-        if (graphConfig.isBackgroundTrackEnabled) {
-            val backgroundTrack = TrackDrawable(graphConfig, graphConfig.backgroundTrackColor)
-            layers.add(backgroundTrack)
-        }
-
-        // TODO: Perhaps don't reverse this here and just sort differently a bit higher
         val graph = RadialGraphDrawable(graphConfig, data.toSectionStates().reversed())
-        layers.add(graph)
+
+        val layers = mutableListOf<Drawable>().apply {
+            addIf(graphConfig.isBackgroundTrackEnabled, TrackDrawable(graphConfig, graphConfig.backgroundTrackColor))
+            add(graph)
+        }
 
         graphView!!.setImageDrawable(LayerDrawable(layers.toTypedArray()))
 

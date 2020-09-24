@@ -1,14 +1,11 @@
 package com.duartbreedt.radialgraph.model
 
-import android.content.Context
-import androidx.core.content.ContextCompat
 import com.duartbreedt.radialgraph.extensions.sumByBigDecimal
 import java.math.BigDecimal
 import java.math.RoundingMode
 
 class Data(sections: List<Section>, total: BigDecimal? = null) {
 
-    val total: BigDecimal = total ?: calculateTotalValue(sections)
     val sections: List<Section> = sections.map {
 
         val totalValue: BigDecimal = total ?: calculateTotalValue(sections)
@@ -31,7 +28,12 @@ class Data(sections: List<Section>, total: BigDecimal? = null) {
         sections.forEachIndexed { index: Int, section: Section ->
             val sectionState: SectionState =
                 if (section.value == BigDecimal.ZERO) SectionState(0f, 0f, section.color, index == sections.size - 1)
-                else SectionState(section.normalizedValue.toFloat(), previousSectionEndPosition, section.color, index == sections.size - 1)
+                else SectionState(
+                    section.normalizedValue.toFloat(),
+                    previousSectionEndPosition,
+                    section.color,
+                    index == sections.size - 1
+                )
 
             previousSectionEndPosition += section.normalizedValue.toFloat()
 
