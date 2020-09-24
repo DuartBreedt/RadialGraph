@@ -40,6 +40,10 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-        graph_layout.draw(Data(sections, BigDecimal("100")))
+        val data = Data(sections, BigDecimal("100"))
+
+        graph_layout.setData(data)
+
+        graph_layout.animateIn()
     }
 }

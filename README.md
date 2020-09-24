@@ -7,7 +7,7 @@ This library aims to be a fully customisable radial graph to suit all your needs
 *Note:* This library only provisions for a radial graph composed of one or multiple head-to-tail stroked paths as
  shown Below:
  
- - *TODO*: Example image of graph  
+ ![Example of Graph](https://github.com/DuartBreedt/RadialGraph/images/graph_example.png)
 
 ### Features
 #### Graph
@@ -32,16 +32,30 @@ This library aims to be a fully customisable radial graph to suit all your needs
 - The animation duration can be specified in milliseconds
 
 ### Usage
-#### Components
-- *TODO:* Describe the usable components of the library
+#### 01 Layout
 
-#### Examples
-- *TODO:* Show full practical examples of the usage
+![Example of Graph Layout](https://github.com/DuartBreedt/RadialGraph/images/layout_example.png)
 
-
-#### Tips and tricks
+##### Note:
 - Using a constraint dimension ratio of 1:1 is recommended for a scalable graph
 - Currently, if you are using labels you will need to set some padding to accommodate said labels
+
+#### 02 Config
+
+![Example of Graph Config](https://github.com/DuartBreedt/RadialGraph/images/config_example.png)
+
+##### Note
+- If the display mode is not specified for a section then it will display as a `DisplayMode.PERCENT` by default. 
+- The Data object's second parameter is the total value of the graph. If it is not specified it is assumed that the sum of the sections comprise 100% of the graph.
+- Note that a custom label - such as STAB - can be set for a specific section.  
+
+#### 03 Initialization
+
+![Example of Graph Initialization](https://github.com/DuartBreedt/RadialGraph/images/initialization_example.png)
+
+#### 04 Animate In
+
+![Example of Graph Animate In](https://github.com/DuartBreedt/RadialGraph/images/animate_in_example.png)
 
 ### License
 Copyright 2020 Duart Breedt

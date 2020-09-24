@@ -5,6 +5,9 @@ import com.duartbreedt.radialgraph.extensions.sumByBigDecimal
 import java.math.BigDecimal
 import java.math.RoundingMode
 
+/**
+ * @param total If not specified it is assumed that the sum of the sections comprise 100% of the graph
+ */
 class Data(sections: List<Section>, total: BigDecimal? = null) {
 
     val sections: List<Section> = sections.map {

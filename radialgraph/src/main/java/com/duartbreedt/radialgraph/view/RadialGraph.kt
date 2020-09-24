@@ -18,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintSet.TOP
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.duartbreedt.radialgraph.R
+import com.duartbreedt.radialgraph.drawable.GraphDrawable
 import com.duartbreedt.radialgraph.drawable.RadialGraphDrawable
 import com.duartbreedt.radialgraph.drawable.TrackDrawable
 import com.duartbreedt.radialgraph.extensions.addIf
@@ -35,6 +36,7 @@ class RadialGraph : ConstraintLayout {
 
     //region Properties
     private var graphView: AppCompatImageView? = null
+    private var graphDrawable: RadialGraphDrawable? = null
     private val labelViews: MutableList<LabelView> = mutableListOf()
     private val graphConfig: GraphConfig
     //endregion
@@ -126,17 +128,21 @@ class RadialGraph : ConstraintLayout {
     //endregion
 
     //region Public API
-    fun draw(data: Data) {
-        addGraphViewToLayout()
-        drawGraph(data)
+    fun setData(data: Data) {
+        setGraphView()
+        createDrawables(data)
         if (graphConfig.labelsEnabled) {
             addLabelViewsToLayout(data)
         }
     }
+
+    fun animateIn() {
+        graphDrawable!!.animateIn()
+    }
     //endregion
 
     //region Helper Functions
-    private fun addGraphViewToLayout() {
+    private fun setGraphView() {
         removeGraphView()
 
         graphView = AppCompatImageView(context).apply { id = ViewCompat.generateViewId() }
@@ -158,17 +164,15 @@ class RadialGraph : ConstraintLayout {
         }
     }
 
-    private fun drawGraph(data: Data) {
-        val graph = RadialGraphDrawable(graphConfig, data.toSectionStates().reversed())
+    private fun createDrawables(data: Data) {
+        graphDrawable = RadialGraphDrawable(graphConfig, data.toSectionStates().reversed())
 
         val layers = mutableListOf<Drawable>().apply {
             addIf(graphConfig.isBackgroundTrackEnabled, TrackDrawable(graphConfig, graphConfig.backgroundTrackColor))
-            add(graph)
+            add(graphDrawable!!)
         }
 
         graphView!!.setImageDrawable(LayerDrawable(layers.toTypedArray()))
-
-        graph.animateIn()
     }
 
     private fun addLabelViewsToLayout(data: Data) {
