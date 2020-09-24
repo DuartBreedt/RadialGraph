@@ -1,5 +1,6 @@
 package com.duartbreedt.radialgraph.model
 
+import com.duartbreedt.radialgraph.exceptions.GraphConfigException
 import com.duartbreedt.radialgraph.extensions.sumByBigDecimal
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -8,7 +9,13 @@ class Data(sections: List<Section>, total: BigDecimal? = null) {
 
     val sections: List<Section> = sections.map {
 
-        val totalValue: BigDecimal = total ?: calculateTotalValue(sections)
+        val calculatedTotal: BigDecimal = calculateTotalValue(sections)
+
+        if(total != null && total < calculatedTotal) {
+            throw GraphConfigException("Specified total is exceeds the sum of the section values!")
+        }
+
+        val totalValue: BigDecimal = total ?: calculatedTotal
 
         it.apply {
             this.totalValue = totalValue

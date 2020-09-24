@@ -1,8 +1,8 @@
 package com.duartbreedt.example
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.duartbreedt.radialgraph.model.Data
 import com.duartbreedt.radialgraph.model.Section
 import kotlinx.android.synthetic.main.activity_main.*
@@ -21,25 +21,25 @@ class MainActivity : AppCompatActivity() {
         val sections = mutableListOf(
             Section(
                 Section.DisplayMode.PERCENT,
-                BigDecimal("10"),
-                ContextCompat.getColor(this, R.color.red)
+                BigDecimal("15"),
+                Color.parseColor("#CE3E61")
             ),
             Section(
                 Section.DisplayMode.VALUE,
-                BigDecimal("20"),
-                ContextCompat.getColor(this, R.color.blue)
+                BigDecimal("25"),
+                Color.parseColor("#FB716F")
             ),
             Section(
-                BigDecimal("10"),
-                ContextCompat.getColor(this, R.color.yellow)
+                BigDecimal("35"),
+                Color.parseColor("#FEAA85")
             ),
             Section(
                 "STAB",
                 BigDecimal("10"),
-                ContextCompat.getColor(this, R.color.green)
+                Color.parseColor("#FDC0A1")
             )
         )
 
-        graph_layout.draw(Data(sections, BigDecimal("60")))
+        graph_layout.draw(Data(sections, BigDecimal("100")))
     }
 }

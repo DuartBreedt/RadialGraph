@@ -13,16 +13,23 @@ This library aims to be a fully customisable radial graph to suit all your needs
 #### Graph
 - Composed of `n` Sections
 - Uses a data model to programmatically determine the graph's composition of Sections
+- The graph stroke size can be set
 - The colors of the Sections are customisable (see usage)
+- Customizable section caps
+- Rudimentary graph node icon
+- A background Section track can be set for the graph
 
 #### Labels
 - Toggleable labels
-- Can be the percent value of the graph which the Section - that the label describes - comprises
+- By default the color is determined by the color of the Section which the label describes
+- All label colors can be set globally for the graph
+- Can display the value of the Section
+- Can display the percent of the graph which the Section - that the label describes - comprises
 - Can define custom text
-- The color is currently defined by the color of the Section which the label describes
 
 #### Animation
 - The direction of the animation can be defined as CLOCKWISE or COUNTERCLOCKWISE
+- The animation duration can be specified in milliseconds
 
 ### Usage
 #### Components
@@ -30,6 +37,11 @@ This library aims to be a fully customisable radial graph to suit all your needs
 
 #### Examples
 - *TODO:* Show full practical examples of the usage
+
+
+#### Tips and tricks
+- Using a constraint dimension ratio of 1:1 is recommended for a scalable graph
+- Currently, if you are using labels you will need to set some padding to accommodate said labels
 
 ### License
 Copyright 2020 Duart Breedt
