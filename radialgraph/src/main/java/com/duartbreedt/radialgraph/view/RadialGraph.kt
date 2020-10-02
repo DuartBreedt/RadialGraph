@@ -141,6 +141,10 @@ class RadialGraph : ConstraintLayout {
     fun animateIn() {
         graphDrawable!!.animateIn()
     }
+
+    fun animateOut() {
+        graphDrawable!!.animateOut()
+    }
     //endregion
 
     //region Helper Functions
