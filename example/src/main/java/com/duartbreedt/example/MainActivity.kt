@@ -80,9 +80,11 @@ class MainActivity : AppCompatActivity() {
     private fun setOnClickListeners() {
         btnToggleGraphNode.setOnClickListener { toggleGraphNode() }
         btnToggleBackgroundTrack.setOnClickListener { toggleBackgroundTrack() }
-        btnRedraw.setOnClickListener {
-            graph_layout.redraw(data)
-        }
+        btnRedraw.setOnClickListener { graph_layout.redraw(data, false) }
+
+        btnAnimateIn.setOnClickListener { graph_layout.animateIn() }
+        btnAnimateOut.setOnClickListener { graph_layout.animateOut() }
+
         btnSwitchDataSet.setOnClickListener { switchDataSet() }
     }
 
@@ -132,7 +134,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateConfig() {
-        val stringBuilder = StringBuilder("Current configuration:\n")
+        val stringBuilder = StringBuilder("Current configuration:\n\n")
 
         stringBuilder.append("Data Set: ${dataSets.keys.elementAt(currentDataSet)}\n")
         stringBuilder.append("Graph Node: ${graphNodeState.name}\n")
