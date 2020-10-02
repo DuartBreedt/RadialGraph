@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
     private fun setOnClickListeners() {
         btnToggleGraphNode.setOnClickListener { toggleGraphNode() }
         btnToggleBackgroundTrack.setOnClickListener { toggleBackgroundTrack() }
-        btnRedraw.setOnClickListener { graph_layout.redraw(data, false) }
+        btnRedraw.setOnClickListener { graph_layout.setData(data) }
 
         btnAnimateIn.setOnClickListener { graph_layout.animateIn() }
         btnAnimateOut.setOnClickListener { graph_layout.animateOut() }

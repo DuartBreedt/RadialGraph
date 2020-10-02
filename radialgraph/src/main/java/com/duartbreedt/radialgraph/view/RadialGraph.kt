@@ -160,11 +160,6 @@ class RadialGraph : ConstraintLayout {
         }
     }
 
-    fun redraw(data: Data, animateIn: Boolean = true) {
-        setData(data)
-        if (animateIn) animateIn()
-    }
-
     fun animateIn() {
         graphDrawable!!.animateIn()
     }
