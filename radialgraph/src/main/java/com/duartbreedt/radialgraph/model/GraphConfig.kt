@@ -3,7 +3,6 @@ package com.duartbreedt.radialgraph.model
 import android.graphics.drawable.Drawable
 import android.view.View.NO_ID
 import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
 
 data class GraphConfig(
     val animationDirection: AnimationDirection,

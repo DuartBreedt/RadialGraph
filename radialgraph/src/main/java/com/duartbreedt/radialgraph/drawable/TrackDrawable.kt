@@ -11,6 +11,7 @@ import android.graphics.PixelFormat
 import android.graphics.RectF
 import android.graphics.Shader
 import android.graphics.drawable.Drawable
+import android.view.View.NO_ID
 import androidx.core.graphics.drawable.toBitmap
 import com.duartbreedt.radialgraph.model.GraphConfig
 
@@ -39,7 +40,11 @@ class TrackDrawable(
             }
 
             strokeWidth = graphConfig.strokeWidth
-            color = backgroundColor
+
+            if (backgroundColor != NO_ID) {
+                color = backgroundColor
+            }
+
             pathEffect = DashPathEffect(floatArrayOf(pathMeasure.length, pathMeasure.length), 0f)
             style = Paint.Style.STROKE
             flags = Paint.ANTI_ALIAS_FLAG

@@ -38,20 +38,6 @@ class MainActivity : AppCompatActivity() {
                 BigDecimal("10"),
                 Color.parseColor("#FDC0A1")
             )
-            // Section(
-            //     Section.DisplayMode.VALUE,
-            //     BigDecimal("30"),
-            //     ContextCompat.getColor(this, R.color.blue)
-            // ),
-            // Section(
-            //     BigDecimal("10"),
-            //     ContextCompat.getColor(this, R.color.yellow)
-            // ),
-            // Section(
-            //     "STAB",
-            //     BigDecimal("10"),
-            //     ContextCompat.getColor(this, R.color.green)
-            // )
         )
 
         graph_layout.setData(Data(sections, BigDecimal("100")))
