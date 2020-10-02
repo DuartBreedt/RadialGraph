@@ -1,6 +1,7 @@
 package com.duartbreedt.radialgraph.drawable
 
 import android.animation.ObjectAnimator
+import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.ColorFilter
 import android.graphics.PathMeasure
@@ -35,42 +36,38 @@ class RadialGraphDrawable(
 
         if (graphConfig.graphNodeType == GraphNode.PERCENT) {
             val sectionState = sectionStates.first { it.isLastSection }
+            val coordinates = FloatArray(2)
 
-            if (sectionState.isLastSection) {
-                val pathMeasure = PathMeasure(sectionState.path!!, false)
-                val coordinates = FloatArray(2)
+            // Get the position of the end of the last drawn segment
+            PathMeasure(sectionState.path!!, false).getPosTan(
+                sectionState.length!! - sectionState.currentProgress,
+                coordinates,
+                null
+            )
 
-                // Get the position of the end of the last drawn segment
-                pathMeasure.getPosTan(
-                    sectionState.length!! * (1 - (sectionState.sweepSize + sectionState.startPosition)),
-                    coordinates,
-                    null
-                )
+            // Add a circle with the same background as the last segment drawn
+            canvas.drawCircle(
+                coordinates[0],
+                coordinates[1],
+                graphConfig.strokeWidth / 2,
+                buildFillPaint(sectionState.color)
+            )
 
-                // FIXME: This is a hack. Ideally the draw order should be fixed so that the last segment is drawn on top instead of at the bottom
-                // Add a circle with the same background as the last segment drawn
-                canvas.drawCircle(
-                    coordinates[0],
-                    coordinates[1],
-                    graphConfig.strokeWidth / 2,
-                    buildNodeBackgroundPaint(sectionState.color)
-                )
+            // Draw coloured node circle
+            canvas.drawCircle(
+                coordinates[0],
+                coordinates[1],
+                (graphConfig.strokeWidth / 2) - (graphConfig.strokeWidth / 10),
+                buildFillPaint(graphConfig.graphNodeColor)
+            )
 
-                canvas.drawCircle(
-                    coordinates[0],
-                    coordinates[1],
-                    (graphConfig.strokeWidth / 2) - (graphConfig.strokeWidth / 10),
-                    buildNodePaint(graphConfig.graphNodeColor)
-                )
-
-                // TODO: Investigate why the magic number 15f works here for centering the text within the circle
-                canvas.drawText(
-                    "%",
-                    coordinates[0] - 15f,
-                    coordinates[1] + 15f,
-                    buildNodeTextPaint(sectionState.color, graphConfig.graphNodeTextSize)
-                )
-            }
+            val textCenterOffset: Float = graphConfig.graphNodeTextSize / Resources.getSystem().displayMetrics.scaledDensity
+            canvas.drawText(
+                "%",
+                coordinates[0] - textCenterOffset,
+                coordinates[1] + textCenterOffset,
+                buildNodeTextPaint(sectionState.color, graphConfig.graphNodeTextSize)
+            )
         }
     }
 
@@ -83,10 +80,7 @@ class RadialGraphDrawable(
     }
 
     fun animateIn() {
-        ObjectAnimator.ofFloat(
-            this,
-            PROGRESS, 0f, 1f
-        ).apply {
+        ObjectAnimator.ofFloat(this, FillProgress, 0f, 1f).apply {
             duration = graphConfig.animationDuration
             interpolator = AccelerateDecelerateInterpolator()
         }.start()
@@ -94,7 +88,7 @@ class RadialGraphDrawable(
 
     // Creates a progress property to be animated animated
     @RequiresApi(Build.VERSION_CODES.N)
-    private object PROGRESS : FloatProperty<RadialGraphDrawable>("progress") {
+    private object FillProgress : FloatProperty<RadialGraphDrawable>("progress") {
         override fun setValue(drawable: RadialGraphDrawable, progressPercent: Float) {
             drawable.invalidateSelf()
             for (sectionState in drawable.sectionStates) {

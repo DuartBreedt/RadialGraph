@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
+    android:background="#EEE"
+
     tools:context="com.duartbreedt.example.MainActivity">
 
     <com.duartbreedt.radialgraph.view.RadialGraph
@@ -14,14 +19,18 @@
 
         app:animationDirection="clockwise"
         app:animationDuration="3000"
-        app:capStyle="rounded"
+
         app:labelsEnabled="true"
         app:labelsColor="@color/label_defaultColor"
-        app:strokeWidth="25dp"
+
         app:graphNode="percent"
         app:graphNodeColor="@color/grey"
-        app:backgroundTrackColor="@color/black"
 
+        app:capStyle="rounded"
+        app:strokeWidth="25dp"
+        app:backgroundTrackColor="#40304B"
+
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

@@ -10,12 +10,18 @@ import androidx.annotation.ColorInt
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.constraintlayout.widget.ConstraintSet.*
+import androidx.constraintlayout.widget.ConstraintSet.BOTTOM
+import androidx.constraintlayout.widget.ConstraintSet.LEFT
+import androidx.constraintlayout.widget.ConstraintSet.PARENT_ID
+import androidx.constraintlayout.widget.ConstraintSet.RIGHT
+import androidx.constraintlayout.widget.ConstraintSet.TOP
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.duartbreedt.radialgraph.R
+import com.duartbreedt.radialgraph.drawable.GraphDrawable
 import com.duartbreedt.radialgraph.drawable.RadialGraphDrawable
 import com.duartbreedt.radialgraph.drawable.TrackDrawable
+import com.duartbreedt.radialgraph.extensions.addIf
 import com.duartbreedt.radialgraph.extensions.toFormattedDecimal
 import com.duartbreedt.radialgraph.model.AnimationDirection
 import com.duartbreedt.radialgraph.model.Cap
@@ -30,6 +36,7 @@ class RadialGraph : ConstraintLayout {
 
     //region Properties
     private var graphView: AppCompatImageView? = null
+    private var graphDrawable: RadialGraphDrawable? = null
     private val labelViews: MutableList<LabelView> = mutableListOf()
     private val graphConfig: GraphConfig
     //endregion
@@ -61,7 +68,8 @@ class RadialGraph : ConstraintLayout {
             attributes.getInt(R.styleable.RadialGraph_animationDirection, DEFAULT_ANIMATION_DIRECTION)
         val animationDirection: AnimationDirection = AnimationDirection.values()[animationDirectionOrdinal]
 
-        val animationDuration: Long = attributes.getInt(R.styleable.RadialGraph_animationDuration, DEFAULT_ANIMATION_DURATION).toLong()
+        val animationDuration: Long =
+            attributes.getInt(R.styleable.RadialGraph_animationDuration, DEFAULT_ANIMATION_DURATION).toLong()
 
         val labelsEnabled: Boolean = attributes.getBoolean(R.styleable.RadialGraph_labelsEnabled, false)
 
@@ -120,17 +128,21 @@ class RadialGraph : ConstraintLayout {
     //endregion
 
     //region Public API
-    fun draw(data: Data) {
-        addGraphViewToLayout()
-        drawGraph(data)
+    fun setData(data: Data) {
+        setGraphView()
+        createDrawables(data)
         if (graphConfig.labelsEnabled) {
             addLabelViewsToLayout(data)
         }
     }
+
+    fun animateIn() {
+        graphDrawable!!.animateIn()
+    }
     //endregion
 
     //region Helper Functions
-    private fun addGraphViewToLayout() {
+    private fun setGraphView() {
         removeGraphView()
 
         graphView = AppCompatImageView(context).apply { id = ViewCompat.generateViewId() }
@@ -152,21 +164,15 @@ class RadialGraph : ConstraintLayout {
         }
     }
 
-    private fun drawGraph(data: Data) {
-        val layers = mutableListOf<Drawable>()
+    private fun createDrawables(data: Data) {
+        graphDrawable = RadialGraphDrawable(graphConfig, data.toSectionStates().reversed())
 
-        if (graphConfig.isBackgroundTrackEnabled) {
-            val backgroundTrack = TrackDrawable(graphConfig, graphConfig.backgroundTrackColor)
-            layers.add(backgroundTrack)
+        val layers = mutableListOf<Drawable>().apply {
+            addIf(graphConfig.isBackgroundTrackEnabled, TrackDrawable(graphConfig, graphConfig.backgroundTrackColor))
+            add(graphDrawable!!)
         }
 
-        // TODO: Perhaps don't reverse this here and just sort differently a bit higher
-        val graph = RadialGraphDrawable(graphConfig, data.toSectionStates().reversed())
-        layers.add(graph)
-
         graphView!!.setImageDrawable(LayerDrawable(layers.toTypedArray()))
-
-        graph.animateIn()
     }
 
     private fun addLabelViewsToLayout(data: Data) {

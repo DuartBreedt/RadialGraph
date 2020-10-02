@@ -4,7 +4,6 @@ import android.graphics.DashPathEffect
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
-import android.graphics.PathMeasure
 import android.graphics.PixelFormat
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
@@ -48,28 +47,16 @@ abstract class GraphDrawable(
         return path
     }
 
-    protected fun buildNodePaint(colorInt: Int): Paint {
-        return Paint().apply {
-            color = colorInt
-            style = Paint.Style.FILL
-            flags = Paint.ANTI_ALIAS_FLAG
-        }
+    protected fun buildFillPaint(colorInt: Int) = Paint().apply {
+        color = colorInt
+        style = Paint.Style.FILL
+        flags = Paint.ANTI_ALIAS_FLAG
     }
 
-    protected fun buildNodeBackgroundPaint(colorInt: Int): Paint {
-        return Paint().apply {
-            color = colorInt
-            style = Paint.Style.FILL
-            flags = Paint.ANTI_ALIAS_FLAG
-        }
-    }
-
-    protected fun buildNodeTextPaint(textColor: Int, textSize: Float): Paint {
-        return TextPaint().apply {
-            this.textSize = textSize
-            color = textColor
-            flags = Paint.ANTI_ALIAS_FLAG
-        }
+    protected fun buildNodeTextPaint(textColor: Int, textSize: Float): Paint = TextPaint().apply {
+        this.textSize = textSize
+        color = textColor
+        flags = Paint.ANTI_ALIAS_FLAG
     }
 
     private fun rotatePath(path: Path, degrees: Float) {
@@ -80,14 +67,12 @@ abstract class GraphDrawable(
         path.transform(matrix)
     }
 
-    protected fun calculateBoundaries(): RectF {
-        return RectF(
-            bounds.left.toFloat() + (graphConfig.strokeWidth / 2f),
-            bounds.top.toFloat() + (graphConfig.strokeWidth / 2f),
-            bounds.right.toFloat() - (graphConfig.strokeWidth / 2f),
-            bounds.bottom.toFloat() - (graphConfig.strokeWidth / 2f)
-        )
-    }
+    protected fun calculateBoundaries() = RectF(
+        bounds.left.toFloat() + (graphConfig.strokeWidth / 2f),
+        bounds.top.toFloat() + (graphConfig.strokeWidth / 2f),
+        bounds.right.toFloat() - (graphConfig.strokeWidth / 2f),
+        bounds.bottom.toFloat() - (graphConfig.strokeWidth / 2f)
+    )
 
     override fun getOpacity(): Int = PixelFormat.OPAQUE
 }
