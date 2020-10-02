@@ -54,6 +54,8 @@ class MainActivity : AppCompatActivity() {
             // )
         )
 
-        graph_layout.draw(Data(sections, BigDecimal("60")))
+        graph_layout.setData(Data(sections, BigDecimal("100")))
+
+        graph_layout.animateIn()
     }
 }

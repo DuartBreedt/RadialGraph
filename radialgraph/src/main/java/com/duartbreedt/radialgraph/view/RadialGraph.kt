@@ -169,9 +169,9 @@ class RadialGraph : ConstraintLayout {
     private fun createDrawables(data: Data) {
         graphDrawable = RadialGraphDrawable(graphConfig, data.toSectionStates().reversed())
 
-        if (graphConfig.isBackgroundTrackEnabled) {
-            val backgroundTrack = TrackDrawable(graphConfig, graphConfig.backgroundTrackColor, graphConfig.backgroundTrackDrawable)
-            layers.add(backgroundTrack)
+        val layers = mutableListOf<Drawable>().apply {
+            addIf(graphConfig.isBackgroundTrackEnabled, TrackDrawable(graphConfig, graphConfig.backgroundTrackColor, graphConfig.backgroundTrackDrawable))
+            add(graphDrawable!!)
         }
 
         graphView!!.setImageDrawable(LayerDrawable(layers.toTypedArray()))

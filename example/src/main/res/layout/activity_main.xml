@@ -28,9 +28,7 @@
         app:backgroundTrackColor="@color/black"
         app:backgroundTrackDrawable="@drawable/bg_graph_track"
 
-        app:capStyle="rounded"
         app:strokeWidth="25dp"
-        app:backgroundTrackColor="#40304B"
 
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintTop_toTopOf="parent"
