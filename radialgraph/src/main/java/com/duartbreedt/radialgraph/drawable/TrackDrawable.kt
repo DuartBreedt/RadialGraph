@@ -1,5 +1,6 @@
 package com.duartbreedt.radialgraph.drawable
 
+import android.graphics.BitmapShader
 import android.graphics.Canvas
 import android.graphics.ColorFilter
 import android.graphics.DashPathEffect
@@ -8,10 +9,16 @@ import android.graphics.Path
 import android.graphics.PathMeasure
 import android.graphics.PixelFormat
 import android.graphics.RectF
+import android.graphics.Shader
 import android.graphics.drawable.Drawable
+import androidx.core.graphics.drawable.toBitmap
 import com.duartbreedt.radialgraph.model.GraphConfig
 
-class TrackDrawable(private val graphConfig: GraphConfig, private val backgroundColor: Int) : Drawable() {
+class TrackDrawable(
+    private val graphConfig: GraphConfig,
+    private val backgroundColor: Int,
+    private val backgroundTrackDrawable: Drawable?
+) : Drawable() {
 
     override fun draw(canvas: Canvas) {
         val boundaries = calculateBoundaries()
@@ -22,6 +29,15 @@ class TrackDrawable(private val graphConfig: GraphConfig, private val background
         val pathMeasure = PathMeasure(path, false)
 
         val paint = Paint().apply {
+            shader = backgroundTrackDrawable?.let {
+                BitmapShader(
+                    backgroundTrackDrawable.toBitmap(
+                        boundaries.width().toInt() + (boundaries.width().toInt() / 10),
+                        boundaries.height().toInt() + (boundaries.height().toInt() / 10)
+                    ), Shader.TileMode.REPEAT, Shader.TileMode.REPEAT
+                )
+            }
+
             strokeWidth = graphConfig.strokeWidth
             color = backgroundColor
             pathEffect = DashPathEffect(floatArrayOf(pathMeasure.length, pathMeasure.length), 0f)

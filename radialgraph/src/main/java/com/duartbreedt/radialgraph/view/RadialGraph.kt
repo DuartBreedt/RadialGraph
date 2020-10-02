@@ -86,6 +86,7 @@ class RadialGraph : ConstraintLayout {
         val capStyle = Cap.values()[capStyleOrdinal]
 
         val backgroundTrackColor = attributes.getColor(R.styleable.RadialGraph_backgroundTrackColor, View.NO_ID)
+        val backgroundTrackDrawable = attributes.getDrawable(R.styleable.RadialGraph_backgroundTrackDrawable)
 
         val graphNodeOrdinal: Int = attributes.getInt(R.styleable.RadialGraph_graphNode, DEFAULT_GRAPH_NODE)
         val graphNode = GraphNode.values()[graphNodeOrdinal]
@@ -111,6 +112,7 @@ class RadialGraph : ConstraintLayout {
             strokeWidth,
             capStyle,
             backgroundTrackColor,
+            backgroundTrackDrawable,
             graphNode,
             graphNodeColor,
             context.resources.getDimension(R.dimen.node_defaultTextSize)
@@ -167,9 +169,9 @@ class RadialGraph : ConstraintLayout {
     private fun createDrawables(data: Data) {
         graphDrawable = RadialGraphDrawable(graphConfig, data.toSectionStates().reversed())
 
-        val layers = mutableListOf<Drawable>().apply {
-            addIf(graphConfig.isBackgroundTrackEnabled, TrackDrawable(graphConfig, graphConfig.backgroundTrackColor))
-            add(graphDrawable!!)
+        if (graphConfig.isBackgroundTrackEnabled) {
+            val backgroundTrack = TrackDrawable(graphConfig, graphConfig.backgroundTrackColor, graphConfig.backgroundTrackDrawable)
+            layers.add(backgroundTrack)
         }
 
         graphView!!.setImageDrawable(LayerDrawable(layers.toTypedArray()))

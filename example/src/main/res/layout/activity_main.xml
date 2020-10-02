@@ -18,13 +18,15 @@
         android:padding="@dimen/label_margin"
 
         app:animationDirection="clockwise"
-        app:animationDuration="3000"
-
+        app:animationDuration="1000"
+        app:capStyle="rounded"
         app:labelsEnabled="true"
         app:labelsColor="@color/label_defaultColor"
 
         app:graphNode="percent"
         app:graphNodeColor="@color/grey"
+        app:backgroundTrackColor="@color/black"
+        app:backgroundTrackDrawable="@drawable/bg_graph_track"
 
         app:capStyle="rounded"
         app:strokeWidth="25dp"

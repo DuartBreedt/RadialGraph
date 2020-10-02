@@ -38,12 +38,22 @@ class MainActivity : AppCompatActivity() {
                 BigDecimal("10"),
                 Color.parseColor("#FDC0A1")
             )
+            // Section(
+            //     Section.DisplayMode.VALUE,
+            //     BigDecimal("30"),
+            //     ContextCompat.getColor(this, R.color.blue)
+            // ),
+            // Section(
+            //     BigDecimal("10"),
+            //     ContextCompat.getColor(this, R.color.yellow)
+            // ),
+            // Section(
+            //     "STAB",
+            //     BigDecimal("10"),
+            //     ContextCompat.getColor(this, R.color.green)
+            // )
         )
 
-        val data = Data(sections, BigDecimal("100"))
-
-        graph_layout.setData(data)
-
-        graph_layout.animateIn()
+        graph_layout.draw(Data(sections, BigDecimal("60")))
     }
 }
