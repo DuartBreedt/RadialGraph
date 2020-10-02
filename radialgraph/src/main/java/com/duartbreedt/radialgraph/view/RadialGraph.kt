@@ -130,12 +130,39 @@ class RadialGraph : ConstraintLayout {
     //endregion
 
     //region Public API
+
     fun setData(data: Data) {
         setGraphView()
         createDrawables(data)
         if (graphConfig.labelsEnabled) {
             addLabelViewsToLayout(data)
         }
+    }
+
+    fun setGraphNode(newGraphNodeType: GraphNode) {
+        graphConfig.graphNodeType = newGraphNodeType
+    }
+
+    fun setBackgroundTrack(newColor: Int?) {
+        graphConfig.backgroundTrackDrawable = null
+        graphConfig.backgroundTrackColor = newColor ?: NO_ID
+    }
+
+    fun setBackgroundTrack(newDrawable: Drawable?) {
+        graphConfig.backgroundTrackColor = NO_ID
+        graphConfig.backgroundTrackDrawable = newDrawable
+    }
+
+    fun removeBackgroundTrack() {
+        with (graphConfig) {
+            backgroundTrackColor = NO_ID
+            backgroundTrackDrawable = null
+        }
+    }
+
+    fun redraw(data: Data) {
+        setData(data)
+        animateIn()
     }
 
     fun animateIn() {
@@ -145,6 +172,7 @@ class RadialGraph : ConstraintLayout {
     fun animateOut() {
         graphDrawable!!.animateOut()
     }
+
     //endregion
 
     //region Helper Functions

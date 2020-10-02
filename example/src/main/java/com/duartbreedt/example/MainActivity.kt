@@ -3,7 +3,9 @@ package com.duartbreedt.example
 import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.duartbreedt.radialgraph.model.Data
+import com.duartbreedt.radialgraph.model.GraphNode
 import com.duartbreedt.radialgraph.model.Section
 import kotlinx.android.synthetic.main.activity_main.*
 import java.math.BigDecimal
@@ -40,7 +42,15 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-        graph_layout.setData(Data(sections, BigDecimal("100")))
+        val data = Data(sections, BigDecimal("100"))
+
+        btnToggle.setOnClickListener {
+            //graph_layout.setGraphNode(GraphNode.NONE)
+            graph_layout.removeBackgroundTrack()
+            graph_layout.redraw(data)
+        }
+
+        graph_layout.setData(data)
 
         graph_layout.animateIn()
     }
