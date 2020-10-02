@@ -51,13 +51,24 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         ),
-        "Set 3 (1 large segment)" to Pair<BigDecimal, List<Section>>(BigDecimal(100), listOf(
-            Section(
-                Section.DisplayMode.PERCENT,
-                BigDecimal("75"),
-                Color.parseColor("#CE3E61")
+        "Set 3 (1 large segment)" to Pair<BigDecimal, List<Section>>(
+            BigDecimal(100), listOf(
+                Section(
+                    Section.DisplayMode.PERCENT,
+                    BigDecimal("75"),
+                    Color.parseColor("#CE3E61")
+                )
             )
-        ))
+        ),
+        "Set 4 (Empty)" to Pair<BigDecimal, List<Section>>(
+            BigDecimal(100), listOf(
+                Section(
+                    Section.DisplayMode.PERCENT,
+                    BigDecimal(0),
+                    Color.parseColor("#CE3E61")
+                )
+            )
+        )
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,7 +110,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun toggleBackgroundTrack() {
         val currentOrdinal = backgroundTrackState.ordinal
-        val newOrdinal = if (currentOrdinal == 2) 0 else currentOrdinal + 1
+        val newOrdinal = if (currentOrdinal == BackgroundTrackState.values().lastIndex) 0 else currentOrdinal + 1
 
         backgroundTrackState = BackgroundTrackState.values()[newOrdinal]
 
@@ -118,7 +129,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun switchDataSet() {
-        val newDataSet = if (currentDataSet == 2) 0 else currentDataSet + 1
+        val newDataSet = if (currentDataSet == dataSets.keys.size - 1) 0 else currentDataSet + 1
         currentDataSet = newDataSet
 
         selectDataSet()
