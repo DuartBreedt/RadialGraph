@@ -37,7 +37,7 @@ This library aims to be a fully customisable radial graph to suit all your needs
 
 ```groovy
 dependencies {
-    implementation "com.duartbreedt.radialgraph:radialgraph:1.0.5"
+    implementation "com.duartbreedt.radialgraph:radialgraph:1.0.6"
 }
 ```
 

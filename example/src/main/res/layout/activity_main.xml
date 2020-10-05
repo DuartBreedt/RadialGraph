@@ -35,52 +35,74 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <Button
-        android:id="@+id/btnRedraw"
-
+    <LinearLayout
+        android:id="@+id/topBtnBar"
+        style="?android:attr/buttonBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
 
         app:layout_constraintTop_toBottomOf="@id/graph_layout"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        android:text="Redraw"/>
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/btnRedraw"
 
-    <Button
-        android:id="@+id/btnAnimateIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            android:textColor="#CE3D60"
 
-        app:layout_constraintTop_toBottomOf="@id/graph_layout"
-        app:layout_constraintStart_toEndOf="@id/btnRedraw"
+            android:text="Redraw"
 
-        android:text="Animate In" />
+            tools:ignore="HardcodedText" />
 
-    <Button
-        android:id="@+id/btnAnimateOut"
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/btnAnimateIn"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toBottomOf="@id/graph_layout"
-        app:layout_constraintStart_toEndOf="@id/btnAnimateIn"
+            android:textColor="#CE3D60"
 
-        android:text="Animate Out" />
+            android:text="Animate In"
+
+            tools:ignore="HardcodedText" />
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/btnAnimateOut"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textColor="#CE3D60"
+
+            android:text="Animate Out"
+
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/currentConfig"
 
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         android:layout_marginTop="5dp"
 
-        app:layout_constraintTop_toBottomOf="@id/btnRedraw"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/topBtnBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         android:orientation="horizontal"
@@ -89,30 +111,43 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/btnToggleGraphNode"
 
-            android:layout_width="120dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="Toggle Graph Node" />
+            android:textColor="#CE3D60"
+
+            android:text="Toggle\nGraph Node"
+
+            tools:ignore="HardcodedText" />
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/btnToggleBackgroundTrack"
 
-            android:layout_width="120dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
 
-            android:text="Toggle Background Track" />
+            android:textColor="#CE3D60"
+
+            android:text="Toggle\nBackground Track"
+
+            tools:ignore="HardcodedText" />
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/btnSwitchDataSet"
 
-            android:layout_width="120dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
 
-            android:text="Switch Data Set" />
+            android:textColor="#CE3D60"
+
+            android:text="Switch Data Set"
+
+            tools:ignore="HardcodedText" />
 
     </LinearLayout>
 
