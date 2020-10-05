@@ -54,8 +54,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:textColor="#CE3D60"
-
             android:text="Redraw"
 
             tools:ignore="HardcodedText" />
@@ -67,8 +65,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:textColor="#CE3D60"
-
             android:text="Animate In"
 
             tools:ignore="HardcodedText" />
@@ -79,8 +75,6 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:textColor="#CE3D60"
 
             android:text="Animate Out"
 
@@ -117,8 +111,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:textColor="#CE3D60"
-
             android:text="Toggle\nGraph Node"
 
             tools:ignore="HardcodedText" />
@@ -130,8 +122,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:textColor="#CE3D60"
-
             android:text="Toggle\nBackground Track"
 
             tools:ignore="HardcodedText" />
@@ -142,8 +132,6 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:textColor="#CE3D60"
 
             android:text="Switch Data Set"
 
