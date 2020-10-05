@@ -86,6 +86,13 @@ class RadialGraphDrawable(
         }.start()
     }
 
+    fun animateOut() {
+        ObjectAnimator.ofFloat(this, FillProgress, 1f, 0f).apply {
+            duration = graphConfig.animationDuration
+            interpolator = AccelerateDecelerateInterpolator()
+        }.start()
+    }
+
     // Creates a progress property to be animated animated
     @RequiresApi(Build.VERSION_CODES.N)
     private object FillProgress : FloatProperty<RadialGraphDrawable>("progress") {

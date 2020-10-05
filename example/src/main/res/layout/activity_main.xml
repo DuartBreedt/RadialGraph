@@ -18,22 +18,102 @@
         android:padding="@dimen/label_margin"
 
         app:animationDirection="clockwise"
-        app:animationDuration="3000"
-
+        app:animationDuration="1000"
+        app:capStyle="rounded"
         app:labelsEnabled="true"
         app:labelsColor="@color/label_defaultColor"
 
         app:graphNode="percent"
         app:graphNodeColor="@color/grey"
+        app:backgroundTrackColor="@color/black"
+        app:backgroundTrackDrawable="@drawable/bg_graph_track"
 
-        app:capStyle="rounded"
         app:strokeWidth="25dp"
-        app:backgroundTrackColor="#40304B"
 
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/btnRedraw"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/graph_layout"
+        app:layout_constraintStart_toStartOf="parent"
+
+        android:text="Redraw"/>
+
+    <Button
+        android:id="@+id/btnAnimateIn"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/graph_layout"
+        app:layout_constraintStart_toEndOf="@id/btnRedraw"
+
+        android:text="Animate In" />
+
+    <Button
+        android:id="@+id/btnAnimateOut"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/graph_layout"
+        app:layout_constraintStart_toEndOf="@id/btnAnimateIn"
+
+        android:text="Animate Out" />
+
+    <TextView
+        android:id="@+id/currentConfig"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="5dp"
+
+        app:layout_constraintTop_toBottomOf="@id/btnRedraw"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/btnToggleGraphNode"
+
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+
+            android:text="Toggle Graph Node" />
+
+        <Button
+            android:id="@+id/btnToggleBackgroundTrack"
+
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+
+            android:text="Toggle Background Track" />
+
+        <Button
+            android:id="@+id/btnSwitchDataSet"
+
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+
+            android:text="Switch Data Set" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

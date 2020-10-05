@@ -35,6 +35,9 @@
         <!-- The colour of the background track rendered behind the graph segments. If not defined, the graph will not render a background track -->
         <attr name="backgroundTrackColor" format="color"/>
 
+        <!-- The drawable that will be used as a background track for the graph. This takes precedence over the `backgroundTrackColor` -->
+        <attr name="backgroundTrackDrawable" format="reference" />
+
         <!-- Specify whether the graph should render label views or not. Defaults to false -->
         <attr name="labelsEnabled" format="boolean"/>
 

@@ -86,6 +86,7 @@ class RadialGraph : ConstraintLayout {
         val capStyle = Cap.values()[capStyleOrdinal]
 
         val backgroundTrackColor = attributes.getColor(R.styleable.RadialGraph_backgroundTrackColor, View.NO_ID)
+        val backgroundTrackDrawable = attributes.getDrawable(R.styleable.RadialGraph_backgroundTrackDrawable)
 
         val graphNodeOrdinal: Int = attributes.getInt(R.styleable.RadialGraph_graphNode, DEFAULT_GRAPH_NODE)
         val graphNode = GraphNode.values()[graphNodeOrdinal]
@@ -111,6 +112,7 @@ class RadialGraph : ConstraintLayout {
             strokeWidth,
             capStyle,
             backgroundTrackColor,
+            backgroundTrackDrawable,
             graphNode,
             graphNodeColor,
             context.resources.getDimension(R.dimen.node_defaultTextSize)
@@ -128,6 +130,7 @@ class RadialGraph : ConstraintLayout {
     //endregion
 
     //region Public API
+
     fun setData(data: Data) {
         setGraphView()
         createDrawables(data)
@@ -136,9 +139,40 @@ class RadialGraph : ConstraintLayout {
         }
     }
 
+    fun setGraphNode(newGraphNodeType: GraphNode) {
+        graphConfig.graphNodeType = newGraphNodeType
+    }
+
+    /**
+     * Set the background track of the graph programmatically.
+     *
+     * @param [newColor] sets the background track to a solid color.
+     * Passing `null` will result in the background track being removed: e.g. `setBackgroundTrack(newColor = null)`
+     */
+    fun setBackgroundTrack(newColor: Int?) {
+        graphConfig.backgroundTrackDrawable = null
+        graphConfig.backgroundTrackColor = newColor ?: NO_ID
+    }
+
+    /**
+     * Set the background track of the graph programmatically.
+     *
+     * @param [newDrawable] sets the background track to a drawable asset.
+     * Passing `null` will result in the background track being removed: e.g. `setBackgroundTrack(newDrawable = null)`
+     */
+    fun setBackgroundTrack(newDrawable: Drawable?) {
+        graphConfig.backgroundTrackColor = NO_ID
+        graphConfig.backgroundTrackDrawable = newDrawable
+    }
+
     fun animateIn() {
         graphDrawable!!.animateIn()
     }
+
+    fun animateOut() {
+        graphDrawable!!.animateOut()
+    }
+
     //endregion
 
     //region Helper Functions
@@ -168,7 +202,7 @@ class RadialGraph : ConstraintLayout {
         graphDrawable = RadialGraphDrawable(graphConfig, data.toSectionStates().reversed())
 
         val layers = mutableListOf<Drawable>().apply {
-            addIf(graphConfig.isBackgroundTrackEnabled, TrackDrawable(graphConfig, graphConfig.backgroundTrackColor))
+            addIf(graphConfig.isBackgroundTrackEnabled, TrackDrawable(graphConfig, graphConfig.backgroundTrackColor, graphConfig.backgroundTrackDrawable))
             add(graphDrawable!!)
         }
 
