@@ -17,7 +17,7 @@ This library aims to be a fully customisable radial graph to suit all your needs
 - The colors of the Sections are customisable (see usage)
 - Customizable section caps
 - Rudimentary graph node icon
-- A background Section track can be set for the graph
+- A background Section track can be set for the graph as a solid color or bitmap image
 
 #### Labels
 - Toggleable labels
@@ -28,6 +28,7 @@ This library aims to be a fully customisable radial graph to suit all your needs
 - Can define custom text
 
 #### Animation
+- The graph has two main functions, `animateIn()` and `animateOut()`
 - The direction of the animation can be defined as CLOCKWISE or COUNTERCLOCKWISE
 - The animation duration can be specified in milliseconds
 
@@ -50,9 +51,9 @@ dependencies {
 - If the `animationDirection` attribute is not specified then it will default to `CLOCKWISE`.
 - By default, labels are disabled.
 - If the `labelsColor` attribute is not specified then it will default to the color of the section which it represents.
-- If the `graphNode` attribute is not specified then it will default to `NONE` and it won't display.
+- If the `graphNode`/`fun setGraphNode(newGraphNodeType: GraphNode)` attribute is not specified then it will default to `NONE` and it won't display.
 - If the `capStyle` attribute is not specified then it will default to the `BUTT`.
-- If the `backgroundTrackColor` attribute is not specified then the background track will be disabled and not be rendered.
+- If the `backgroundTrackColor`/`fun setBackgroundTrack(newColor: Int?)` or `backgroundTrackDrawable`/`fun setBackgroundTrack(newDrawable: Drawable?)` attribute is not specified then the background track will be disabled and not be rendered.
 - Using a constraint dimension ratio of 1:1 is recommended for a scalable graph.
 - Currently, if you are using labels you will need to set some padding to accommodate said labels.
 
