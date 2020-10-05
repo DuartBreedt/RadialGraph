@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         backgroundTrackState = BackgroundTrackState.values()[newOrdinal]
 
         when (backgroundTrackState) {
-            BackgroundTrackState.OFF -> graph_layout.removeBackgroundTrack()
+            BackgroundTrackState.OFF -> graph_layout.setBackgroundTrack(newColor = null)
             BackgroundTrackState.COLOR -> graph_layout.setBackgroundTrack(ContextCompat.getColor(this, R.color.black))
             BackgroundTrackState.DRAWABLE -> graph_layout.setBackgroundTrack(
                 ContextCompat.getDrawable(

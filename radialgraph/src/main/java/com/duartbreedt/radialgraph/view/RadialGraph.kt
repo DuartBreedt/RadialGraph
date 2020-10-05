@@ -143,21 +143,26 @@ class RadialGraph : ConstraintLayout {
         graphConfig.graphNodeType = newGraphNodeType
     }
 
+    /**
+     * Set the background track of the graph programmatically.
+     *
+     * @param [newColor] sets the background track to a solid color.
+     * Passing `null` will result in the background track being removed: e.g. `setBackgroundTrack(newColor = null)`
+     */
     fun setBackgroundTrack(newColor: Int?) {
         graphConfig.backgroundTrackDrawable = null
         graphConfig.backgroundTrackColor = newColor ?: NO_ID
     }
 
+    /**
+     * Set the background track of the graph programmatically.
+     *
+     * @param [newDrawable] sets the background track to a drawable asset.
+     * Passing `null` will result in the background track being removed: e.g. `setBackgroundTrack(newDrawable = null)`
+     */
     fun setBackgroundTrack(newDrawable: Drawable?) {
         graphConfig.backgroundTrackColor = NO_ID
         graphConfig.backgroundTrackDrawable = newDrawable
-    }
-
-    fun removeBackgroundTrack() {
-        with (graphConfig) {
-            backgroundTrackColor = NO_ID
-            backgroundTrackDrawable = null
-        }
     }
 
     fun animateIn() {
