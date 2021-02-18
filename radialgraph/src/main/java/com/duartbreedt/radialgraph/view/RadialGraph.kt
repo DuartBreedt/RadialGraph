@@ -104,6 +104,8 @@ class RadialGraph : ConstraintLayout {
             ContextCompat.getColor(context, R.color.node_defaultColor)
         }
 
+        val graphNodeIcon = attributes.getDrawable(R.styleable.RadialGraph_graphNodeIcon)
+
         graphConfig = GraphConfig(
             animationDirection,
             animationDuration,
@@ -115,7 +117,8 @@ class RadialGraph : ConstraintLayout {
             backgroundTrackDrawable,
             graphNode,
             graphNodeColor,
-            context.resources.getDimension(R.dimen.node_defaultTextSize)
+            context.resources.getDimension(R.dimen.node_defaultTextSize),
+            graphNodeIcon
         )
 
         attributes.recycle()

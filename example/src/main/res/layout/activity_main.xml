@@ -23,14 +23,14 @@
         app:labelsEnabled="true"
         app:labelsColor="@color/label_defaultColor"
 
-        app:graphNode="percent"
+        app:graphNode="icon"
         app:graphNodeColor="@color/grey"
+        app:graphNodeIcon="@drawable/ic_rewards_nav_icon"
         app:backgroundTrackColor="@color/black"
         app:backgroundTrackDrawable="@drawable/bg_graph_track"
 
         app:strokeWidth="25dp"
-
-        app:layout_constraintDimensionRatio="1:1"
+       app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

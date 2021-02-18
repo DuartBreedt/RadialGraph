@@ -14,6 +14,7 @@
     <attr name="graphNode" format="enum">
         <enum name="none" value="0" />
         <enum name="percent" value="1" />
+        <enum name="icon" value="2" />
     </attr>
 
     <declare-styleable name="RadialGraph">
@@ -31,6 +32,9 @@
 
         <!-- The color of the node being rendered on the last graph segment. Defaults to magenta -->
         <attr name="graphNodeColor" format="color" />
+
+        <!-- The icon on the node being rendered on the last graph segment -->
+        <attr name="graphNodeIcon" format="reference" />
 
         <!-- The colour of the background track rendered behind the graph segments. If not defined, the graph will not render a background track -->
         <attr name="backgroundTrackColor" format="color"/>
