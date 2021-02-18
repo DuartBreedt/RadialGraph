@@ -1,16 +1,13 @@
 package com.duartbreedt.radialgraph.drawable
 
-import android.content.res.Resources
 import android.graphics.DashPathEffect
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PixelFormat
-import android.graphics.PorterDuff
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.text.TextPaint
-import androidx.core.content.res.ResourcesCompat
 import com.duartbreedt.radialgraph.model.AnimationDirection
 import com.duartbreedt.radialgraph.model.GraphConfig
 import com.duartbreedt.radialgraph.model.SectionState
