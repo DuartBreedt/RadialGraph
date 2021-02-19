@@ -24,7 +24,7 @@
 
         app:graphNode="icon"
         app:graphNodeColor="@color/grey"
-        app:graphNodeIcon="@drawable/ic_rewards_nav_icon"
+        app:graphNodeIcon="@drawable/ic_heart_node_foreground"
         app:backgroundTrackColor="@color/black"
         app:backgroundTrackDrawable="@drawable/bg_graph_track"
 
