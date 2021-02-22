@@ -15,7 +15,8 @@ data class GraphConfig(
     var backgroundTrackDrawable: Drawable?,
     var graphNodeType: GraphNode,
     @ColorInt val graphNodeColor: Int,
-    val graphNodeTextSize: Float
+    val graphNodeTextSize: Float,
+    val graphNodeIcon: Drawable?
 ) {
     val isBackgroundTrackEnabled: Boolean
         get() = backgroundTrackColor != NO_ID || backgroundTrackDrawable != null

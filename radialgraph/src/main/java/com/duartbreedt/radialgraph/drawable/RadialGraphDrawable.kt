@@ -9,6 +9,7 @@ import android.os.Build
 import android.util.FloatProperty
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.annotation.RequiresApi
+import androidx.core.graphics.drawable.toBitmap
 import com.duartbreedt.radialgraph.model.GraphConfig
 import com.duartbreedt.radialgraph.model.GraphNode
 import com.duartbreedt.radialgraph.model.SectionState
@@ -34,7 +35,7 @@ class RadialGraphDrawable(
             canvas.drawPath(sectionState.path!!, sectionState.paint!!)
         }
 
-        if (graphConfig.graphNodeType == GraphNode.PERCENT) {
+        if (graphConfig.graphNodeType != GraphNode.NONE) {
             val sectionState = sectionStates.first { it.isLastSection }
             val coordinates = FloatArray(2)
 
@@ -61,13 +62,30 @@ class RadialGraphDrawable(
                 buildFillPaint(graphConfig.graphNodeColor)
             )
 
-            val textCenterOffset: Float = graphConfig.graphNodeTextSize / Resources.getSystem().displayMetrics.scaledDensity
-            canvas.drawText(
-                "%",
-                coordinates[0] - textCenterOffset,
-                coordinates[1] + textCenterOffset,
-                buildNodeTextPaint(sectionState.color, graphConfig.graphNodeTextSize)
-            )
+            val textCenterOffset: Float =
+                graphConfig.graphNodeTextSize / Resources.getSystem().displayMetrics.scaledDensity
+
+            if (graphConfig.graphNodeType == GraphNode.PERCENT) {
+                canvas.drawText(
+                    "%",
+                    coordinates[0] - textCenterOffset,
+                    coordinates[1] + textCenterOffset,
+                    buildNodeTextPaint(sectionState.color, graphConfig.graphNodeTextSize)
+                )
+            }
+
+            if (graphConfig.graphNodeType == GraphNode.ICON) {
+                graphConfig.graphNodeIcon?.setTint(sectionState.color)
+
+                graphConfig.graphNodeIcon?.toBitmap()?.let {
+                    canvas.drawBitmap(
+                        it,
+                        coordinates[0] - textCenterOffset,
+                        coordinates[1] - textCenterOffset,
+                        null
+                    )
+                }
+            }
         }
     }
 

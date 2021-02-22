@@ -18,7 +18,6 @@ import androidx.constraintlayout.widget.ConstraintSet.TOP
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.duartbreedt.radialgraph.R
-import com.duartbreedt.radialgraph.drawable.GraphDrawable
 import com.duartbreedt.radialgraph.drawable.RadialGraphDrawable
 import com.duartbreedt.radialgraph.drawable.TrackDrawable
 import com.duartbreedt.radialgraph.extensions.addIf
@@ -65,20 +64,26 @@ class RadialGraph : ConstraintLayout {
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.RadialGraph)
 
         val animationDirectionOrdinal: Int =
-            attributes.getInt(R.styleable.RadialGraph_animationDirection, DEFAULT_ANIMATION_DIRECTION)
-        val animationDirection: AnimationDirection = AnimationDirection.values()[animationDirectionOrdinal]
+            attributes.getInt(
+                R.styleable.RadialGraph_animationDirection,
+                DEFAULT_ANIMATION_DIRECTION
+            )
+        val animationDirection: AnimationDirection =
+            AnimationDirection.values()[animationDirectionOrdinal]
 
         val animationDuration: Long =
-            attributes.getInt(R.styleable.RadialGraph_animationDuration, DEFAULT_ANIMATION_DURATION).toLong()
+            attributes.getInt(R.styleable.RadialGraph_animationDuration, DEFAULT_ANIMATION_DURATION)
+                .toLong()
 
         val labelsEnabled: Boolean = attributes.getBoolean(R.styleable.RadialGraph_labelsEnabled, false)
 
-        @ColorInt val labelsColor: Int? = if (attributes.hasValue(R.styleable.RadialGraph_labelsColor)) {
-            attributes.getColor(
-                R.styleable.RadialGraph_labelsColor,
-                ContextCompat.getColor(context, R.color.label_defaultColor)
-            )
-        } else null
+        @ColorInt val labelsColor: Int? =
+            if (attributes.hasValue(R.styleable.RadialGraph_labelsColor)) {
+                attributes.getColor(
+                    R.styleable.RadialGraph_labelsColor,
+                    ContextCompat.getColor(context, R.color.label_defaultColor)
+                )
+            } else null
 
         val strokeWidth: Float = attributes.getDimension(R.styleable.RadialGraph_strokeWidth, 0f)
 
@@ -98,10 +103,22 @@ class RadialGraph : ConstraintLayout {
             )
         } else {
             if (graphNode != GraphNode.NONE) {
-                Log.w(TAG, "No value passed for the `app:graphNodeColor` attribute. It will default to Magenta")
+                Log.w(
+                    TAG,
+                    "No value passed for the `app:graphNodeColor` attribute. It will default to Magenta"
+                )
             }
 
             ContextCompat.getColor(context, R.color.node_defaultColor)
+        }
+
+        val graphNodeIcon = attributes.getDrawable(R.styleable.RadialGraph_graphNodeIcon)
+
+        if (graphNode == GraphNode.ICON && graphNodeIcon == null) {
+            Log.e(
+                TAG,
+                "No value passed for the `app:graphNodeIcon` attribute."
+            )
         }
 
         graphConfig = GraphConfig(
@@ -115,7 +132,8 @@ class RadialGraph : ConstraintLayout {
             backgroundTrackDrawable,
             graphNode,
             graphNodeColor,
-            context.resources.getDimension(R.dimen.node_defaultTextSize)
+            context.resources.getDimension(R.dimen.node_defaultTextSize),
+            graphNodeIcon
         )
 
         attributes.recycle()
@@ -202,7 +220,14 @@ class RadialGraph : ConstraintLayout {
         graphDrawable = RadialGraphDrawable(graphConfig, data.toSectionStates().reversed())
 
         val layers = mutableListOf<Drawable>().apply {
-            addIf(graphConfig.isBackgroundTrackEnabled, TrackDrawable(graphConfig, graphConfig.backgroundTrackColor, graphConfig.backgroundTrackDrawable))
+            addIf(
+                graphConfig.isBackgroundTrackEnabled,
+                TrackDrawable(
+                    graphConfig,
+                    graphConfig.backgroundTrackColor,
+                    graphConfig.backgroundTrackDrawable
+                )
+            )
             add(graphDrawable!!)
         }
 
@@ -225,7 +250,10 @@ class RadialGraph : ConstraintLayout {
 
                 val labelValue: String = section.label ?: when (section.displayMode) {
                     Section.DisplayMode.PERCENT ->
-                        resources.getString(R.string.label_percentPattern, section.percent.toFormattedDecimal())
+                        resources.getString(
+                            R.string.label_percentPattern,
+                            section.percent.toFormattedDecimal()
+                        )
                     Section.DisplayMode.VALUE ->
                         section.value.toFormattedDecimal()
                 }
@@ -246,7 +274,10 @@ class RadialGraph : ConstraintLayout {
         }
     }
 
-    private fun calculateLabelPositionValue(section: Section, portionStartPositionValue: BigDecimal): Float {
+    private fun calculateLabelPositionValue(
+        section: Section,
+        portionStartPositionValue: BigDecimal
+    ): Float {
         val halfSectionSize = section.normalizedValue.divide(BigDecimal("2"), 2, RoundingMode.HALF_EVEN)
         val sectionMidpointPosition =
             if (graphConfig.isClockwise()) (portionStartPositionValue - halfSectionSize)
