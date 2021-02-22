@@ -75,8 +75,7 @@ class RadialGraph : ConstraintLayout {
             attributes.getInt(R.styleable.RadialGraph_animationDuration, DEFAULT_ANIMATION_DURATION)
                 .toLong()
 
-        val labelsEnabled: Boolean =
-            attributes.getBoolean(R.styleable.RadialGraph_labelsEnabled, false)
+        val labelsEnabled: Boolean = attributes.getBoolean(R.styleable.RadialGraph_labelsEnabled, false)
 
         @ColorInt val labelsColor: Int? =
             if (attributes.hasValue(R.styleable.RadialGraph_labelsColor)) {
@@ -88,17 +87,13 @@ class RadialGraph : ConstraintLayout {
 
         val strokeWidth: Float = attributes.getDimension(R.styleable.RadialGraph_strokeWidth, 0f)
 
-        val capStyleOrdinal: Int =
-            attributes.getInt(R.styleable.RadialGraph_capStyle, DEFAULT_CAP_STYLE)
+        val capStyleOrdinal: Int = attributes.getInt(R.styleable.RadialGraph_capStyle, DEFAULT_CAP_STYLE)
         val capStyle = Cap.values()[capStyleOrdinal]
 
-        val backgroundTrackColor =
-            attributes.getColor(R.styleable.RadialGraph_backgroundTrackColor, View.NO_ID)
-        val backgroundTrackDrawable =
-            attributes.getDrawable(R.styleable.RadialGraph_backgroundTrackDrawable)
+        val backgroundTrackColor = attributes.getColor(R.styleable.RadialGraph_backgroundTrackColor, View.NO_ID)
+        val backgroundTrackDrawable = attributes.getDrawable(R.styleable.RadialGraph_backgroundTrackDrawable)
 
-        val graphNodeOrdinal: Int =
-            attributes.getInt(R.styleable.RadialGraph_graphNode, DEFAULT_GRAPH_NODE)
+        val graphNodeOrdinal: Int = attributes.getInt(R.styleable.RadialGraph_graphNode, DEFAULT_GRAPH_NODE)
         val graphNode = GraphNode.values()[graphNodeOrdinal]
 
         val graphNodeColor: Int = if (attributes.hasValue(R.styleable.RadialGraph_graphNodeColor)) {
@@ -251,8 +246,7 @@ class RadialGraph : ConstraintLayout {
 
                 val sectionNormalizedSize: BigDecimal = section.normalizedValue
 
-                val labelPositionValue: Float =
-                    calculateLabelPositionValue(section, labelStartPositionValue)
+                val labelPositionValue: Float = calculateLabelPositionValue(section, labelStartPositionValue)
 
                 val labelValue: String = section.label ?: when (section.displayMode) {
                     Section.DisplayMode.PERCENT ->
@@ -284,8 +278,7 @@ class RadialGraph : ConstraintLayout {
         section: Section,
         portionStartPositionValue: BigDecimal
     ): Float {
-        val halfSectionSize =
-            section.normalizedValue.divide(BigDecimal("2"), 2, RoundingMode.HALF_EVEN)
+        val halfSectionSize = section.normalizedValue.divide(BigDecimal("2"), 2, RoundingMode.HALF_EVEN)
         val sectionMidpointPosition =
             if (graphConfig.isClockwise()) (portionStartPositionValue - halfSectionSize)
             else (portionStartPositionValue + halfSectionSize)
