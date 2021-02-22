@@ -119,6 +119,13 @@ class RadialGraph : ConstraintLayout {
 
         val graphNodeIcon = attributes.getDrawable(R.styleable.RadialGraph_graphNodeIcon)
 
+        if (graphNode == GraphNode.ICON && graphNodeIcon == null) {
+            Log.e(
+                TAG,
+                "No value passed for the `app:graphNodeIcon` attribute."
+            )
+        }
+
         graphConfig = GraphConfig(
             animationDirection,
             animationDuration,
