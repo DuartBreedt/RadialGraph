@@ -18,8 +18,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var data: Data
 
-    private val dataSets = mapOf<String, Pair<BigDecimal, List<Section>>>(
-        "Set 1 (Full)" to Pair<BigDecimal, List<Section>>(
+    private val dataSets = mapOf(
+        "Set 1 (Full)" to Pair(
             BigDecimal(85), listOf(
                 Section(
                     Section.DisplayMode.PERCENT,
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         ),
-        "Set 2 (1 small segment)" to Pair<BigDecimal, List<Section>>(
+        "Set 2 (1 small segment)" to Pair(
             BigDecimal(100), listOf(
                 Section(
                     Section.DisplayMode.PERCENT,
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         ),
-        "Set 3 (1 large segment)" to Pair<BigDecimal, List<Section>>(
+        "Set 3 (1 large segment)" to Pair(
             BigDecimal(100), listOf(
                 Section(
                     Section.DisplayMode.PERCENT,
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         ),
-        "Set 4 (Empty)" to Pair<BigDecimal, List<Section>>(
+        "Set 4 (Empty)" to Pair(
             BigDecimal(100), listOf(
                 Section(
                     Section.DisplayMode.PERCENT,
@@ -100,7 +100,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun toggleGraphNode() {
-        val newState = if (graphNodeState == GraphNode.PERCENT) GraphNode.NONE else GraphNode.PERCENT
+        val newState = when (graphNodeState) {
+            GraphNode.ICON -> GraphNode.PERCENT
+            GraphNode.PERCENT -> GraphNode.NONE
+            GraphNode.NONE -> GraphNode.ICON
+        }
         graphNodeState = newState
 
         graph_layout.setGraphNode(newState)
