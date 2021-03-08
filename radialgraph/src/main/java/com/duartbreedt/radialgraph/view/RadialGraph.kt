@@ -15,12 +15,12 @@ import androidx.constraintlayout.widget.ConstraintSet.LEFT
 import androidx.constraintlayout.widget.ConstraintSet.PARENT_ID
 import androidx.constraintlayout.widget.ConstraintSet.RIGHT
 import androidx.constraintlayout.widget.ConstraintSet.TOP
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.duartbreedt.radialgraph.R
 import com.duartbreedt.radialgraph.drawable.RadialGraphDrawable
 import com.duartbreedt.radialgraph.drawable.TrackDrawable
 import com.duartbreedt.radialgraph.extensions.addIf
+import com.duartbreedt.radialgraph.extensions.getColorCompat
 import com.duartbreedt.radialgraph.extensions.toFormattedDecimal
 import com.duartbreedt.radialgraph.model.AnimationDirection
 import com.duartbreedt.radialgraph.model.Cap
@@ -38,6 +38,12 @@ class RadialGraph : ConstraintLayout {
     private var graphDrawable: RadialGraphDrawable? = null
     private val labelViews: MutableList<LabelView> = mutableListOf()
     private val graphConfig: GraphConfig
+
+    var isLabelsEnabled: Boolean
+        set(value) {
+            graphConfig.labelsEnabled = value
+        }
+        get() = graphConfig.labelsEnabled
     //endregion
 
     companion object {
@@ -72,8 +78,7 @@ class RadialGraph : ConstraintLayout {
             AnimationDirection.values()[animationDirectionOrdinal]
 
         val animationDuration: Long =
-            attributes.getInt(R.styleable.RadialGraph_animationDuration, DEFAULT_ANIMATION_DURATION)
-                .toLong()
+            attributes.getInt(R.styleable.RadialGraph_animationDuration, DEFAULT_ANIMATION_DURATION).toLong()
 
         val labelsEnabled: Boolean = attributes.getBoolean(R.styleable.RadialGraph_labelsEnabled, false)
 
@@ -81,7 +86,7 @@ class RadialGraph : ConstraintLayout {
             if (attributes.hasValue(R.styleable.RadialGraph_labelsColor)) {
                 attributes.getColor(
                     R.styleable.RadialGraph_labelsColor,
-                    ContextCompat.getColor(context, R.color.label_defaultColor)
+                    context.getColorCompat(R.color.label_defaultColor)
                 )
             } else null
 
@@ -99,7 +104,7 @@ class RadialGraph : ConstraintLayout {
         val graphNodeColor: Int = if (attributes.hasValue(R.styleable.RadialGraph_graphNodeColor)) {
             attributes.getColor(
                 R.styleable.RadialGraph_graphNodeColor,
-                ContextCompat.getColor(context, R.color.node_defaultColor)
+                context.getColorCompat(R.color.node_defaultColor)
             )
         } else {
             if (graphNode != GraphNode.NONE) {
@@ -109,16 +114,13 @@ class RadialGraph : ConstraintLayout {
                 )
             }
 
-            ContextCompat.getColor(context, R.color.node_defaultColor)
+            context.getColorCompat(R.color.node_defaultColor)
         }
 
         val graphNodeIcon = attributes.getDrawable(R.styleable.RadialGraph_graphNodeIcon)
 
         if (graphNode == GraphNode.ICON && graphNodeIcon == null) {
-            Log.e(
-                TAG,
-                "No value passed for the `app:graphNodeIcon` attribute."
-            )
+            Log.e(TAG, "No value passed for the `app:graphNodeIcon` attribute.")
         }
 
         graphConfig = GraphConfig(

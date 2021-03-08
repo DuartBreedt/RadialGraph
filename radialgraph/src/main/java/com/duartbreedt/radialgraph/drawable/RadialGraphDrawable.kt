@@ -1,12 +1,14 @@
 package com.duartbreedt.radialgraph.drawable
 
 import android.animation.ObjectAnimator
-import android.content.res.Resources
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.ColorFilter
 import android.graphics.PathMeasure
+import android.graphics.Rect
 import android.os.Build
 import android.util.FloatProperty
+import android.util.Log
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.annotation.RequiresApi
 import androidx.core.graphics.drawable.toBitmap
@@ -19,6 +21,11 @@ class RadialGraphDrawable(
     override val sectionStates: List<SectionState>
 ) : GraphDrawable(graphConfig, sectionStates) {
 
+    companion object {
+        private val TAG = RadialGraphDrawable::class.simpleName
+    }
+
+    //region Public API
     override fun draw(canvas: Canvas) {
         val boundaries = calculateBoundaries()
 
@@ -35,58 +42,7 @@ class RadialGraphDrawable(
             canvas.drawPath(sectionState.path!!, sectionState.paint!!)
         }
 
-        if (graphConfig.graphNodeType != GraphNode.NONE) {
-            val sectionState = sectionStates.first { it.isLastSection }
-            val coordinates = FloatArray(2)
-
-            // Get the position of the end of the last drawn segment
-            PathMeasure(sectionState.path!!, false).getPosTan(
-                sectionState.length!! - sectionState.currentProgress,
-                coordinates,
-                null
-            )
-
-            // Add a circle with the same background as the last segment drawn
-            canvas.drawCircle(
-                coordinates[0],
-                coordinates[1],
-                graphConfig.strokeWidth / 2,
-                buildFillPaint(sectionState.color)
-            )
-
-            // Draw coloured node circle
-            canvas.drawCircle(
-                coordinates[0],
-                coordinates[1],
-                (graphConfig.strokeWidth / 2) - (graphConfig.strokeWidth / 10),
-                buildFillPaint(graphConfig.graphNodeColor)
-            )
-
-            val textCenterOffset: Float =
-                graphConfig.graphNodeTextSize / Resources.getSystem().displayMetrics.scaledDensity
-
-            if (graphConfig.graphNodeType == GraphNode.PERCENT) {
-                canvas.drawText(
-                    "%",
-                    coordinates[0] - textCenterOffset,
-                    coordinates[1] + textCenterOffset,
-                    buildNodeTextPaint(sectionState.color, graphConfig.graphNodeTextSize)
-                )
-            }
-
-            if (graphConfig.graphNodeType == GraphNode.ICON) {
-                graphConfig.graphNodeIcon?.setTint(sectionState.color)
-
-                graphConfig.graphNodeIcon?.toBitmap()?.let {
-                    canvas.drawBitmap(
-                        it,
-                        coordinates[0] - textCenterOffset,
-                        coordinates[1] - textCenterOffset,
-                        null
-                    )
-                }
-            }
-        }
+        drawGraphNode(canvas)
     }
 
     override fun setAlpha(alpha: Int) {
@@ -110,6 +66,80 @@ class RadialGraphDrawable(
             interpolator = AccelerateDecelerateInterpolator()
         }.start()
     }
+    //endregion
+
+    //region Helper Functions
+    private fun drawGraphNode(canvas: Canvas) {
+        val lastSectionState = sectionStates.first { it.isLastSection }
+        val graphEndCoords = FloatArray(2)
+        val strokeRadius = graphConfig.strokeWidth / 2
+        val innerCircleRadius = strokeRadius - (graphConfig.strokeWidth / 10)
+
+        // Get the position of the end of the last drawn segment
+        PathMeasure(lastSectionState.path!!, false).getPosTan(
+            lastSectionState.length!! - (lastSectionState.currentProgress * 0.999f),
+            graphEndCoords,
+            null
+        )
+
+        // Add a circle with the same background as the last segment drawn
+        canvas.drawCircle(
+            graphEndCoords[0],
+            graphEndCoords[1],
+            strokeRadius,
+            buildFillPaint(lastSectionState.color)
+        )
+
+        if (graphConfig.graphNodeType != GraphNode.NONE) {
+
+            // Draw inner coloured node circle
+            canvas.drawCircle(
+                graphEndCoords[0],
+                graphEndCoords[1],
+                innerCircleRadius,
+                buildFillPaint(graphConfig.graphNodeColor)
+            )
+
+            when (graphConfig.graphNodeType) {
+                GraphNode.PERCENT -> drawTextNode(canvas, graphEndCoords, lastSectionState, '%')
+                GraphNode.ICON -> drawIconNode(canvas, graphEndCoords, lastSectionState, innerCircleRadius)
+                else -> Log.e(TAG, "${graphConfig.graphNodeType} has not yet been catered for!")
+            }
+        }
+    }
+
+    private fun drawIconNode(
+        canvas: Canvas,
+        graphEndCoords: FloatArray,
+        lastSectionState: SectionState,
+        innerCircleRadius: Float
+    ) {
+        graphConfig.graphNodeIcon?.setTint(lastSectionState.color)
+        graphConfig.graphNodeIcon?.toBitmap()?.let {
+            val size = ((innerCircleRadius * 2) - (innerCircleRadius * 0.2)).toInt()
+            canvas.drawBitmap(
+                Bitmap.createScaledBitmap(it, size, size, true),
+                graphEndCoords[0] - (size / 2),
+                graphEndCoords[1] - (size / 2),
+                null
+            )
+        }
+    }
+
+    private fun drawTextNode(canvas: Canvas, graphEndCoords: FloatArray, lastSectionState: SectionState, node: Char) {
+        val nodeBounds = Rect()
+        val nodePaint = buildNodeTextPaint(lastSectionState.color, graphConfig.graphNodeTextSize).apply {
+            getTextBounds(node.toString(), 0, node.toString().length, nodeBounds)
+        }
+        val nodeOffset: Int = nodeBounds.width() / 2
+
+        canvas.drawText(
+            node.toString(),
+            graphEndCoords[0] - nodeOffset,
+            graphEndCoords[1] + nodeOffset,
+            nodePaint
+        )
+    }
 
     // Creates a progress property to be animated animated
     @RequiresApi(Build.VERSION_CODES.N)
@@ -124,4 +154,5 @@ class RadialGraphDrawable(
 
         override fun get(drawable: RadialGraphDrawable) = drawable.sectionStates[0].currentProgress
     }
+    //endregion
 }

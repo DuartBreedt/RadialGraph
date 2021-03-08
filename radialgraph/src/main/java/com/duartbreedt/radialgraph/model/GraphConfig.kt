@@ -7,7 +7,7 @@ import androidx.annotation.ColorInt
 data class GraphConfig(
     val animationDirection: AnimationDirection,
     val animationDuration: Long,
-    val labelsEnabled: Boolean,
+    var labelsEnabled: Boolean,
     @ColorInt val labelsColor: Int?,
     val strokeWidth: Float,
     val capStyle: Cap,

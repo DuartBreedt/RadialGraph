@@ -10,6 +10,58 @@
 
     tools:context="com.duartbreedt.example.MainActivity">
 
+    <LinearLayout
+        android:id="@+id/topBtnBar"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="15dp"
+
+        android:orientation="horizontal"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/btnRedraw"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="Redraw"
+            android:drawableStart="@drawable/ic_refresh"
+            android:drawablePadding="5dp"
+
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/btnAnimateIn"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="Animate In"
+            android:drawableStart="@drawable/ic_play_arrow"
+            android:drawablePadding="5dp"
+
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/btnAnimateOut"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="Animate Out"
+            android:drawableStart="@drawable/ic_rewind"
+            android:drawablePadding="5dp"
+
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
     <com.duartbreedt.radialgraph.view.RadialGraph
         android:id="@+id/graph_layout"
         android:layout_width="0dp"
@@ -22,64 +74,17 @@
         app:labelsEnabled="true"
         app:labelsColor="@color/label_defaultColor"
 
-        app:graphNode="icon"
+        app:graphNode="percent"
         app:graphNodeColor="@color/grey"
-        app:graphNodeIcon="@drawable/ic_heart_node"
+        app:graphNodeIcon="@drawable/ic_star"
         app:backgroundTrackColor="@color/black"
         app:backgroundTrackDrawable="@drawable/bg_graph_track"
 
         app:strokeWidth="25dp"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBtnBar"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/topBtnBar"
-        style="?android:attr/buttonBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:orientation="horizontal"
-
-        app:layout_constraintTop_toBottomOf="@id/graph_layout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <Button
-            style="?android:attr/buttonBarButtonStyle"
-            android:id="@+id/btnRedraw"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="Redraw"
-
-            tools:ignore="HardcodedText" />
-
-        <Button
-            style="?android:attr/buttonBarButtonStyle"
-            android:id="@+id/btnAnimateIn"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="Animate In"
-
-            tools:ignore="HardcodedText" />
-
-        <Button
-            style="?android:attr/buttonBarButtonStyle"
-            android:id="@+id/btnAnimateOut"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="Animate Out"
-
-            tools:ignore="HardcodedText" />
-
-    </LinearLayout>
 
     <TextView
         android:id="@+id/currentConfig"
@@ -88,10 +93,10 @@
         android:layout_height="wrap_content"
 
         android:layout_marginTop="5dp"
+        android:layout_marginStart="20dp"
 
-        app:layout_constraintTop_toBottomOf="@id/topBtnBar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/graph_layout"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         style="?android:attr/buttonBarStyle"
@@ -100,8 +105,11 @@
 
         android:orientation="horizontal"
 
+        android:layout_marginBottom="20dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <Button
             style="?android:attr/buttonBarButtonStyle"
@@ -122,6 +130,17 @@
             android:layout_height="wrap_content"
 
             android:text="Toggle\nBackground Track"
+
+            tools:ignore="HardcodedText" />
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/btnToggleLabels"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="Toggle Labels"
 
             tools:ignore="HardcodedText" />
 

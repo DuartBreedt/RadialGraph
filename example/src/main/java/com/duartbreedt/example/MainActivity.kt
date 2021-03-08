@@ -1,9 +1,9 @@
 package com.duartbreedt.example
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.duartbreedt.example.DataSets.dataSets
 import com.duartbreedt.radialgraph.model.Data
 import com.duartbreedt.radialgraph.model.GraphNode
 import com.duartbreedt.radialgraph.model.Section
@@ -17,59 +17,6 @@ class MainActivity : AppCompatActivity() {
     private var currentDataSet: Int = 0
 
     private lateinit var data: Data
-
-    private val dataSets = mapOf(
-        "Set 1 (Full)" to Pair(
-            BigDecimal(85), listOf(
-                Section(
-                    Section.DisplayMode.PERCENT,
-                    BigDecimal("15"),
-                    Color.parseColor("#CE3E61")
-                ),
-                Section(
-                    Section.DisplayMode.PERCENT,
-                    BigDecimal("25"),
-                    Color.parseColor("#FB716F")
-                ),
-                Section(
-                    BigDecimal("35"),
-                    Color.parseColor("#FEAA85")
-                ),
-                Section(
-                    "STAB",
-                    BigDecimal("10"),
-                    Color.parseColor("#FDC0A1")
-                )
-            )
-        ),
-        "Set 2 (1 small segment)" to Pair(
-            BigDecimal(100), listOf(
-                Section(
-                    Section.DisplayMode.PERCENT,
-                    BigDecimal("15"),
-                    Color.parseColor("#CE3E61")
-                )
-            )
-        ),
-        "Set 3 (1 large segment)" to Pair(
-            BigDecimal(100), listOf(
-                Section(
-                    Section.DisplayMode.PERCENT,
-                    BigDecimal("75"),
-                    Color.parseColor("#CE3E61")
-                )
-            )
-        ),
-        "Set 4 (Empty)" to Pair(
-            BigDecimal(100), listOf(
-                Section(
-                    Section.DisplayMode.PERCENT,
-                    BigDecimal(0),
-                    Color.parseColor("#CE3E61")
-                )
-            )
-        )
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         btnAnimateOut.setOnClickListener { graph_layout.animateOut() }
 
         btnSwitchDataSet.setOnClickListener { switchDataSet() }
+        btnToggleLabels.setOnClickListener { toggleLabels() }
     }
 
     private fun toggleGraphNode() {
@@ -132,6 +80,12 @@ class MainActivity : AppCompatActivity() {
         updateConfig()
     }
 
+    private fun toggleLabels() {
+        graph_layout.isLabelsEnabled = !graph_layout.isLabelsEnabled
+
+        updateConfig()
+    }
+
     private fun switchDataSet() {
         val newDataSet = if (currentDataSet == dataSets.keys.size - 1) 0 else currentDataSet + 1
         currentDataSet = newDataSet
@@ -149,11 +103,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateConfig() {
-        val stringBuilder = StringBuilder("Current configuration:\n\n")
+        val stringBuilder = StringBuilder()
 
         stringBuilder.append("Data Set: ${dataSets.keys.elementAt(currentDataSet)}\n")
         stringBuilder.append("Graph Node: ${graphNodeState.name}\n")
-        stringBuilder.append("Background Track: ${backgroundTrackState.name}")
+        stringBuilder.append("Background Track: ${backgroundTrackState.name}\n")
+        stringBuilder.append("Label Enabled: ${graph_layout.isLabelsEnabled}")
 
         currentConfig.text = stringBuilder.toString()
     }
