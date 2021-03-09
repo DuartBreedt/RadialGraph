@@ -77,7 +77,7 @@ class RadialGraphDrawable(
 
         // Get the position of the end of the last drawn segment
         PathMeasure(lastSectionState.path!!, false).getPosTan(
-            lastSectionState.length!! - (lastSectionState.currentProgress * 0.999f),
+            lastSectionState.length!! - lastSectionState.currentProgress + 1.0f,
             graphEndCoords,
             null
         )
@@ -116,11 +116,16 @@ class RadialGraphDrawable(
     ) {
         graphConfig.graphNodeIcon?.setTint(lastSectionState.color)
         graphConfig.graphNodeIcon?.toBitmap()?.let {
-            val size = ((innerCircleRadius * 2) - (innerCircleRadius * 0.2)).toInt()
+
+            // Ensures we retains the icon aspect ratio
+            val widthMultiplier = if(it.width > it.height) 1.0f else it.width.toFloat()/it.height
+            val heightMultiplier = if(it.width > it.height) it.height.toFloat()/it.width else 1.0f
+
+            val iconSize: Float = (innerCircleRadius * 2f) - (innerCircleRadius * 0.6f)
             canvas.drawBitmap(
-                Bitmap.createScaledBitmap(it, size, size, true),
-                graphEndCoords[0] - (size / 2),
-                graphEndCoords[1] - (size / 2),
+                Bitmap.createScaledBitmap(it, (iconSize * widthMultiplier).toInt(), (iconSize * heightMultiplier).toInt(), true),
+                graphEndCoords[0] - (iconSize / 2f),
+                graphEndCoords[1] - (iconSize / 2f),
                 null
             )
         }

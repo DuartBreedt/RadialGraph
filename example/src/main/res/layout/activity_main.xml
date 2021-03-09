@@ -76,7 +76,7 @@
 
         app:graphNode="percent"
         app:graphNodeColor="@color/grey"
-        app:graphNodeIcon="@drawable/ic_star"
+        app:graphNodeIcon="@drawable/ic_rewards_graph_node"
         app:backgroundTrackColor="@color/black"
         app:backgroundTrackDrawable="@drawable/bg_graph_track"
 
