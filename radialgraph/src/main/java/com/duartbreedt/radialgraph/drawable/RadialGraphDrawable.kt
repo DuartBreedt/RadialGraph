@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.annotation.RequiresApi
 import androidx.core.graphics.drawable.toBitmap
+import com.duartbreedt.radialgraph.model.Cap
 import com.duartbreedt.radialgraph.model.GraphConfig
 import com.duartbreedt.radialgraph.model.GraphNode
 import com.duartbreedt.radialgraph.model.SectionState
@@ -23,6 +24,8 @@ class RadialGraphDrawable(
 
     companion object {
         private val TAG = RadialGraphDrawable::class.simpleName
+
+        private const val CAP_STYLE_BUTT = 0
     }
 
     //region Public API
@@ -83,12 +86,14 @@ class RadialGraphDrawable(
         )
 
         // Add a circle with the same background as the last segment drawn
-        canvas.drawCircle(
-            graphEndCoords[0],
-            graphEndCoords[1],
-            strokeRadius,
-            buildFillPaint(lastSectionState.color)
-        )
+        if (graphConfig.graphNodeType != GraphNode.NONE || graphConfig.capStyle == Cap.ROUND) {
+            canvas.drawCircle(
+                graphEndCoords[0],
+                graphEndCoords[1],
+                strokeRadius,
+                buildFillPaint(lastSectionState.color)
+            )
+        }
 
         if (graphConfig.graphNodeType != GraphNode.NONE) {
 
