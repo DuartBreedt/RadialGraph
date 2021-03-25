@@ -150,9 +150,10 @@ class RadialGraph : ConstraintLayout {
     //endregion
 
     //region Public API
-
     fun setData(data: Data) {
-        setGraphView()
+        if (graphView == null) {
+            setGraphView()
+        }
         createDrawables(data)
         if (graphConfig.labelsEnabled) {
             addLabelViewsToLayout(data)
@@ -185,12 +186,23 @@ class RadialGraph : ConstraintLayout {
         graphConfig.backgroundTrackDrawable = newDrawable
     }
 
+    fun setAnimationProgress(progress: Float) {
+        graphDrawable!!.setAnimationProgress(progress)
+    }
+
+    fun isAnimationComplete(): Boolean =
+        graphDrawable!!.isAnimationComplete()
+
+    fun animate(from: Float, to: Float) {
+        graphDrawable!!.animate(from, to)
+    }
+
     fun animateIn() {
-        graphDrawable!!.animateIn()
+        graphDrawable!!.animate(0f, 1f)
     }
 
     fun animateOut() {
-        graphDrawable!!.animateOut()
+        graphDrawable!!.animate(1f, 0f)
     }
 
     //endregion

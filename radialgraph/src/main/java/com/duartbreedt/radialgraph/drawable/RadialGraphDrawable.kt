@@ -6,11 +6,9 @@ import android.graphics.Canvas
 import android.graphics.ColorFilter
 import android.graphics.PathMeasure
 import android.graphics.Rect
-import android.os.Build
-import android.util.FloatProperty
 import android.util.Log
+import android.util.Property
 import android.view.animation.AccelerateDecelerateInterpolator
-import androidx.annotation.RequiresApi
 import androidx.core.graphics.drawable.toBitmap
 import com.duartbreedt.radialgraph.model.Cap
 import com.duartbreedt.radialgraph.model.GraphConfig
@@ -56,15 +54,15 @@ class RadialGraphDrawable(
         // This method is required
     }
 
-    fun animateIn() {
-        ObjectAnimator.ofFloat(this, FillProgress, 0f, 1f).apply {
-            duration = graphConfig.animationDuration
-            interpolator = AccelerateDecelerateInterpolator()
-        }.start()
+    fun setAnimationProgress(progress: Float) {
+        FillProgress.set(this, progress)
     }
 
-    fun animateOut() {
-        ObjectAnimator.ofFloat(this, FillProgress, 1f, 0f).apply {
+    fun isAnimationComplete(): Boolean =
+        FillProgress.get(this) == 1f
+
+    fun animate(from: Float, to: Float) {
+        ObjectAnimator.ofFloat(this, FillProgress, from, to).apply {
             duration = graphConfig.animationDuration
             interpolator = AccelerateDecelerateInterpolator()
         }.start()
@@ -123,12 +121,17 @@ class RadialGraphDrawable(
         graphConfig.graphNodeIcon?.toBitmap()?.let {
 
             // Ensures we retains the icon aspect ratio
-            val widthMultiplier = if(it.width > it.height) 1.0f else it.width.toFloat()/it.height
-            val heightMultiplier = if(it.width > it.height) it.height.toFloat()/it.width else 1.0f
+            val widthMultiplier = if (it.width > it.height) 1.0f else it.width.toFloat() / it.height
+            val heightMultiplier = if (it.width > it.height) it.height.toFloat() / it.width else 1.0f
 
             val iconSize: Float = (innerCircleRadius * 2f) - (innerCircleRadius * 0.6f)
             canvas.drawBitmap(
-                Bitmap.createScaledBitmap(it, (iconSize * widthMultiplier).toInt(), (iconSize * heightMultiplier).toInt(), true),
+                Bitmap.createScaledBitmap(
+                    it,
+                    (iconSize * widthMultiplier).toInt(),
+                    (iconSize * heightMultiplier).toInt(),
+                    true
+                ),
                 graphEndCoords[0] - (iconSize / 2f),
                 graphEndCoords[1] - (iconSize / 2f),
                 null
@@ -152,9 +155,8 @@ class RadialGraphDrawable(
     }
 
     // Creates a progress property to be animated animated
-    @RequiresApi(Build.VERSION_CODES.N)
-    private object FillProgress : FloatProperty<RadialGraphDrawable>("progress") {
-        override fun setValue(drawable: RadialGraphDrawable, progressPercent: Float) {
+    private object FillProgress : Property<RadialGraphDrawable, Float>(Float::class.java, "progress") {
+        override fun set(drawable: RadialGraphDrawable, progressPercent: Float) {
             drawable.invalidateSelf()
             for (sectionState in drawable.sectionStates) {
                 sectionState.currentProgress = progressPercent * (sectionState.length ?: 0f) *
