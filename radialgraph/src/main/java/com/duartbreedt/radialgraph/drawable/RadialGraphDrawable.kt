@@ -22,8 +22,6 @@ class RadialGraphDrawable(
 
     companion object {
         private val TAG = RadialGraphDrawable::class.simpleName
-
-        private const val CAP_STYLE_BUTT = 0
     }
 
     //region Public API
