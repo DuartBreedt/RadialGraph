@@ -1,5 +1,8 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
 
 android {
 
@@ -13,7 +16,6 @@ android {
     }
 
     compileSdkVersion 31
-    buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.duartbreedt.example"
