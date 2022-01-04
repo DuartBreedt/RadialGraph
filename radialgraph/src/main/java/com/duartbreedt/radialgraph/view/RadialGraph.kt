@@ -6,15 +6,11 @@ import android.graphics.drawable.LayerDrawable
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import androidx.annotation.ColorInt
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.constraintlayout.widget.ConstraintSet.BOTTOM
-import androidx.constraintlayout.widget.ConstraintSet.LEFT
-import androidx.constraintlayout.widget.ConstraintSet.PARENT_ID
-import androidx.constraintlayout.widget.ConstraintSet.RIGHT
-import androidx.constraintlayout.widget.ConstraintSet.TOP
+import androidx.constraintlayout.widget.ConstraintSet.*
 import androidx.core.view.ViewCompat
 import com.duartbreedt.radialgraph.R
 import com.duartbreedt.radialgraph.drawable.RadialGraphDrawable
@@ -22,19 +18,14 @@ import com.duartbreedt.radialgraph.drawable.TrackDrawable
 import com.duartbreedt.radialgraph.extensions.addIf
 import com.duartbreedt.radialgraph.extensions.getColorCompat
 import com.duartbreedt.radialgraph.extensions.toFormattedDecimal
-import com.duartbreedt.radialgraph.model.AnimationDirection
-import com.duartbreedt.radialgraph.model.Cap
-import com.duartbreedt.radialgraph.model.Data
-import com.duartbreedt.radialgraph.model.GraphConfig
-import com.duartbreedt.radialgraph.model.GraphNode
-import com.duartbreedt.radialgraph.model.Section
+import com.duartbreedt.radialgraph.model.*
 import java.math.BigDecimal
 import java.math.RoundingMode
 
 class RadialGraph : ConstraintLayout {
 
     //region Properties
-    private var graphView: AppCompatImageView? = null
+    private var graphView: ImageView? = null
     private var graphDrawable: RadialGraphDrawable? = null
     private val labelViews: MutableList<LabelView> = mutableListOf()
     private val graphConfig: GraphConfig
@@ -78,9 +69,11 @@ class RadialGraph : ConstraintLayout {
             AnimationDirection.values()[animationDirectionOrdinal]
 
         val animationDuration: Long =
-            attributes.getInt(R.styleable.RadialGraph_animationDuration, DEFAULT_ANIMATION_DURATION).toLong()
+            attributes.getInt(R.styleable.RadialGraph_animationDuration, DEFAULT_ANIMATION_DURATION)
+                .toLong()
 
-        val labelsEnabled: Boolean = attributes.getBoolean(R.styleable.RadialGraph_labelsEnabled, false)
+        val labelsEnabled: Boolean =
+            attributes.getBoolean(R.styleable.RadialGraph_labelsEnabled, false)
 
         @ColorInt val labelsColor: Int? =
             if (attributes.hasValue(R.styleable.RadialGraph_labelsColor)) {
@@ -92,13 +85,17 @@ class RadialGraph : ConstraintLayout {
 
         val strokeWidth: Float = attributes.getDimension(R.styleable.RadialGraph_strokeWidth, 0f)
 
-        val capStyleOrdinal: Int = attributes.getInt(R.styleable.RadialGraph_capStyle, DEFAULT_CAP_STYLE)
+        val capStyleOrdinal: Int =
+            attributes.getInt(R.styleable.RadialGraph_capStyle, DEFAULT_CAP_STYLE)
         val capStyle = Cap.values()[capStyleOrdinal]
 
-        val backgroundTrackColor = attributes.getColor(R.styleable.RadialGraph_backgroundTrackColor, View.NO_ID)
-        val backgroundTrackDrawable = attributes.getDrawable(R.styleable.RadialGraph_backgroundTrackDrawable)
+        val backgroundTrackColor =
+            attributes.getColor(R.styleable.RadialGraph_backgroundTrackColor, View.NO_ID)
+        val backgroundTrackDrawable =
+            attributes.getDrawable(R.styleable.RadialGraph_backgroundTrackDrawable)
 
-        val graphNodeOrdinal: Int = attributes.getInt(R.styleable.RadialGraph_graphNode, DEFAULT_GRAPH_NODE)
+        val graphNodeOrdinal: Int =
+            attributes.getInt(R.styleable.RadialGraph_graphNode, DEFAULT_GRAPH_NODE)
         val graphNode = GraphNode.values()[graphNodeOrdinal]
 
         val graphNodeColor: Int = if (attributes.hasValue(R.styleable.RadialGraph_graphNodeColor)) {
@@ -204,14 +201,14 @@ class RadialGraph : ConstraintLayout {
     fun animateOut() {
         graphDrawable!!.animate(1f, 0f)
     }
-
     //endregion
+
 
     //region Helper Functions
     private fun setGraphView() {
         removeGraphView()
 
-        graphView = AppCompatImageView(context).apply { id = ViewCompat.generateViewId() }
+        graphView = ImageView(context).apply { id = ViewCompat.generateViewId() }
 
         addView(graphView)
 
@@ -260,7 +257,8 @@ class RadialGraph : ConstraintLayout {
 
                 val sectionNormalizedSize: BigDecimal = section.normalizedValue
 
-                val labelPositionValue: Float = calculateLabelPositionValue(section, labelStartPositionValue)
+                val labelPositionValue: Float =
+                    calculateLabelPositionValue(section, labelStartPositionValue)
 
                 val labelValue: String = section.label ?: when (section.displayMode) {
                     Section.DisplayMode.PERCENT ->
@@ -292,7 +290,8 @@ class RadialGraph : ConstraintLayout {
         section: Section,
         portionStartPositionValue: BigDecimal
     ): Float {
-        val halfSectionSize = section.normalizedValue.divide(BigDecimal("2"), 2, RoundingMode.HALF_EVEN)
+        val halfSectionSize =
+            section.normalizedValue.divide(BigDecimal("2"), 2, RoundingMode.HALF_EVEN)
         val sectionMidpointPosition =
             if (graphConfig.isClockwise()) (portionStartPositionValue - halfSectionSize)
             else (portionStartPositionValue + halfSectionSize)

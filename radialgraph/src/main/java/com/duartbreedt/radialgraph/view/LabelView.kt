@@ -4,23 +4,31 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.TypedValue
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.annotation.ColorInt
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.ViewCompat
 import com.duartbreedt.radialgraph.R
 import kotlin.math.cos
 import kotlin.math.sin
 
 @SuppressLint("ViewConstructor")
-internal class LabelView(context: Context, value: String, @ColorInt val color: Int, posValue: Float) :
-    AppCompatTextView(context, null) {
+internal class LabelView(
+    context: Context,
+    value: String,
+    @ColorInt val color: Int,
+    posValue: Float
+) :
+    TextView(context, null) {
 
     private var positionValue: Float = posValue
 
     init {
         id = ViewCompat.generateViewId()
         text = value
-        setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.label_defaultTextSize))
+        setTextSize(
+            TypedValue.COMPLEX_UNIT_PX,
+            resources.getDimension(R.dimen.label_defaultTextSize)
+        )
         setTextColor(color)
         layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -33,7 +41,8 @@ internal class LabelView(context: Context, value: String, @ColorInt val color: I
         val yGraphCenter = y
 
         val labelPadding = context.resources.getDimension(R.dimen.label_padding)
-        val labelDistanceFromGraph = radius + labelPadding + (width / 2f * (cosineFunction(positionValue)))
+        val labelDistanceFromGraph =
+            radius + labelPadding + (width / 2f * (cosineFunction(positionValue)))
 
         val xLabelPosition = x
         val yLabelPosition = y - labelDistanceFromGraph
@@ -44,8 +53,10 @@ internal class LabelView(context: Context, value: String, @ColorInt val color: I
         val yVector = yLabelPosition - yGraphCenter + (height / 2)
 
         // Rotate label about the center of the graph
-        y = ((xVector * sin(angleOfRotation) + yVector * cos(angleOfRotation)) + yGraphCenter).toFloat()
-        x = ((xVector * cos(angleOfRotation) - yVector * sin(angleOfRotation)) + xGraphCenter).toFloat()
+        y =
+            ((xVector * sin(angleOfRotation) + yVector * cos(angleOfRotation)) + yGraphCenter).toFloat()
+        x =
+            ((xVector * cos(angleOfRotation) - yVector * sin(angleOfRotation)) + xGraphCenter).toFloat()
     }
 
     /**
