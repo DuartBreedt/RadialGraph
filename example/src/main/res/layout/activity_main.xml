@@ -1,160 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true">
 
-    android:background="#EEE"
+    <androidx.constraintlayout.widget.ConstraintLayout
 
-    tools:context="com.duartbreedt.example.MainActivity">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
-    <LinearLayout
-        android:id="@+id/topBtnBar"
-        style="?android:attr/buttonBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:background="#EEE"
 
-        android:layout_marginTop="15dp"
+        tools:context="com.duartbreedt.example.MainActivity">
 
-        android:orientation="horizontal"
+        <LinearLayout
+            android:id="@+id/topBtnBar"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+            android:layout_marginTop="15dp"
 
-        <Button
-            android:id="@+id/btnRedraw"
+            android:orientation="horizontal"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <Button
+                android:id="@+id/btnRedraw"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="Redraw"
+                android:drawableStart="@drawable/ic_refresh"
+                android:drawablePadding="5dp"
+
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/btnAnimateIn"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="Animate In"
+                android:drawableStart="@drawable/ic_play_arrow"
+                android:drawablePadding="5dp"
+
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/btnAnimateOut"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="Animate Out"
+                android:drawableStart="@drawable/ic_rewind"
+                android:drawablePadding="5dp"
+
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+        <com.duartbreedt.radialgraph.view.RadialGraph
+            android:id="@+id/graph_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="@dimen/label_margin"
+
+            app:animationDirection="clockwise"
+            app:animationDuration="1000"
+            app:capStyle="rounded"
+            app:labelsEnabled="true"
+            app:labelsColor="@color/label_defaultColor"
+
+            app:graphNode="percent"
+            app:graphNodeColor="@color/grey"
+            app:graphNodeIcon="@drawable/ic_star"
+            app:backgroundTrackColor="@color/black"
+            app:backgroundTrackDrawable="@drawable/bg_graph_track"
+
+            app:strokeWidth="25dp"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintTop_toBottomOf="@id/topBtnBar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/currentConfig"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="Redraw"
-            android:drawableStart="@drawable/ic_refresh"
-            android:drawablePadding="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="20dp"
 
-            tools:ignore="HardcodedText" />
+            app:layout_constraintTop_toBottomOf="@id/graph_layout"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/btnAnimateIn"
-
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="Animate In"
-            android:drawableStart="@drawable/ic_play_arrow"
-            android:drawablePadding="5dp"
+            android:orientation="horizontal"
 
-            tools:ignore="HardcodedText" />
+            android:layout_marginBottom="20dp"
 
-        <Button
-            android:id="@+id/btnAnimateOut"
+            app:layout_constraintVertical_bias="1"
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/currentConfig"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-            android:text="Animate Out"
-            android:drawableStart="@drawable/ic_rewind"
-            android:drawablePadding="5dp"
+            <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/btnToggleGraphNode"
 
-            tools:ignore="HardcodedText" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-    </LinearLayout>
+                android:text="Toggle\nGraph Node"
 
-    <com.duartbreedt.radialgraph.view.RadialGraph
-        android:id="@+id/graph_layout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:padding="@dimen/label_margin"
+                tools:ignore="HardcodedText" />
 
-        app:animationDirection="clockwise"
-        app:animationDuration="1000"
-        app:capStyle="rounded"
-        app:labelsEnabled="true"
-        app:labelsColor="@color/label_defaultColor"
+            <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/btnToggleBackgroundTrack"
 
-        app:graphNode="percent"
-        app:graphNodeColor="@color/grey"
-        app:graphNodeIcon="@drawable/ic_star"
-        app:backgroundTrackColor="@color/black"
-        app:backgroundTrackDrawable="@drawable/bg_graph_track"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-        app:strokeWidth="25dp"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toBottomOf="@id/topBtnBar"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+                android:text="Toggle\nBackground Track"
 
-    <TextView
-        android:id="@+id/currentConfig"
+                tools:ignore="HardcodedText" />
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/btnToggleLabels"
 
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toBottomOf="@id/graph_layout"
-        app:layout_constraintStart_toStartOf="parent" />
+                android:text="Toggle Labels"
 
-    <LinearLayout
-        style="?android:attr/buttonBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+                tools:ignore="HardcodedText" />
 
-        android:orientation="horizontal"
+            <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/btnSwitchDataSet"
 
-        android:layout_marginBottom="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+                android:text="Switch Data Set"
 
-        <Button
-            style="?android:attr/buttonBarButtonStyle"
-            android:id="@+id/btnToggleGraphNode"
+                tools:ignore="HardcodedText" />
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        </LinearLayout>
 
-            android:text="Toggle\nGraph Node"
-
-            tools:ignore="HardcodedText" />
-
-        <Button
-            style="?android:attr/buttonBarButtonStyle"
-            android:id="@+id/btnToggleBackgroundTrack"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="Toggle\nBackground Track"
-
-            tools:ignore="HardcodedText" />
-
-        <Button
-            style="?android:attr/buttonBarButtonStyle"
-            android:id="@+id/btnToggleLabels"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="Toggle Labels"
-
-            tools:ignore="HardcodedText" />
-
-        <Button
-            style="?android:attr/buttonBarButtonStyle"
-            android:id="@+id/btnSwitchDataSet"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="Switch Data Set"
-
-            tools:ignore="HardcodedText" />
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
