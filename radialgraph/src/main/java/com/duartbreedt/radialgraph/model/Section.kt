@@ -8,30 +8,30 @@ class Section {
     val displayMode: DisplayMode
     val value: BigDecimal
     @ColorInt
-    val color: Int
+    val color: List<Int>
     lateinit var totalValue: BigDecimal
     lateinit var normalizedValue: BigDecimal
     lateinit var percent: BigDecimal
 
-    constructor(value: BigDecimal, color: Int) {
+    constructor(value: BigDecimal, vararg color: Int) {
         this.label = null
         this.displayMode = DisplayMode.PERCENT
         this.value = value
-        this.color = color
+        this.color = color.toList()
     }
 
-    constructor(label: String, value: BigDecimal, color: Int) {
+    constructor(label: String, value: BigDecimal, vararg color: Int) {
         this.label = label
         this.displayMode = DisplayMode.PERCENT
         this.value = value
-        this.color = color
+        this.color = color.toList()
     }
 
-    constructor(displayMode: DisplayMode, value: BigDecimal, color: Int) {
+    constructor(displayMode: DisplayMode, value: BigDecimal, vararg color: Int) {
         this.label = null
         this.displayMode = displayMode
         this.value = value
-        this.color = color
+        this.color = color.toList()
     }
 
     enum class DisplayMode {

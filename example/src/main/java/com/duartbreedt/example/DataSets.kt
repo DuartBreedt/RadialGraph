@@ -20,7 +20,7 @@ object DataSets {
             ),
             Section(
                 BigDecimal("35"),
-                Color.parseColor("#FEAA85")
+                Color.parseColor("#FEAA85"), Color.parseColor("#FB716F")
             ),
             Section(
                 "STAB",

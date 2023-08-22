@@ -24,8 +24,8 @@ class RadialGraphDrawable(
         private val TAG = RadialGraphDrawable::class.simpleName
     }
 
-    //region Public API
-    override fun draw(canvas: Canvas) {
+    // Initialize sections
+    private fun initializeDrawable() {
         val boundaries = calculateBoundaries()
 
         for (sectionState in sectionStates) {
@@ -37,7 +37,23 @@ class RadialGraphDrawable(
                 sectionState.length = PathMeasure(sectionState.path, false).length
             }
 
-            sectionState.paint = buildPhasedPathPaint(sectionState)
+            if (sectionState.paint == null) {
+                buildPhasedPathPaint(sectionState)
+            }
+        }
+    }
+
+    //region Public API
+    override fun draw(canvas: Canvas) {
+        initializeDrawable()
+
+        for ((index, sectionState) in sectionStates.withIndex()) {
+            val nextSectionState: SectionState? = if (index + 1 < sectionStates.size) sectionStates[index + 1] else null
+
+            updatePhasedPathPaint(sectionState)
+            if (sectionState.color.size > 1) {
+                updateSegmentedGradientPath(sectionState, nextSectionState)
+            }
             canvas.drawPath(sectionState.path!!, sectionState.paint!!)
         }
 
@@ -87,7 +103,7 @@ class RadialGraphDrawable(
                 graphEndCoords[0],
                 graphEndCoords[1],
                 strokeRadius,
-                buildFillPaint(lastSectionState.color)
+                buildFillPaint(lastSectionState.color.last())
             )
         }
 
@@ -115,7 +131,7 @@ class RadialGraphDrawable(
         lastSectionState: SectionState,
         innerCircleRadius: Float
     ) {
-        graphConfig.graphNodeIcon?.setTint(lastSectionState.color)
+        graphConfig.graphNodeIcon?.setTint(lastSectionState.color.last())
         graphConfig.graphNodeIcon?.toBitmap()?.let {
 
             // Ensures we retains the icon aspect ratio
@@ -139,7 +155,7 @@ class RadialGraphDrawable(
 
     private fun drawTextNode(canvas: Canvas, graphEndCoords: FloatArray, lastSectionState: SectionState, node: Char) {
         val nodeBounds = Rect()
-        val nodePaint = buildNodeTextPaint(lastSectionState.color, graphConfig.graphNodeTextSize).apply {
+        val nodePaint = buildNodeTextPaint(lastSectionState.color.last(), graphConfig.graphNodeTextSize).apply {
             getTextBounds(node.toString(), 0, node.toString().length, nodeBounds)
         }
         val nodeOffset: Int = nodeBounds.width() / 2
@@ -158,7 +174,7 @@ class RadialGraphDrawable(
             drawable.invalidateSelf()
             for (sectionState in drawable.sectionStates) {
                 sectionState.currentProgress = progressPercent * (sectionState.length ?: 0f) *
-                    (sectionState.sweepSize + sectionState.startPosition)
+                        (sectionState.sweepSize + sectionState.startPosition)
             }
         }
 
