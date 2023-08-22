@@ -37,12 +37,19 @@ class Data(sections: List<Section>, total: BigDecimal? = null) {
 
         sections.forEachIndexed { index: Int, section: Section ->
             val sectionState: SectionState =
-                if (section.value == BigDecimal.ZERO) SectionState(0f, 0f, section.color, index == sections.size - 1)
+                if (section.value == BigDecimal.ZERO) SectionState(
+                    0f,
+                    0f,
+                    section.color,
+                    index == sections.size - 1,
+                    section.gradientColors
+                )
                 else SectionState(
                     section.normalizedValue.toFloat(),
                     previousSectionEndPosition,
                     section.color,
-                    index == sections.size - 1
+                    index == sections.size - 1,
+                    section.gradientColors
                 )
 
             previousSectionEndPosition += section.normalizedValue.toFloat()

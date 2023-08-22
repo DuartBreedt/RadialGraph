@@ -8,6 +8,7 @@ data class SectionState(
     val startPosition: Float,
     val color: Int,
     val isLastSection: Boolean,
+    val gradientColors: List<Int>? = null,
     var currentProgress: Float = 0f,
     var path: Path? = null,
     var paint: Paint? = null,
