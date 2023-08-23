@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
@@ -27,9 +26,9 @@
 
             android:orientation="horizontal"
 
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <Button
                 android:id="@+id/btnRedraw"
@@ -37,9 +36,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:text="Redraw"
                 android:drawableStart="@drawable/ic_refresh"
                 android:drawablePadding="5dp"
+                android:text="Redraw"
 
                 tools:ignore="HardcodedText" />
 
@@ -49,9 +48,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:text="Animate In"
                 android:drawableStart="@drawable/ic_play_arrow"
                 android:drawablePadding="5dp"
+                android:text="Animate In"
 
                 tools:ignore="HardcodedText" />
 
@@ -61,9 +60,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:text="Animate Out"
                 android:drawableStart="@drawable/ic_rewind"
                 android:drawablePadding="5dp"
+                android:text="Animate Out"
 
                 tools:ignore="HardcodedText" />
 
@@ -77,21 +76,21 @@
 
             app:animationDirection="clockwise"
             app:animationDuration="1000"
+            app:backgroundTrackColor="@color/black"
+            app:backgroundTrackDrawable="@drawable/bg_graph_track"
             app:capStyle="rounded"
-            app:labelsEnabled="true"
-            app:labelsColor="@color/label_defaultColor"
 
             app:graphNode="percent"
             app:graphNodeColor="@color/grey"
             app:graphNodeIcon="@drawable/ic_star"
-            app:backgroundTrackColor="@color/black"
-            app:backgroundTrackDrawable="@drawable/bg_graph_track"
+            app:labelsColor="@color/label_defaultColor"
+            app:labelsEnabled="true"
 
-            app:strokeWidth="25dp"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintTop_toBottomOf="@id/topBtnBar"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topBtnBar"
+            app:strokeWidth="25dp" />
 
         <TextView
             android:id="@+id/currentConfig"
@@ -99,31 +98,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginTop="5dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
 
-            app:layout_constraintTop_toBottomOf="@id/graph_layout"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/graph_layout" />
 
         <LinearLayout
+            android:id="@+id/firstContainer"
             style="?android:attr/buttonBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:orientation="horizontal"
-
             android:layout_marginBottom="20dp"
 
-            app:layout_constraintVertical_bias="1"
+            android:orientation="horizontal"
 
-            app:layout_constraintTop_toBottomOf="@id/currentConfig"
             app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/currentConfig"
+            app:layout_constraintVertical_bias="0">
 
             <Button
-                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/btnToggleGraphNode"
+                style="?android:attr/buttonBarButtonStyle"
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -133,8 +133,8 @@
                 tools:ignore="HardcodedText" />
 
             <Button
-                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/btnToggleBackgroundTrack"
+                style="?android:attr/buttonBarButtonStyle"
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -144,8 +144,8 @@
                 tools:ignore="HardcodedText" />
 
             <Button
-                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/btnToggleLabels"
+                style="?android:attr/buttonBarButtonStyle"
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -154,9 +154,28 @@
 
                 tools:ignore="HardcodedText" />
 
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginBottom="20dp"
+
+            android:orientation="horizontal"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/firstContainer"
+            app:layout_constraintVertical_bias="0">
+
             <Button
-                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/btnSwitchDataSet"
+                style="?android:attr/buttonBarButtonStyle"
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

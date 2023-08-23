@@ -14,8 +14,8 @@ class Data(sections: List<Section>, total: BigDecimal? = null) {
 
         val calculatedTotal: BigDecimal = calculateTotalValue(sections)
 
-        if(total != null && total < calculatedTotal) {
-            throw GraphConfigException("Specified total is exceeds the sum of the section values!")
+        if (total != null && total < calculatedTotal) {
+            throw GraphConfigException("Specified total exceeds the sum of the section values!")
         }
 
         val totalValue: BigDecimal = total ?: calculatedTotal
@@ -23,7 +23,8 @@ class Data(sections: List<Section>, total: BigDecimal? = null) {
         it.apply {
             this.totalValue = totalValue
             this.normalizedValue = value.divide(totalValue, 10, RoundingMode.HALF_EVEN)
-            this.percent = normalizedValue.multiply(BigDecimal("100")).setScale(1, RoundingMode.HALF_EVEN)
+            this.percent =
+                normalizedValue.multiply(BigDecimal("100")).setScale(1, RoundingMode.HALF_EVEN)
         }
     }
 
@@ -41,8 +42,7 @@ class Data(sections: List<Section>, total: BigDecimal? = null) {
                     0f,
                     0f,
                     section.color,
-                    index == sections.size - 1,
-                    section.gradientColors
+                    index == sections.size - 1
                 )
                 else SectionState(
                     section.normalizedValue.toFloat(),

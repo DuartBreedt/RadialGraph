@@ -10,7 +10,11 @@ import android.widget.ImageView
 import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.constraintlayout.widget.ConstraintSet.*
+import androidx.constraintlayout.widget.ConstraintSet.BOTTOM
+import androidx.constraintlayout.widget.ConstraintSet.LEFT
+import androidx.constraintlayout.widget.ConstraintSet.PARENT_ID
+import androidx.constraintlayout.widget.ConstraintSet.RIGHT
+import androidx.constraintlayout.widget.ConstraintSet.TOP
 import androidx.core.view.ViewCompat
 import com.duartbreedt.radialgraph.R
 import com.duartbreedt.radialgraph.drawable.RadialGraphDrawable
@@ -18,7 +22,12 @@ import com.duartbreedt.radialgraph.drawable.TrackDrawable
 import com.duartbreedt.radialgraph.extensions.addIf
 import com.duartbreedt.radialgraph.extensions.getColorCompat
 import com.duartbreedt.radialgraph.extensions.toFormattedDecimal
-import com.duartbreedt.radialgraph.model.*
+import com.duartbreedt.radialgraph.model.AnimationDirection
+import com.duartbreedt.radialgraph.model.Cap
+import com.duartbreedt.radialgraph.model.Data
+import com.duartbreedt.radialgraph.model.GraphConfig
+import com.duartbreedt.radialgraph.model.GraphNode
+import com.duartbreedt.radialgraph.model.Section
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -278,12 +287,13 @@ class RadialGraph : ConstraintLayout {
                             R.string.label_percentPattern,
                             section.percent.toFormattedDecimal()
                         )
+
                     Section.DisplayMode.VALUE ->
                         section.value.toFormattedDecimal()
                 }
 
                 @ColorInt
-                val labelColor: Int = graphConfig.labelsColor ?: section.color
+                val labelColor: Int = graphConfig.labelsColor ?: section.color.last()
 
                 val labelView = LabelView(context, labelValue, labelColor, labelPositionValue)
 
