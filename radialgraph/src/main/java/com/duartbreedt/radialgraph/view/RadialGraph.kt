@@ -25,6 +25,8 @@ import com.duartbreedt.radialgraph.extensions.toFormattedDecimal
 import com.duartbreedt.radialgraph.model.AnimationDirection
 import com.duartbreedt.radialgraph.model.Cap
 import com.duartbreedt.radialgraph.model.Data
+import com.duartbreedt.radialgraph.model.GradientFill
+import com.duartbreedt.radialgraph.model.GradientType
 import com.duartbreedt.radialgraph.model.GraphConfig
 import com.duartbreedt.radialgraph.model.GraphNode
 import com.duartbreedt.radialgraph.model.Section
@@ -293,7 +295,7 @@ class RadialGraph : ConstraintLayout {
                 }
 
                 @ColorInt
-                val labelColor: Int = graphConfig.labelsColor ?: section.color
+                val labelColor: Int = graphConfig.labelsColor ?: section.color.first()
 
                 val labelView = LabelView(context, labelValue, labelColor, labelPositionValue)
 

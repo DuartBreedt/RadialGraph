@@ -11,7 +11,7 @@ data class SectionState(
     // The start position of this section's sweep as a value between 0.0 and 1.0
     val startPosition: Float,
 
-    val color: Int,
+    val color: List<Int>,
     val isLastSection: Boolean,
 
     // Measured section progress length

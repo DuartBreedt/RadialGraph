@@ -98,7 +98,7 @@ class RadialGraphDrawable(
                 graphEndCoords[0],
                 graphEndCoords[1],
                 strokeRadius,
-                buildFillPaint(lastSectionState.color)
+                buildFillPaint(lastSectionState.color.first())
             )
         }
 
@@ -126,7 +126,7 @@ class RadialGraphDrawable(
         lastSectionState: SectionState,
         innerCircleRadius: Float
     ) {
-        graphConfig.graphNodeIcon?.setTint(lastSectionState.color)
+        graphConfig.graphNodeIcon?.setTint(lastSectionState.color.first())
         graphConfig.graphNodeIcon?.toBitmap()?.let {
 
             // Ensures we retains the icon aspect ratio
@@ -150,7 +150,7 @@ class RadialGraphDrawable(
 
     private fun drawTextNode(canvas: Canvas, graphEndCoords: FloatArray, lastSectionState: SectionState, node: Char) {
         val nodeBounds = Rect()
-        val nodePaint = buildNodeTextPaint(lastSectionState.color, graphConfig.graphNodeTextSize).apply {
+        val nodePaint = buildNodeTextPaint(lastSectionState.color.first(), graphConfig.graphNodeTextSize).apply {
             getTextBounds(node.toString(), 0, node.toString().length, nodeBounds)
         }
         val nodeOffset: Int = nodeBounds.width() / 2

@@ -20,7 +20,7 @@ object DataSets {
             ),
             Section(
                 BigDecimal("35"),
-                Color.parseColor("#FEAA85")
+                Color.parseColor("#FEAA85"), Color.parseColor("#FB716F")
             ),
             Section(
                 "STAB",
@@ -45,7 +45,7 @@ object DataSets {
             Section(
                 Section.DisplayMode.PERCENT,
                 BigDecimal("75"),
-                Color.parseColor("#CE3E61")
+                Color.parseColor("#CE3E61"), Color.parseColor("#FB716F"), Color.parseColor("#FDC0A1")
             )
         )
     )

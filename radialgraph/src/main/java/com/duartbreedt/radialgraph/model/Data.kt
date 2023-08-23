@@ -48,8 +48,7 @@ class Data(sections: List<Section>, total: BigDecimal? = null) {
                     section.normalizedValue.toFloat(),
                     previousSectionEndPosition,
                     section.color,
-                    index == sections.size - 1,
-                    section.gradientColors
+                    index == sections.size - 1
                 )
 
             previousSectionEndPosition += section.normalizedValue.toFloat()
