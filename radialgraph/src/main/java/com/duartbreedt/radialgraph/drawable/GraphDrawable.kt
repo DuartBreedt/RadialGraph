@@ -39,7 +39,7 @@ abstract class GraphDrawable(
 
         state.paint = Paint().apply {
             strokeWidth = graphConfig.strokeWidth
-            color = state.color.first()
+            color = state.color
             pathEffect = DashPathEffect(floatArrayOf(state.length!!, state.length!!), phase)
             style = Paint.Style.STROKE
             flags = Paint.ANTI_ALIAS_FLAG
@@ -114,25 +114,6 @@ abstract class GraphDrawable(
         state.paint?.let {
             it.pathEffect = DashPathEffect(floatArrayOf(state.length!!, state.length!!), phase)
         }
-    }
-
-    protected fun updateSegmentedGradientPath(state: SectionState, nextSectionState: SectionState?) {
-        val measure = PathMeasure(state.path!!, false)
-        val startCoords = FloatArray(2)
-        val endCoords = FloatArray(2)
-
-        measure.getPosTan(state.length!! - (nextSectionState?.currentProgress ?: 0f), startCoords, null)
-        measure.getPosTan(state.length!! - state.currentProgress, endCoords, null)
-
-        state.paint?.shader = LinearGradient(
-            startCoords[0],
-            startCoords[1],
-            endCoords[0],
-            endCoords[1],
-            state.color.toIntArray(),
-            null,
-            Shader.TileMode.CLAMP
-        )
     }
 
     protected fun buildCircularPath(boundaries: RectF): Path {

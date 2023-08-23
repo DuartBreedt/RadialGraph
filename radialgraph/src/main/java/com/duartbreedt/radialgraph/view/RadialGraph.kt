@@ -293,7 +293,7 @@ class RadialGraph : ConstraintLayout {
                 }
 
                 @ColorInt
-                val labelColor: Int = graphConfig.labelsColor ?: section.color.last()
+                val labelColor: Int = graphConfig.labelsColor ?: section.color
 
                 val labelView = LabelView(context, labelValue, labelColor, labelPositionValue)
 
