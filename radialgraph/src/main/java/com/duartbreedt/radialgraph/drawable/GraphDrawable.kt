@@ -5,9 +5,7 @@ import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PixelFormat
-import android.graphics.RadialGradient
 import android.graphics.RectF
-import android.graphics.Shader.TileMode
 import android.graphics.SweepGradient
 import android.graphics.drawable.Drawable
 import android.text.TextPaint
