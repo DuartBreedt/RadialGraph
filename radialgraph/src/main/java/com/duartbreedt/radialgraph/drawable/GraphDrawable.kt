@@ -1,6 +1,5 @@
 package com.duartbreedt.radialgraph.drawable
 
-import android.graphics.Color
 import android.graphics.DashPathEffect
 import android.graphics.LinearGradient
 import android.graphics.Matrix
@@ -10,10 +9,13 @@ import android.graphics.PathMeasure
 import android.graphics.PixelFormat
 import android.graphics.RectF
 import android.graphics.Shader
+import android.graphics.SweepGradient
 import android.graphics.drawable.Drawable
 import android.text.TextPaint
-import android.util.Log
 import com.duartbreedt.radialgraph.model.AnimationDirection
+import com.duartbreedt.radialgraph.model.Cap
+import com.duartbreedt.radialgraph.model.GradientFill
+import com.duartbreedt.radialgraph.model.GradientType
 import com.duartbreedt.radialgraph.model.GraphConfig
 import com.duartbreedt.radialgraph.model.SectionState
 
@@ -24,6 +26,7 @@ abstract class GraphDrawable(
 ) : Drawable() {
 
     private val startingRotation = -90f
+    private val endGradientCapFill = 0.98f
 
     /**
      * Creates a paint object with a phase value to indicate the progress of the bar
@@ -35,12 +38,69 @@ abstract class GraphDrawable(
 
         state.paint = Paint().apply {
             strokeWidth = graphConfig.strokeWidth
-            color = state.color
             pathEffect = DashPathEffect(floatArrayOf(state.length!!, state.length!!), phase)
             style = Paint.Style.STROKE
             flags = Paint.ANTI_ALIAS_FLAG
             strokeCap = graphConfig.capStyle.paintCapStyle
+
+            if (!graphConfig.isGradientEnabled()) {
+                color = state.color.first()
+            }
+
+            if (graphConfig.gradientType == GradientType.SWEEP) {
+                applySweepGradient(state, this)
+            }
         }
+    }
+
+    private fun applySweepGradient(state: SectionState, paint: Paint) {
+        if (state.color.size == 1) {
+            paint.color = state.color.first()
+            return
+        }
+
+        val colorList: MutableList<Int> = state.color.toMutableList()
+        val positionList: MutableList<Float> = generatePositionList(state, colorList.size).toMutableList()
+        val boundaries = calculateBoundaries()
+
+        //Fix for gradient overflow when using a cap style other than 'BUTT'
+        if (state.startPosition == 0f && graphConfig.capStyle != Cap.BUTT) {
+            colorList.add(state.color.first())
+            positionList.addAll(
+                listOf(
+                    positionList.removeLast().coerceAtMost(endGradientCapFill),
+                    endGradientCapFill
+                )
+            )
+        }
+
+        paint.shader = SweepGradient(
+            boundaries.centerX(),
+            boundaries.centerY(),
+            colorList.toIntArray(),
+            positionList.toFloatArray()
+        ).apply {
+            setLocalMatrix(Matrix().apply {
+                preRotate(
+                    startingRotation,
+                    boundaries.centerX(),
+                    boundaries.centerY()
+                )
+            })
+        }
+    }
+
+    private fun generatePositionList(state: SectionState, colorListSize: Int): List<Float> {
+        var positionList: MutableList<Float> = MutableList(colorListSize, Int::toFloat)
+        //Get spacing between each gradient section
+        var gradientGap = (1f / (colorListSize - 1).coerceAtLeast(1))
+        gradientGap = if(graphConfig.gradientFill == GradientFill.SECTION) gradientGap * state.sweepSize else gradientGap
+
+        positionList = positionList.map {
+            (gradientGap * it) + state.startPosition
+        }.toMutableList()
+
+        return positionList
     }
 
     /**

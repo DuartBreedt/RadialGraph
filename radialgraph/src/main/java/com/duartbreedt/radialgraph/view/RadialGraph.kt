@@ -25,6 +25,8 @@ import com.duartbreedt.radialgraph.extensions.toFormattedDecimal
 import com.duartbreedt.radialgraph.model.AnimationDirection
 import com.duartbreedt.radialgraph.model.Cap
 import com.duartbreedt.radialgraph.model.Data
+import com.duartbreedt.radialgraph.model.GradientFill
+import com.duartbreedt.radialgraph.model.GradientType
 import com.duartbreedt.radialgraph.model.GraphConfig
 import com.duartbreedt.radialgraph.model.GraphNode
 import com.duartbreedt.radialgraph.model.Section
@@ -52,11 +54,15 @@ class RadialGraph : ConstraintLayout {
         private const val ANIMATION_DIRECTION_CLOCKWISE = 0
         private const val CAP_STYLE_BUTT = 0
         private const val GRAPH_NODE_NONE = 0
+        private const val GRADIENT_TYPE_NONE = 0
+        private const val GRADIENT_FILL = 0
 
         private const val DEFAULT_ANIMATION_DIRECTION = ANIMATION_DIRECTION_CLOCKWISE
         private const val DEFAULT_CAP_STYLE = CAP_STYLE_BUTT
         private const val DEFAULT_GRAPH_NODE = GRAPH_NODE_NONE
         private const val DEFAULT_ANIMATION_DURATION = 1000
+        private const val DEFAULT_GRADIENT_TYPE = GRADIENT_TYPE_NONE
+        private const val DEFAULT_GRADIENT_FILL = GRADIENT_FILL
     }
 
     init {
@@ -129,6 +135,12 @@ class RadialGraph : ConstraintLayout {
             Log.e(TAG, "No value passed for the `app:graphNodeIcon` attribute.")
         }
 
+        val gradientTypeOrdinal = attributes.getInt(R.styleable.RadialGraph_gradientType, DEFAULT_GRADIENT_TYPE)
+        val gradientType = GradientType.values()[gradientTypeOrdinal]
+
+        val gradientFillOrdinal = attributes.getInt(R.styleable.RadialGraph_gradientFill, DEFAULT_GRADIENT_FILL)
+        val gradientFill = GradientFill.values()[gradientFillOrdinal]
+
         graphConfig = GraphConfig(
             animationDirection,
             animationDuration,
@@ -141,7 +153,9 @@ class RadialGraph : ConstraintLayout {
             graphNode,
             graphNodeColor,
             context.resources.getDimension(R.dimen.node_defaultTextSize),
-            graphNodeIcon
+            graphNodeIcon,
+            gradientType,
+            gradientFill
         )
 
         attributes.recycle()
@@ -281,7 +295,7 @@ class RadialGraph : ConstraintLayout {
                 }
 
                 @ColorInt
-                val labelColor: Int = graphConfig.labelsColor ?: section.color
+                val labelColor: Int = graphConfig.labelsColor ?: section.color.first()
 
                 val labelView = LabelView(context, labelValue, labelColor, labelPositionValue)
 

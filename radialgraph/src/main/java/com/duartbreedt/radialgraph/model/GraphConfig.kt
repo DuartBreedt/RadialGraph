@@ -16,11 +16,15 @@ data class GraphConfig(
     var graphNodeType: GraphNode,
     @ColorInt val graphNodeColor: Int,
     val graphNodeTextSize: Float,
-    val graphNodeIcon: Drawable?
+    val graphNodeIcon: Drawable?,
+    val gradientType: GradientType,
+    val gradientFill: GradientFill
 ) {
     val isBackgroundTrackEnabled: Boolean
         get() = backgroundTrackColor != NO_ID || backgroundTrackDrawable != null
 
     fun isClockwise(): Boolean = animationDirection == AnimationDirection.CLOCKWISE
     fun isCounterClockwise(): Boolean = animationDirection == AnimationDirection.COUNTERCLOCKWISE
+
+    fun isGradientEnabled(): Boolean = gradientType != GradientType.NONE
 }

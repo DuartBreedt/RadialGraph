@@ -17,6 +17,16 @@
         <enum name="icon" value="2" />
     </attr>
 
+    <attr name="gradientType" format="enum">
+        <enum name="none" value="0" />
+        <enum name="sweep" value="1" />
+    </attr>
+
+    <attr name="gradientFill" format="enum">
+        <enum name="section" value="0" />
+        <enum name="full" value="1" />
+    </attr>
+
     <declare-styleable name="RadialGraph">
         <!-- The direction in which the graph is animated in -->
         <attr name="animationDirection" />
@@ -50,5 +60,11 @@
 
         <!-- Specify the stroke width of the graph being drawn -->
         <attr name="strokeWidth" format="dimension"/>
+
+        <!-- Used to specify whether the graph should use apply a gradient to a section. Defaults to none -->
+        <attr name="gradientType" />
+
+        <!-- Used to specify how the gradient will be filled within a section. Defaults to section -->
+        <attr name="gradientFill" />
     </declare-styleable>
 </resources>
