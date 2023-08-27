@@ -5,10 +5,7 @@ import android.graphics.*
 import android.util.Log
 import android.util.Property
 import android.view.animation.AccelerateDecelerateInterpolator
-import androidx.annotation.ColorInt
-import androidx.core.graphics.drawable.toBitmap
-import com.duartbreedt.radialgraph.PaintProvider
-import com.duartbreedt.radialgraph.TextPaintProvider
+import com.duartbreedt.radialgraph.drawable.node.*
 import com.duartbreedt.radialgraph.model.*
 
 class RadialGraphDrawable(
@@ -22,9 +19,8 @@ class RadialGraphDrawable(
         private const val endGradientCapFill = 0.98f
     }
 
-    private val strokeRadius = graphConfig.strokeWidth / 2
-    private val innerCircleRadius = strokeRadius - (graphConfig.strokeWidth / 10)
     private val lastSectionState = sectionStates.first { it.isLastSection }
+    private var node: Node? = null
 
     //region Public API
     override fun draw(canvas: Canvas) {
@@ -35,8 +31,11 @@ class RadialGraphDrawable(
             canvas.drawPath(sectionState.path!!, sectionState.paint!!)
         }
 
-        // Make this more efficient
-        drawGraphNode(canvas)
+        if (node == null) {
+            initializeGraphNode()
+        }
+
+        node?.updateNode(canvas)
     }
 
     override fun setAlpha(alpha: Int) {
@@ -87,6 +86,10 @@ class RadialGraphDrawable(
     }
 
     private fun applySweepGradient(state: SectionState) {
+        if (state.color.size < 2) {
+            return
+        }
+        
         val colorList: MutableList<Int> = state.color.toMutableList()
         val positionList: MutableList<Float> = generatePositionList(state, colorList.size).toMutableList()
         val boundaries = calculateBoundaries()
@@ -138,85 +141,23 @@ class RadialGraphDrawable(
         return colorPositionIndices.map { (clampedGradientGap * it) + state.startPosition }
     }
 
-    private fun drawGraphNode(canvas: Canvas) {
-        val graphEndCoords = FloatArray(2)
-
-        // Get the position of the end of the last drawn segment
-        PathMeasure(lastSectionState.path!!, false).getPosTan(
-            lastSectionState.length!! - lastSectionState.currentProgress + 1.0f,
-            graphEndCoords,
-            null
-        )
-
-        // Add a circle with the same background as the last segment drawn
-        if (graphConfig.graphNodeType != GraphNode.NONE || graphConfig.capStyle == Cap.ROUND) {
-            canvas.drawCircle(
-                graphEndCoords[0],
-                graphEndCoords[1],
-                strokeRadius,
-                PaintProvider.getPaint(lastSectionState.color.last())
-            )
+    private fun initializeGraphNode() {
+        if (graphConfig.graphNodeType == GraphNode.NONE && graphConfig.capStyle != Cap.ROUND) {
+            return
         }
+
+        node = CircularNode(lastSectionState, lastSectionState.color.last(), graphConfig)
 
         if (graphConfig.graphNodeType != GraphNode.NONE) {
 
-            // Draw inner coloured node circle
-            canvas.drawCircle(
-                graphEndCoords[0],
-                graphEndCoords[1],
-                innerCircleRadius,
-                PaintProvider.getPaint(graphConfig.graphNodeColor)
-            )
+            node = PaddedCircularNodeDecorator(node!!, graphConfig)
 
             when (graphConfig.graphNodeType) {
-                GraphNode.PERCENT -> drawTextNode(canvas, graphEndCoords, lastSectionState.color.last(), '%')
-                GraphNode.ICON -> drawIconNode(canvas, graphEndCoords, lastSectionState.color.last(), innerCircleRadius)
+                GraphNode.PERCENT -> node = TextNodeDecorator(lastSectionState.color.last(), '%', node!!, graphConfig)
+                GraphNode.ICON -> node = IconNodeDecorator(lastSectionState.color.last(), node!!, graphConfig)
                 else -> Log.e(TAG, "${graphConfig.graphNodeType} has not yet been catered for!")
             }
         }
-    }
-
-    private fun drawIconNode(
-        canvas: Canvas,
-        graphEndCoords: FloatArray,
-        @ColorInt nodeColor: Int,
-        innerCircleRadius: Float
-    ) {
-        graphConfig.graphNodeIcon?.setTint(nodeColor)
-        graphConfig.graphNodeIcon?.toBitmap()?.let {
-
-            // Ensures we retains the icon aspect ratio
-            val widthMultiplier = if (it.width > it.height) 1.0f else it.width.toFloat() / it.height
-            val heightMultiplier = if (it.width > it.height) it.height.toFloat() / it.width else 1.0f
-
-            val iconSize: Float = (innerCircleRadius * 2f) - (innerCircleRadius * 0.6f)
-            canvas.drawBitmap(
-                Bitmap.createScaledBitmap(
-                    it,
-                    (iconSize * widthMultiplier).toInt(),
-                    (iconSize * heightMultiplier).toInt(),
-                    true
-                ),
-                graphEndCoords[0] - (iconSize / 2f),
-                graphEndCoords[1] - (iconSize / 2f),
-                null
-            )
-        }
-    }
-
-    private fun drawTextNode(canvas: Canvas, graphEndCoords: FloatArray, @ColorInt nodeColor: Int, node: Char) {
-        val nodeBounds = Rect()
-        val nodePaint = TextPaintProvider.getPaint(nodeColor, graphConfig.graphNodeTextSize).apply {
-            getTextBounds(node.toString(), 0, node.toString().length, nodeBounds)
-        }
-        val nodeOffset: Int = nodeBounds.width() / 2
-
-        canvas.drawText(
-            node.toString(),
-            graphEndCoords[0] - nodeOffset,
-            graphEndCoords[1] + nodeOffset,
-            nodePaint
-        )
     }
 
     // Creates a progress property to be animated animated
