@@ -15,9 +15,11 @@ This library aims to be a fully customisable radial graph to suit all your needs
 - Uses a data model to programmatically determine the graph's composition of Sections
 - The graph stroke size can be set
 - The colors of the Sections are customisable (see usage)
+  - Gradients can also be applied for either the whole graph (FULL) or per section (SECTION)
 - Customizable section caps
-- Rudimentary graph node icon
 - A background Section track can be set for the graph as a solid color or bitmap image
+- Graph Cap styles can be BUTT, ROUND, or SQUARE
+- The graph end node can be set to ICON or PERCENT
 
 #### Labels
 - Toggleable labels
@@ -38,7 +40,7 @@ This library aims to be a fully customisable radial graph to suit all your needs
 
 ```groovy
 dependencies {
-    implementation "com.duartbreedt.radialgraph:radialgraph:1.0.13"
+    implementation "com.duartbreedt.radialgraph:radialgraph:1.0.14"
 }
 ```
 
