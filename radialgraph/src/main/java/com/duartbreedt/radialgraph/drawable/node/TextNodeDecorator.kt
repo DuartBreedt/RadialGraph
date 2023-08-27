@@ -16,7 +16,7 @@ internal class TextNodeDecorator(@ColorInt val color: Int, private val char: Cha
     private val nodeOffset: Int = nodeBounds.width() / 2
 
     override fun updateNode(canvas: Canvas) {
-        node.updateNode(canvas)
+        super.updateNode(canvas)
 
         canvas.drawText(
             char.toString(),

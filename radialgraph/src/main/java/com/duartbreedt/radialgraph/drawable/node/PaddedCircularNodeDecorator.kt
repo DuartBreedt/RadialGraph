@@ -9,7 +9,7 @@ internal class PaddedCircularNodeDecorator(node: Node, graphConfig: GraphConfig)
     private val innerCircleRadius = super.getRadius() - (graphConfig.strokeWidth / 10)
 
     override fun updateNode(canvas: Canvas) {
-        node.updateNode(canvas)
+        super.updateNode(canvas)
 
         // Draw inner coloured node circle
         canvas.drawCircle(

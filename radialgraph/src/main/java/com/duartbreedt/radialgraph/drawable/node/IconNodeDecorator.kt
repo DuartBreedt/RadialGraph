@@ -16,7 +16,7 @@ internal class IconNodeDecorator(@ColorInt val color: Int, node: Node, graphConf
     private val iconSize: Float = (super.getRadius() * 2f) - (super.getRadius() * 0.6f)
 
     override fun updateNode(canvas: Canvas) {
-        node.updateNode(canvas)
+        super.updateNode(canvas)
 
         if (graphConfig.graphNodeIcon != null && drawableHashCode != graphConfig.graphNodeIcon.hashCode()) {
 
