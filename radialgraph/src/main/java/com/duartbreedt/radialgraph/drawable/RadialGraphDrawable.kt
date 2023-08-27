@@ -1,19 +1,15 @@
 package com.duartbreedt.radialgraph.drawable
 
 import android.animation.ObjectAnimator
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.ColorFilter
-import android.graphics.PathMeasure
-import android.graphics.Rect
+import android.graphics.*
 import android.util.Log
 import android.util.Property
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.annotation.ColorInt
 import androidx.core.graphics.drawable.toBitmap
-import com.duartbreedt.radialgraph.model.Cap
-import com.duartbreedt.radialgraph.model.GraphConfig
-import com.duartbreedt.radialgraph.model.GraphNode
-import com.duartbreedt.radialgraph.model.SectionState
+import com.duartbreedt.radialgraph.PaintProvider
+import com.duartbreedt.radialgraph.TextPaintProvider
+import com.duartbreedt.radialgraph.model.*
 
 class RadialGraphDrawable(
     override val graphConfig: GraphConfig,
@@ -22,26 +18,13 @@ class RadialGraphDrawable(
 
     companion object {
         private val TAG = RadialGraphDrawable::class.simpleName
+
+        private const val endGradientCapFill = 0.98f
     }
 
-    // Initialize sections
-    private fun initializeDrawable() {
-        val boundaries = calculateBoundaries()
-
-        for (sectionState in sectionStates) {
-            if (sectionState.path == null) {
-                sectionState.path = buildCircularPath(boundaries)
-            }
-
-            if (sectionState.length == null) {
-                sectionState.length = PathMeasure(sectionState.path, false).length
-            }
-
-            if (sectionState.paint == null) {
-                buildPhasedPathPaint(sectionState)
-            }
-        }
-    }
+    private val strokeRadius = graphConfig.strokeWidth / 2
+    private val innerCircleRadius = strokeRadius - (graphConfig.strokeWidth / 10)
+    private val lastSectionState = sectionStates.first { it.isLastSection }
 
     //region Public API
     override fun draw(canvas: Canvas) {
@@ -52,6 +35,7 @@ class RadialGraphDrawable(
             canvas.drawPath(sectionState.path!!, sectionState.paint!!)
         }
 
+        // Make this more efficient
         drawGraphNode(canvas)
     }
 
@@ -78,12 +62,84 @@ class RadialGraphDrawable(
     }
     //endregion
 
+
     //region Helper Functions
+    // Initialize sections
+    private fun initializeDrawable() {
+        val boundaries = calculateBoundaries()
+
+        for (sectionState in sectionStates) {
+            if (sectionState.path == null) {
+                sectionState.path = buildCircularPath(boundaries)
+            }
+
+            if (sectionState.length == null) {
+                sectionState.length = PathMeasure(sectionState.path, false).length
+            }
+
+            if (sectionState.paint == null) {
+                buildPhasedPathPaint(sectionState)
+                if (graphConfig.isGradientEnabled() && graphConfig.gradientType == GradientType.SWEEP) {
+                    applySweepGradient(sectionState)
+                }
+            }
+        }
+    }
+
+    private fun applySweepGradient(state: SectionState) {
+        val colorList: MutableList<Int> = state.color.toMutableList()
+        val positionList: MutableList<Float> = generatePositionList(state, colorList.size).toMutableList()
+        val boundaries = calculateBoundaries()
+
+        /*
+            Fix for gradient overflow for the first section's first cap when using a cap style other than 'BUTT'.
+            This creates a small gradient at the end of the sweep to account for the overflowing cap.
+         */
+        if (state.startPosition == 0f && graphConfig.capStyle != Cap.BUTT) {
+            colorList.add(state.color.first())
+            positionList.addAll(
+                listOf(
+                    positionList.removeLast().coerceAtMost(endGradientCapFill),
+                    endGradientCapFill
+                )
+            )
+        }
+
+        state.paint?.shader = SweepGradient(
+            boundaries.centerX(),
+            boundaries.centerY(),
+            colorList.toIntArray(),
+            positionList.toFloatArray()
+        ).apply {
+            setLocalMatrix(Matrix().apply {
+                preRotate(
+                    startingRotation,
+                    boundaries.centerX(),
+                    boundaries.centerY()
+                )
+            })
+        }
+    }
+
+    private fun generatePositionList(state: SectionState, colorListSize: Int): List<Float> {
+
+        // Distribution of colors on the section as a value between 0.0 and 1.0
+        val gradientDistribution = (1f / (colorListSize - 1).coerceAtLeast(1))
+
+        // Gap between each color clamped to the size of the section in relation to the graph
+        val clampedGradientGap = when (graphConfig.gradientFill) {
+            GradientFill.SECTION -> gradientDistribution * state.sweepSize
+            GradientFill.FULL -> gradientDistribution
+        }
+
+        val colorPositionIndices: List<Float> = List(colorListSize, Int::toFloat)
+
+        // Generate the position for each color relative to the graph
+        return colorPositionIndices.map { (clampedGradientGap * it) + state.startPosition }
+    }
+
     private fun drawGraphNode(canvas: Canvas) {
-        val lastSectionState = sectionStates.first { it.isLastSection }
         val graphEndCoords = FloatArray(2)
-        val strokeRadius = graphConfig.strokeWidth / 2
-        val innerCircleRadius = strokeRadius - (graphConfig.strokeWidth / 10)
 
         // Get the position of the end of the last drawn segment
         PathMeasure(lastSectionState.path!!, false).getPosTan(
@@ -98,7 +154,7 @@ class RadialGraphDrawable(
                 graphEndCoords[0],
                 graphEndCoords[1],
                 strokeRadius,
-                buildFillPaint(lastSectionState.color.first())
+                PaintProvider.getPaint(lastSectionState.color.last())
             )
         }
 
@@ -109,12 +165,12 @@ class RadialGraphDrawable(
                 graphEndCoords[0],
                 graphEndCoords[1],
                 innerCircleRadius,
-                buildFillPaint(graphConfig.graphNodeColor)
+                PaintProvider.getPaint(graphConfig.graphNodeColor)
             )
 
             when (graphConfig.graphNodeType) {
-                GraphNode.PERCENT -> drawTextNode(canvas, graphEndCoords, lastSectionState, '%')
-                GraphNode.ICON -> drawIconNode(canvas, graphEndCoords, lastSectionState, innerCircleRadius)
+                GraphNode.PERCENT -> drawTextNode(canvas, graphEndCoords, lastSectionState.color.last(), '%')
+                GraphNode.ICON -> drawIconNode(canvas, graphEndCoords, lastSectionState.color.last(), innerCircleRadius)
                 else -> Log.e(TAG, "${graphConfig.graphNodeType} has not yet been catered for!")
             }
         }
@@ -123,10 +179,10 @@ class RadialGraphDrawable(
     private fun drawIconNode(
         canvas: Canvas,
         graphEndCoords: FloatArray,
-        lastSectionState: SectionState,
+        @ColorInt nodeColor: Int,
         innerCircleRadius: Float
     ) {
-        graphConfig.graphNodeIcon?.setTint(lastSectionState.color.first())
+        graphConfig.graphNodeIcon?.setTint(nodeColor)
         graphConfig.graphNodeIcon?.toBitmap()?.let {
 
             // Ensures we retains the icon aspect ratio
@@ -148,9 +204,9 @@ class RadialGraphDrawable(
         }
     }
 
-    private fun drawTextNode(canvas: Canvas, graphEndCoords: FloatArray, lastSectionState: SectionState, node: Char) {
+    private fun drawTextNode(canvas: Canvas, graphEndCoords: FloatArray, @ColorInt nodeColor: Int, node: Char) {
         val nodeBounds = Rect()
-        val nodePaint = buildNodeTextPaint(lastSectionState.color.first(), graphConfig.graphNodeTextSize).apply {
+        val nodePaint = TextPaintProvider.getPaint(nodeColor, graphConfig.graphNodeTextSize).apply {
             getTextBounds(node.toString(), 0, node.toString().length, nodeBounds)
         }
         val nodeOffset: Int = nodeBounds.width() / 2

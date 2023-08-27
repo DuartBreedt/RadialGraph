@@ -10,11 +10,7 @@ import android.widget.ImageView
 import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.constraintlayout.widget.ConstraintSet.BOTTOM
-import androidx.constraintlayout.widget.ConstraintSet.LEFT
-import androidx.constraintlayout.widget.ConstraintSet.PARENT_ID
-import androidx.constraintlayout.widget.ConstraintSet.RIGHT
-import androidx.constraintlayout.widget.ConstraintSet.TOP
+import androidx.constraintlayout.widget.ConstraintSet.*
 import androidx.core.view.ViewCompat
 import com.duartbreedt.radialgraph.R
 import com.duartbreedt.radialgraph.drawable.RadialGraphDrawable
@@ -22,14 +18,7 @@ import com.duartbreedt.radialgraph.drawable.TrackDrawable
 import com.duartbreedt.radialgraph.extensions.addIf
 import com.duartbreedt.radialgraph.extensions.getColorCompat
 import com.duartbreedt.radialgraph.extensions.toFormattedDecimal
-import com.duartbreedt.radialgraph.model.AnimationDirection
-import com.duartbreedt.radialgraph.model.Cap
-import com.duartbreedt.radialgraph.model.Data
-import com.duartbreedt.radialgraph.model.GradientFill
-import com.duartbreedt.radialgraph.model.GradientType
-import com.duartbreedt.radialgraph.model.GraphConfig
-import com.duartbreedt.radialgraph.model.GraphNode
-import com.duartbreedt.radialgraph.model.Section
+import com.duartbreedt.radialgraph.model.*
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -92,10 +81,7 @@ class RadialGraph : ConstraintLayout {
 
         @ColorInt val labelsColor: Int? =
             if (attributes.hasValue(R.styleable.RadialGraph_labelsColor)) {
-                attributes.getColor(
-                    R.styleable.RadialGraph_labelsColor,
-                    context.getColorCompat(R.color.label_defaultColor)
-                )
+                attributes.getColor(R.styleable.RadialGraph_labelsColor, context.getColorCompat(R.color.label_defaultColor))
             } else null
 
         val strokeWidth: Float = attributes.getDimension(R.styleable.RadialGraph_strokeWidth, 0f)
@@ -104,26 +90,19 @@ class RadialGraph : ConstraintLayout {
             attributes.getInt(R.styleable.RadialGraph_capStyle, DEFAULT_CAP_STYLE)
         val capStyle = Cap.values()[capStyleOrdinal]
 
-        val backgroundTrackColor =
-            attributes.getColor(R.styleable.RadialGraph_backgroundTrackColor, View.NO_ID)
+        val backgroundTrackColor = attributes.getColor(R.styleable.RadialGraph_backgroundTrackColor, View.NO_ID)
         val backgroundTrackDrawable =
-            attributes.getDrawable(R.styleable.RadialGraph_backgroundTrackDrawable)
+            if (!attributes.hasValue(R.styleable.RadialGraph_backgroundTrackDrawable)) null
+            else attributes.getDrawable(R.styleable.RadialGraph_backgroundTrackDrawable)
 
-        val graphNodeOrdinal: Int =
-            attributes.getInt(R.styleable.RadialGraph_graphNode, DEFAULT_GRAPH_NODE)
+        val graphNodeOrdinal: Int = attributes.getInt(R.styleable.RadialGraph_graphNode, DEFAULT_GRAPH_NODE)
         val graphNode = GraphNode.values()[graphNodeOrdinal]
 
         val graphNodeColor: Int = if (attributes.hasValue(R.styleable.RadialGraph_graphNodeColor)) {
-            attributes.getColor(
-                R.styleable.RadialGraph_graphNodeColor,
-                context.getColorCompat(R.color.node_defaultColor)
-            )
+            attributes.getColor(R.styleable.RadialGraph_graphNodeColor, context.getColorCompat(R.color.node_defaultColor))
         } else {
             if (graphNode != GraphNode.NONE) {
-                Log.w(
-                    TAG,
-                    "No value passed for the `app:graphNodeColor` attribute. It will default to Magenta"
-                )
+                Log.w(TAG, "No value passed for the `app:graphNodeColor` attribute. It will default to Magenta")
             }
 
             context.getColorCompat(R.color.node_defaultColor)
