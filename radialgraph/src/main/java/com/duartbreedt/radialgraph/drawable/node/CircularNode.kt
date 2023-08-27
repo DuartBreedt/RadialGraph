@@ -7,7 +7,7 @@ import com.duartbreedt.radialgraph.PaintProvider
 import com.duartbreedt.radialgraph.model.GraphConfig
 import com.duartbreedt.radialgraph.model.SectionState
 
-class CircularNode(private val sectionState: SectionState, @ColorInt val color: Int, graphConfig: GraphConfig) :
+internal class CircularNode(private val sectionState: SectionState, @ColorInt val color: Int, graphConfig: GraphConfig) :
     Node(graphConfig) {
 
     private val nodePosition: FloatArray = FloatArray(2)

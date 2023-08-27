@@ -4,7 +4,7 @@ import android.graphics.Canvas
 import com.duartbreedt.radialgraph.PaintProvider
 import com.duartbreedt.radialgraph.model.GraphConfig
 
-class PaddedCircularNodeDecorator(node: Node, graphConfig: GraphConfig) : BaseNodeDecorator(node, graphConfig) {
+internal class PaddedCircularNodeDecorator(node: Node, graphConfig: GraphConfig) : BaseNodeDecorator(node, graphConfig) {
 
     private val innerCircleRadius = super.getRadius() - (graphConfig.strokeWidth / 10)
 

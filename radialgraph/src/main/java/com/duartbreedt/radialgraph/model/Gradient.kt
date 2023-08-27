@@ -1,11 +1,11 @@
 package com.duartbreedt.radialgraph.model
 
-enum class GradientType {
+internal enum class GradientType {
     NONE,
     SWEEP
 }
 
-enum class GradientFill {
+internal enum class GradientFill {
     SECTION,
     FULL
 }

@@ -6,7 +6,7 @@ import androidx.annotation.ColorInt
 import androidx.core.graphics.drawable.toBitmap
 import com.duartbreedt.radialgraph.model.GraphConfig
 
-class IconNodeDecorator(@ColorInt val color: Int, node: Node, graphConfig: GraphConfig) : BaseNodeDecorator(node, graphConfig) {
+internal class IconNodeDecorator(@ColorInt val color: Int, node: Node, graphConfig: GraphConfig) : BaseNodeDecorator(node, graphConfig) {
 
     private var drawableHashCode: Int = 0
     private var nodeIconBitmap: Bitmap? = null

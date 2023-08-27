@@ -15,7 +15,7 @@ import android.view.View.NO_ID
 import androidx.core.graphics.drawable.toBitmap
 import com.duartbreedt.radialgraph.model.GraphConfig
 
-class TrackDrawable(
+internal class TrackDrawable(
     private val graphConfig: GraphConfig,
     private val backgroundColor: Int,
     private val backgroundTrackDrawable: Drawable?

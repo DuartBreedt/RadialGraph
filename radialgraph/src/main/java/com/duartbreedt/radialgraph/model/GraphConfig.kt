@@ -4,7 +4,7 @@ import android.graphics.drawable.Drawable
 import android.view.View.NO_ID
 import androidx.annotation.ColorInt
 
-data class GraphConfig(
+internal data class GraphConfig(
     val animationDirection: AnimationDirection,
     val animationDuration: Long,
     var labelsEnabled: Boolean,

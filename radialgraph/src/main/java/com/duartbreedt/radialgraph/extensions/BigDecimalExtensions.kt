@@ -3,7 +3,7 @@ package com.duartbreedt.radialgraph.extensions
 import java.math.BigDecimal
 import java.text.DecimalFormat
 
-const val percentageDecimalPattern: String = "##0.0"
+internal const val percentageDecimalPattern: String = "##0.0"
 
 /**
  * Adds the result together of an operation performed on each element in an iterable
@@ -13,7 +13,7 @@ const val percentageDecimalPattern: String = "##0.0"
  * @param selector The operation to be performed on each element in the iterable
  * @return The addition of all the results of performing an operation (selector) on every element in the iterable
  */
-inline fun <T> Iterable<T>.sumByBigDecimal(selector: (T) -> BigDecimal): BigDecimal {
+internal inline fun <T> Iterable<T>.sumByBigDecimal(selector: (T) -> BigDecimal): BigDecimal {
     var sum: BigDecimal = BigDecimal.ZERO
 
     for (element in this) {
@@ -23,7 +23,7 @@ inline fun <T> Iterable<T>.sumByBigDecimal(selector: (T) -> BigDecimal): BigDeci
     return sum
 }
 
-fun BigDecimal.toFormattedDecimal(): String = createSpaceGroupingSeparator(this, percentageDecimalPattern)
+internal fun BigDecimal.toFormattedDecimal(): String = createSpaceGroupingSeparator(this, percentageDecimalPattern)
 
 private fun createSpaceGroupingSeparator(value: BigDecimal, pattern: String): String {
     val formatter = DecimalFormat(pattern)

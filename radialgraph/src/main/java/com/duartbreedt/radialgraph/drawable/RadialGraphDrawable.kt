@@ -8,7 +8,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import com.duartbreedt.radialgraph.drawable.node.*
 import com.duartbreedt.radialgraph.model.*
 
-class RadialGraphDrawable(
+internal class RadialGraphDrawable(
     override val graphConfig: GraphConfig,
     override val sectionStates: List<SectionState>
 ) : GraphDrawable(graphConfig, sectionStates) {
@@ -89,7 +89,7 @@ class RadialGraphDrawable(
         if (state.color.size < 2) {
             return
         }
-        
+
         val colorList: MutableList<Int> = state.color.toMutableList()
         val positionList: MutableList<Float> = generatePositionList(state, colorList.size).toMutableList()
         val boundaries = calculateBoundaries()

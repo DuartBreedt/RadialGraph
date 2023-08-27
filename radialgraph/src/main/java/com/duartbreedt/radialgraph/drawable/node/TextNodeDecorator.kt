@@ -6,7 +6,7 @@ import androidx.annotation.ColorInt
 import com.duartbreedt.radialgraph.TextPaintProvider
 import com.duartbreedt.radialgraph.model.GraphConfig
 
-class TextNodeDecorator(@ColorInt val color: Int, private val char: Char, node: Node, graphConfig: GraphConfig) :
+internal class TextNodeDecorator(@ColorInt val color: Int, private val char: Char, node: Node, graphConfig: GraphConfig) :
     BaseNodeDecorator(node, graphConfig) {
 
     private val nodeBounds = Rect()

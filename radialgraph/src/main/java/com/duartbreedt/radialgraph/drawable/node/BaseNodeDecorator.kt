@@ -3,7 +3,7 @@ package com.duartbreedt.radialgraph.drawable.node
 import android.graphics.Canvas
 import com.duartbreedt.radialgraph.model.GraphConfig
 
-abstract class BaseNodeDecorator(val node: Node, graphConfig: GraphConfig) : Node(graphConfig) {
+internal abstract class BaseNodeDecorator(val node: Node, graphConfig: GraphConfig) : Node(graphConfig) {
 
     override fun updateNode(canvas: Canvas) {
         node.updateNode(canvas)

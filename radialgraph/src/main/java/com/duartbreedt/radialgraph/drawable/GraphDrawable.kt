@@ -7,7 +7,7 @@ import com.duartbreedt.radialgraph.model.GraphConfig
 import com.duartbreedt.radialgraph.model.SectionState
 
 
-abstract class GraphDrawable(
+internal abstract class GraphDrawable(
     open val graphConfig: GraphConfig,
     open val sectionStates: List<SectionState>
 ) : Drawable() {
