@@ -163,6 +163,14 @@ class RadialGraph : ConstraintLayout {
         graphConfig.graphNodeType = newGraphNodeType
     }
 
+    fun setGraphNodeColor(@ColorInt newColor: Int) {
+        graphConfig.graphNodeColor = newColor
+    }
+
+    fun setGraphNodeIcon(icon: Drawable?) {
+        graphConfig.graphNodeIcon = icon
+    }
+
     /**
      * Set the background track of the graph programmatically.
      *

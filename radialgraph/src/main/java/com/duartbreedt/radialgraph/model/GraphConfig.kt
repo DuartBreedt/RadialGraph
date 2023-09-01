@@ -14,9 +14,9 @@ internal data class GraphConfig(
     @ColorInt var backgroundTrackColor: Int,
     var backgroundTrackDrawable: Drawable?,
     var graphNodeType: GraphNode,
-    @ColorInt val graphNodeColor: Int,
+    @ColorInt var graphNodeColor: Int,
     val graphNodeTextSize: Float,
-    val graphNodeIcon: Drawable?,
+    var graphNodeIcon: Drawable?,
     val gradientType: GradientType,
     val gradientFill: GradientFill
 ) {

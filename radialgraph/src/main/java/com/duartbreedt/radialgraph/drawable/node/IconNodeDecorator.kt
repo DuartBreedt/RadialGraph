@@ -20,8 +20,8 @@ internal class IconNodeDecorator(@ColorInt val color: Int, node: Node, graphConf
 
         if (graphConfig.graphNodeIcon != null && drawableHashCode != graphConfig.graphNodeIcon.hashCode()) {
 
-            graphConfig.graphNodeIcon.setTint(color)
-            nodeIconBitmap = graphConfig.graphNodeIcon.toBitmap()
+            graphConfig.graphNodeIcon?.setTint(color)
+            nodeIconBitmap = graphConfig.graphNodeIcon?.toBitmap()
 
             // Ensures we retains the icon aspect ratio
             with(nodeIconBitmap!!) {
