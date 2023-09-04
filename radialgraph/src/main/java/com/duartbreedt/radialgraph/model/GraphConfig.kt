@@ -9,7 +9,7 @@ internal data class GraphConfig(
     val animationDuration: Long,
     var labelsEnabled: Boolean,
     @ColorInt val labelsColor: Int?,
-    val strokeWidth: Float,
+    var strokeWidth: Float,
     val capStyle: Cap,
     @ColorInt var backgroundTrackColor: Int,
     var backgroundTrackDrawable: Drawable?,
