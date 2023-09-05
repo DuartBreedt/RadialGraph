@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.ColorInt
+import androidx.annotation.Dimension
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.ConstraintSet.*
@@ -159,8 +160,20 @@ class RadialGraph : ConstraintLayout {
         }
     }
 
+    fun setStrokeWidth(@Dimension width: Float) {
+        graphConfig.strokeWidth = width
+    }
+
     fun setGraphNode(newGraphNodeType: GraphNode) {
         graphConfig.graphNodeType = newGraphNodeType
+    }
+
+    fun setGraphNodeColor(@ColorInt newColor: Int) {
+        graphConfig.graphNodeColor = newColor
+    }
+
+    fun setGraphNodeIcon(icon: Drawable?) {
+        graphConfig.graphNodeIcon = icon
     }
 
     /**

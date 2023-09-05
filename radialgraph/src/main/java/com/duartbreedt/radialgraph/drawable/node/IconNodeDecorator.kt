@@ -20,13 +20,13 @@ internal class IconNodeDecorator(@ColorInt val color: Int, node: Node, graphConf
 
         if (graphConfig.graphNodeIcon != null && drawableHashCode != graphConfig.graphNodeIcon.hashCode()) {
 
-            graphConfig.graphNodeIcon.setTint(color)
-            nodeIconBitmap = graphConfig.graphNodeIcon.toBitmap()
+            graphConfig.graphNodeIcon?.setTint(color)
+            nodeIconBitmap = graphConfig.graphNodeIcon?.toBitmap()
 
             // Ensures we retains the icon aspect ratio
-            with(nodeIconBitmap!!) {
-                nodeIconBitmapWidthMultiplier = if (width > height) 1.0f else width.toFloat() / height
-                nodeIconBitmapHeightMultiplier = if (width > height) height.toFloat() / width else 1.0f
+            nodeIconBitmap?.let {
+                nodeIconBitmapWidthMultiplier = if (it.width > it.height) 1.0f else it.width.toFloat() / it.height
+                nodeIconBitmapHeightMultiplier = if (it.width > it.height) it.height.toFloat() / it.width else 1.0f
             }
 
             drawableHashCode = graphConfig.graphNodeIcon.hashCode()
